@@ -30,4 +30,3 @@ Het script inventariseert Garmin-apparaten in Windows, Verkenner en eventuele vo
 Gebruik voor de eerste overdracht de Garmin Express-route die op deze pc al werkt. Selecteer de voorbereide MP3 uit de stagingmap, synchroniseer via Garmin Express, koppel het horloge veilig los en controleer op het horloge of de aflevering verschijnt en afspeelt.
 
 Noteer zonder privé-URL's te delen: detectie in Windows, of Garmin Express de MP3 accepteert, of deze op het horloge verschijnt, en of afspelen werkt. Automatiseer het schrijven naar Garmin-opslag pas nadat deze route is bevestigd.
-
