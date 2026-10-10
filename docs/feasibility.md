@@ -9,6 +9,7 @@
 - Een tweede volledige back-up bevat 17 afleveringen. `compare` vond precies één toevoeging op positie 7, geen verwijderingen en 16 behouden afleveringen. Dit bevestigt de playlistkoppeling voor deze appversie.
 - Alle 16 geselecteerde afleveringen hebben een HTTPS-audiolink, een podcastfeed en een unieke afgeleide sleutel. Ze zijn volgens de back-up niet lokaal gedownload.
 - Een OPML-export bevat abonnementen, maar geen playlistafleveringen.
+- De lokale stagingopdracht kan MP3-bestanden downloaden, een controlesom bewaren en dezelfde audio bij een tweede run verifiëren en hergebruiken; dit is met een gesimuleerde HTTPS-bron getest.
 
 ## Nog te bewijzen met echte hardware en data
 
@@ -17,8 +18,8 @@
 | Verwijdering uit de playlist | Verwijder later een testaflevering en vergelijk twee volledige back-ups. | Controleer dat `compare` alleen die aflevering als verwijderd meldt. |
 | Lokale wifi-overdracht | Test of een Android-synchronisatie-app de back-upmap onder gedeelde opslag (`Android/media`) kan lezen en nieuwe `.backup`-bestanden via het thuisnetwerk naar een Windows-map kan sturen. | Kies een beveiligde, eenrichtings-overdracht en controleer dat Windows alleen complete bestanden verwerkt. |
 | Automatische volledige back-up | In de tweede back-up staat deze instelling aan en is een lokale back-upmap ingesteld. Controleer nog of een geplande back-up zonder handmatige actie verschijnt en de nieuwste playlist bevat. | Gebruik automatische back-ups als invoer wanneer timing en volledigheid zijn bewezen. |
-| Audio voor streamingafleveringen | Neem één publiek beschikbare aflevering uit de testplaylist en bepaal of de pc de oorspronkelijke audiobron kan ophalen. | Kies directe download vanaf Windows of markeer de bron als niet ondersteund. |
-| Garmin-opslag | Sluit de Forerunner op Windows aan en inventariseer alleen leesbaar welke opslag en mappen zichtbaar zijn. | Bepaal of een ondersteunde overdrachtsroute bestaat. |
+| Audio voor streamingafleveringen | Voer `prepare ... --limit 1` uit op de Windows-pc. De cloudproxy weigert de huidige podcastbronnen met 403, dus een echte download is hier nog niet geverifieerd. | Bevestig dat de MP3 volledig en afspeelbaar is. |
+| Garmin-opslag | Sluit de Forerunner op Windows aan, voer `scripts/Inspect-Garmin.ps1` uit en gebruik Garmin Express voor één MP3-proef. | Bepaal of het bestand op het horloge verschijnt en afspeelt. |
 
 ## Voorlopige architectuur
 

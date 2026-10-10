@@ -3,4 +3,8 @@ obj/
 .vs/
 *.backup
 *.opml
+*.mp3
+*.partial
+podcast-sync-manifest.json
+staging/
 

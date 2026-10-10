@@ -10,6 +10,7 @@
 | 2026-10-10 | Lees de handmatige playlist via `ordered_list.type=1` en `filter=-1` uit de volledige SQLite-back-up. | De telling kwam overeen met de app; een tweede back-up liet precies één toevoeging zien. | Bevestigd voor deze appversie |
 | 2026-10-10 | Gebruik voorlopig handmatige volledige back-ups. | Automatische back-ups verschijnen nog niet betrouwbaar in de cloudopslag van de gebruiker. | Actief; automatisering geparkeerd |
 | 2026-10-10 | Onderzoek lokale wifi-overdracht van de back-upmap naar Windows. | Automatische volledige back-ups staan inmiddels aan en de map ligt in gedeelde Android-opslag; cloud-overdracht is onbetrouwbaar. | Te testen op telefoon en Windows-pc |
+| 2026-10-10 | Bereid MP3-bestanden eerst in een lokale pc-map voor en test één bestand via Garmin Express. | De playlist heeft bruikbare MP3-links; directe USB-bestandsoverdracht is nog onbewezen. | Staging getest met gesimuleerde bron; hardwareproef volgt |
 
 ## Werkwijze voor vervolgchats
 
