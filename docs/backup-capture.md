@@ -1,16 +1,16 @@
 # Podcast Addict-playlistwijziging controleren
 
-De eerste echte back-up is gelezen. De 16 gevonden afleveringen komen overeen met de telling in de app. Voor de volgende proef is een tweede back-up nodig.
+Twee echte back-ups zijn vergeleken: de tweede bevat één nieuwe aflevering op positie 7 en de eerdere 16 zijn behouden. De volgende proef kan een verwijdering uit de playlist testen.
 
 ## Gewenste inhoud
 
-Verander de playlist op de telefoon op een manier die je gemakkelijk kunt herkennen:
+Voor een volgende vergelijkingsproef:
 
-1. voeg één publieke streamingaflevering toe;
-2. verwijder desgewenst één bestaande aflevering;
-3. maak daarna opnieuw een **volledige back-up** in Podcast Addict.
+1. verwijder één testaflevering uit de playlist;
+2. maak daarna opnieuw een **volledige back-up** in Podcast Addict;
+3. vergelijk die met de vorige back-up.
 
-Upload alleen die tweede `.backup`. Een OPML-export is voor deze proef niet nodig. Noteer welke aflevering is toegevoegd of verwijderd, zodat we de vergelijking kunnen toetsen.
+Een OPML-export is voor deze proef niet nodig. Noteer welke aflevering is verwijderd, zodat we de vergelijking kunnen toetsen.
 
 ## Veilig aanleveren
 

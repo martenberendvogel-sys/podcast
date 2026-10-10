@@ -7,8 +7,9 @@
 | 2026-10-10 | Garmin-overdracht pas automatiseren na een hardwareproef. | USB-zichtbaarheid bewijst geen ondersteunde mediaoverdracht. | Actief |
 | 2026-10-10 | Eenrichtingssynchronisatie is versie 1. | Tweerichtingsposities zijn technisch onbewezen. | Actief |
 | 2026-10-10 | Playlist/wachtrij is de primaire synchronisatiebron; luisterpositie is optioneel. | De Garmin moet vooral dezelfde geselecteerde afleveringen bevatten, ook wanneer de telefoon streamt. | Actief |
-| 2026-10-10 | Lees de handmatige playlist voorlopig via `ordered_list.type=1` en `filter=-1` uit de volledige SQLite-back-up. | De 16 rijen komen overeen met de door de gebruiker bevestigde 16 afleveringen in de app. | Te bevestigen met tweede back-up na wijziging |
-| 2026-10-10 | Onderzoek automatische volledige back-ups als bron voor versie 1. | De handmatige volledige back-up bevat de playlist; in de huidige appinstellingen staat automatisch volledig back-uppen nog uit. | Te testen |
+| 2026-10-10 | Lees de handmatige playlist via `ordered_list.type=1` en `filter=-1` uit de volledige SQLite-back-up. | De telling kwam overeen met de app; een tweede back-up liet precies één toevoeging zien. | Bevestigd voor deze appversie |
+| 2026-10-10 | Gebruik voorlopig handmatige volledige back-ups. | Automatische back-ups verschijnen nog niet betrouwbaar in de cloudopslag van de gebruiker. | Actief; automatisering geparkeerd |
+| 2026-10-10 | Onderzoek lokale wifi-overdracht van de back-upmap naar Windows. | Automatische volledige back-ups staan inmiddels aan en de map ligt in gedeelde Android-opslag; cloud-overdracht is onbetrouwbaar. | Te testen op telefoon en Windows-pc |
 
 ## Werkwijze voor vervolgchats
 

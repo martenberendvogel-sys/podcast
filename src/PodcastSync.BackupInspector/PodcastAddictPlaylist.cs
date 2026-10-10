@@ -16,7 +16,7 @@ public sealed record PlaylistChanges(
 
 public static class PodcastAddictPlaylist
 {
-    private const string SelectionRule = "ordered_list.type=1 AND ordered_list.filter=-1 (voorlopige playlistkoppeling; controleer met de app)";
+    private const string SelectionRule = "ordered_list.type=1 AND ordered_list.filter=-1 (geverifieerd met twee back-ups uit dezelfde appversie)";
 
     public static async Task<PlaylistReport> ReadAsync(string backupPath)
     {

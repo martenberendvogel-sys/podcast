@@ -14,7 +14,7 @@ dotnet run --project src/PodcastSync.BackupInspector -- playlist /pad/naar/Podca
 dotnet run --project src/PodcastSync.BackupInspector -- compare /pad/naar/oude.backup /pad/naar/nieuwe.backup
 ```
 
-`playlist` toont de afleveringen in volgorde, met een stabiele sleutel en audiolink. `compare` toont welke afleveringen zijn toegevoegd, verwijderd of gebleven tussen twee back-ups. Er wordt nog niets naar de Garmin geschreven. De gevonden databasekoppeling is op één echte back-up en de telling in de app gevalideerd; een tweede back-up met een veranderde playlist moet de wijzigingsdetectie nog bevestigen.
+`playlist` toont de afleveringen in volgorde, met een stabiele sleutel en audiolink. `compare` toont welke afleveringen zijn toegevoegd, verwijderd of gebleven tussen twee back-ups. Er wordt nog niets naar de Garmin geschreven. De databasekoppeling is met twee echte back-ups gevalideerd: één nieuwe aflevering werd correct herkend.
 
 De oudere opdracht `inspect` blijft beschikbaar voor losse JSON-, XML- en ZIP-bestanden. Voor `.backup` gebruikt die dezelfde Podcast Addict-parser als `playlist`.
 
@@ -30,8 +30,8 @@ Dit test JSON-, XML- en ZIP-invoer en vergelijkt twee synthetische Podcast Addic
 
 ## Volgende praktische onderzoeken
 
-1. Exporteer een tweede back-up nadat de playlist is gewijzigd en controleer de `compare`-uitvoer.
-2. Leg vast hoe de back-up automatisch van Android naar Windows komt en test een publieke audiolink.
+1. Test op een later moment of een verwijderde playlistaflevering correct wordt herkend.
+2. Test of de pc een publieke audiolink uit de playlist kan ophalen.
 3. Test, zonder bestanden te schrijven, hoe de Garmin via USB door Windows wordt gepresenteerd.
 4. Test één handmatige audio-overdracht voordat automatische Garmin-synchronisatie wordt gebouwd.
 
