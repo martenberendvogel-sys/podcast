@@ -7,7 +7,7 @@
 - Het rapport bevat per invoerbestand de aangetroffen veldnamen, zodat het werkelijke back-upschema zonder giswerk kan worden vastgelegd.
 - De echte `.backup` is een ZIP met `podcastAddict.db` (SQLite). `ordered_list` met `type=1` en `filter=-1` bevatte 16 geordende afleveringen; de gebruiker bevestigde dat de app 16 playlistafleveringen toonde.
 - Een tweede volledige back-up bevat 17 afleveringen. `compare` vond precies één toevoeging op positie 7, geen verwijderingen en 16 behouden afleveringen. Dit bevestigt de playlistkoppeling voor deze appversie.
-- Alle 16 geselecteerde afleveringen hebben een HTTPS-audiolink, een podcastfeed en een unieke afgeleide sleutel. Ze zijn volgens de back-up niet lokaal gedownload.
+- De 16 afleveringen in de eerste back-up en de 17 in de tweede hebben elk een HTTPS-audiolink, een podcastfeed en een unieke afgeleide sleutel. Ze zijn volgens de back-ups niet lokaal gedownload.
 - Een OPML-export bevat abonnementen, maar geen playlistafleveringen.
 - De lokale stagingopdracht kan MP3-bestanden downloaden, een controlesom bewaren en dezelfde audio bij een tweede run verifiëren en hergebruiken; dit is met een gesimuleerde HTTPS-bron getest.
 
@@ -23,7 +23,7 @@
 
 ## Voorlopige architectuur
 
-Voorlopig levert de gebruiker een handmatig gemaakte volledige back-up met de gewenste selectie aan de Windows .NET-app. Automatische volledige back-ups staan nu aan op de telefoon, maar automatische overdracht naar OneDrive werkt nog niet betrouwbaar. Een volgende proef is de lokale back-upmap via wifi naar Windows te synchroniseren. Dezelfde wifi alleen geeft Windows geen toegang tot Android-bestanden; daar is een dienst of synchronisatie-app op de telefoon voor nodig. De Windows-app haalt waar mogelijk de geselecteerde audio op bij de oorspronkelijke podcastbron en houdt een lokale synchronisatiestatus bij. Pas nadat de Garmin-overdrachtsroute praktisch is bewezen, wordt USB-detectie en kopiëren toegevoegd. Luisterposities en tweerichtingssynchronisatie vallen buiten versie 1.
+Voorlopig levert de gebruiker een handmatig gemaakte volledige back-up met de gewenste selectie aan de Windows .NET-app. Automatische volledige back-ups staan nu aan op de telefoon, maar automatische overdracht naar OneDrive werkt nog niet betrouwbaar. Overdracht via wifi onderzoeken we later; dezelfde wifi alleen geeft Windows geen toegang tot Android-bestanden. De Windows-app haalt waar mogelijk de geselecteerde audio op bij de oorspronkelijke podcastbron en houdt een lokale synchronisatiestatus bij. Pas nadat de Garmin-overdrachtsroute praktisch is bewezen, wordt USB-detectie en kopiëren toegevoegd. Luisterposities en tweerichtingssynchronisatie vallen buiten versie 1.
 
 ## Veiligheidsgrens
 

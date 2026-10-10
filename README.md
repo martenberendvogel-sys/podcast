@@ -2,6 +2,8 @@
 
 Onderzoeksprototype voor een betrouwbare synchronisatieketen van Podcast Addict via Windows naar een Garmin Forerunner 265.
 
+Lees bij hervatten eerst [de actuele projectstand](docs/handoff.md).
+
 De eerste stap leest nu de afspeellijst uit een echte Podcast Addict-back-up. Garmin-overdracht wordt pas na praktische hardwaretests ontworpen. Luisterposities zijn optioneel voor versie 1.
 
 ## Back-upinspecteur draaien
