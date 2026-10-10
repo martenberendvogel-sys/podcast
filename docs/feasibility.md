@@ -15,12 +15,13 @@
 | --- | --- | --- |
 | Playlistwijzigingen | Exporteer na toevoegen of verwijderen van een aflevering een tweede back-up. | Controleer dat `compare` de juiste toevoeging en verwijdering meldt. |
 | Automatische Android-overdracht | Vergelijk ondersteunde export/back-upmogelijkheden en een veilige LAN-overdracht naar Windows. | Kies een methode die geen toegang tot de privédata van de app vereist. |
+| Automatische volledige back-up | Schakel die in Podcast Addict in en controleer een nieuw, automatisch gemaakt `.backup`-bestand op `podcastAddict.db` en de 16 playlistafleveringen. Controleer ook waar en wanneer het bestand verschijnt. | Gebruik dit als invoerbron als het betrouwbaar en actueel genoeg is. |
 | Audio voor streamingafleveringen | Neem één publiek beschikbare aflevering uit de testplaylist en bepaal of de pc de oorspronkelijke audiobron kan ophalen. | Kies directe download vanaf Windows of markeer de bron als niet ondersteund. |
 | Garmin-opslag | Sluit de Forerunner op Windows aan en inventariseer alleen leesbaar welke opslag en mappen zichtbaar zijn. | Bepaal of een ondersteunde overdrachtsroute bestaat. |
 
 ## Voorlopige architectuur
 
-Android levert een geëxporteerde back-up met de gewenste selectie via het thuisnetwerk aan een Windows .NET-app. Die app haalt waar mogelijk de geselecteerde audio op bij de oorspronkelijke podcastbron en houdt een lokale synchronisatiestatus bij. Pas nadat de Garmin-overdrachtsroute praktisch is bewezen, wordt USB-detectie en kopiëren toegevoegd. Luisterposities en tweerichtingssynchronisatie vallen buiten versie 1.
+Android levert mogelijk automatisch een volledige back-up met de gewenste selectie aan een Windows .NET-app. In de aangeleverde back-up staat de instelling voor automatische volledige back-ups uit; de haalbaarheid van deze route is dus nog niet getest. OneDrive-opslag op de telefoon bewijst nog geen automatische overdracht van nieuwe back-ups naar Windows. De Windows-app haalt waar mogelijk de geselecteerde audio op bij de oorspronkelijke podcastbron en houdt een lokale synchronisatiestatus bij. Pas nadat de Garmin-overdrachtsroute praktisch is bewezen, wordt USB-detectie en kopiëren toegevoegd. Luisterposities en tweerichtingssynchronisatie vallen buiten versie 1.
 
 ## Veiligheidsgrens
 
