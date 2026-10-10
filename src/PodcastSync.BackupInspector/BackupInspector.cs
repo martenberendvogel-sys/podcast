@@ -15,6 +15,7 @@ public sealed record EpisodeCandidate(
 public sealed record InspectionReport(
     string InputFile,
     IReadOnlyList<string> InspectedEntries,
+    IReadOnlyDictionary<string, IReadOnlyList<string>> DiscoveredFields,
     IReadOnlyList<EpisodeCandidate> Episodes,
     IReadOnlyList<string> Notes);
 
@@ -43,13 +44,16 @@ public static class BackupInspector
         }
 
         var episodes = new List<EpisodeCandidate>();
+        var discoveredFields = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase);
         var notes = new List<string>();
         foreach (var (name, content) in entries)
         {
             try
             {
-                if (LooksLikeJson(content)) ExtractJson(name, content, episodes);
-                else ExtractXml(name, content, episodes);
+                var fields = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                if (LooksLikeJson(content)) ExtractJson(name, content, episodes, fields);
+                else ExtractXml(name, content, episodes, fields);
+                discoveredFields[name] = fields.Order(StringComparer.OrdinalIgnoreCase).ToList();
             }
             catch (Exception exception) when (exception is JsonException or System.Xml.XmlException)
             {
@@ -60,37 +64,39 @@ public static class BackupInspector
         if (episodes.Count == 0)
             notes.Add("Geen afleveringkandidaten gevonden. Bewaar dit rapport en voeg een echte back-up toe om de veldkoppeling te verfijnen.");
 
-        return new InspectionReport(inputFile, entries.Select(e => e.Name).ToList(), episodes, notes);
+        return new InspectionReport(inputFile, entries.Select(e => e.Name).ToList(), discoveredFields, episodes, notes);
     }
 
     private static bool IsStructured(string name) => name.EndsWith(".json", StringComparison.OrdinalIgnoreCase) || name.EndsWith(".xml", StringComparison.OrdinalIgnoreCase);
     private static bool LooksLikeJson(string text) => text.TrimStart().StartsWith('{') || text.TrimStart().StartsWith('[');
 
-    private static void ExtractJson(string source, string json, List<EpisodeCandidate> output)
+    private static void ExtractJson(string source, string json, List<EpisodeCandidate> output, ISet<string> discoveredFields)
     {
         using var document = JsonDocument.Parse(json);
-        WalkJson(source, document.RootElement, output);
+        WalkJson(source, document.RootElement, output, discoveredFields);
     }
 
-    private static void WalkJson(string source, JsonElement element, List<EpisodeCandidate> output)
+    private static void WalkJson(string source, JsonElement element, List<EpisodeCandidate> output, ISet<string> discoveredFields)
     {
         if (element.ValueKind == JsonValueKind.Object)
         {
             var fields = element.EnumerateObject().ToDictionary(p => p.Name, p => p.Value, StringComparer.OrdinalIgnoreCase);
+            discoveredFields.UnionWith(fields.Keys);
             AddCandidate(source, fields.ToDictionary(p => p.Key, p => p.Value.ToString(), StringComparer.OrdinalIgnoreCase), output);
-            foreach (var value in fields.Values) WalkJson(source, value, output);
+            foreach (var value in fields.Values) WalkJson(source, value, output, discoveredFields);
         }
         else if (element.ValueKind == JsonValueKind.Array)
-            foreach (var item in element.EnumerateArray()) WalkJson(source, item, output);
+            foreach (var item in element.EnumerateArray()) WalkJson(source, item, output, discoveredFields);
     }
 
-    private static void ExtractXml(string source, string xml, List<EpisodeCandidate> output)
+    private static void ExtractXml(string source, string xml, List<EpisodeCandidate> output, ISet<string> discoveredFields)
     {
         var document = XDocument.Parse(xml);
         foreach (var element in document.Descendants())
         {
             var fields = element.Attributes().ToDictionary(a => a.Name.LocalName, a => a.Value, StringComparer.OrdinalIgnoreCase);
             foreach (var child in element.Elements()) fields[child.Name.LocalName] = child.Value;
+            discoveredFields.UnionWith(fields.Keys);
             AddCandidate(source, fields, output);
         }
     }
@@ -115,6 +121,6 @@ public static class BackupInspector
 
 public static class ReportWriter
 {
-    public static string ToJson(InspectionReport report) => JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true });
+    public static string ToJson<T>(T report) => JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true });
 }
 

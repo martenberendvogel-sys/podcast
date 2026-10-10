@@ -2,17 +2,23 @@
 
 Onderzoeksprototype voor een betrouwbare synchronisatieketen van Podcast Addict via Windows naar een Garmin Forerunner 265.
 
-De eerste stap is bewust beperkt: een back-up inspecteren en de mogelijk bruikbare afleveringgegevens en luisterposities zichtbaar maken. Garmin-overdracht en het herstellen van afspeelposities zijn nog niet bewezen en worden pas na praktische hardwaretests ontworpen.
+De eerste stap leest nu de afspeellijst uit een echte Podcast Addict-back-up. Garmin-overdracht wordt pas na praktische hardwaretests ontworpen. Luisterposities zijn optioneel voor versie 1.
 
 ## Back-upinspecteur draaien
 
 Deze repository gebruikt .NET 8. Installeer een SDK of gebruik in de cloudomgeving `/workspace/.dotnet/dotnet`.
 
 ```bash
-dotnet run --project src/PodcastSync.BackupInspector -- inspect /pad/naar/podcast-addict-back-up
+dotnet restore tests/PodcastSync.BackupInspector.Tests --locked-mode
+dotnet run --project src/PodcastSync.BackupInspector -- playlist /pad/naar/PodcastAddict.backup
+dotnet run --project src/PodcastSync.BackupInspector -- compare /pad/naar/oude.backup /pad/naar/nieuwe.backup
 ```
 
-De inspecteur accepteert JSON, XML en ZIP. Hij schrijft een JSON-rapport met gevonden velden en kandidaat-afleveringen. De heuristiek is expres traceerbaar: een echte Podcast Addict-back-up is nodig om de velden definitief te koppelen.
+`playlist` toont de afleveringen in volgorde, met een stabiele sleutel en audiolink. `compare` toont welke afleveringen zijn toegevoegd, verwijderd of gebleven tussen twee back-ups. Er wordt nog niets naar de Garmin geschreven. De gevonden databasekoppeling is op één echte back-up en de telling in de app gevalideerd; een tweede back-up met een veranderde playlist moet de wijzigingsdetectie nog bevestigen.
+
+De oudere opdracht `inspect` blijft beschikbaar voor losse JSON-, XML- en ZIP-bestanden. Voor `.backup` gebruikt die dezelfde Podcast Addict-parser als `playlist`.
+
+Zie [de instructies voor een testback-up](docs/backup-capture.md) voordat je een bestand aanlevert.
 
 ## Huidige verificatie
 
@@ -20,12 +26,12 @@ De inspecteur accepteert JSON, XML en ZIP. Hij schrijft een JSON-rapport met gev
 dotnet run --project tests/PodcastSync.BackupInspector.Tests
 ```
 
-Dit test JSON-, XML- en ZIP-invoer met luisterposities.
+Dit test JSON-, XML- en ZIP-invoer en vergelijkt twee synthetische Podcast Addict-back-ups.
 
 ## Volgende praktische onderzoeken
 
-1. Exporteer een echte Podcast Addict-back-up en voer die door de inspecteur.
-2. Leg vast hoe audiobestanden en de back-up automatisch van Android naar Windows komen.
+1. Exporteer een tweede back-up nadat de playlist is gewijzigd en controleer de `compare`-uitvoer.
+2. Leg vast hoe de back-up automatisch van Android naar Windows komt en test een publieke audiolink.
 3. Test, zonder bestanden te schrijven, hoe de Garmin via USB door Windows wordt gepresenteerd.
 4. Test één handmatige audio-overdracht voordat automatische Garmin-synchronisatie wordt gebouwd.
 
