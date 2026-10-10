@@ -28,4 +28,3 @@ dotnet run --project src/PodcastSync.BackupInspector -- compare 'C:\pad\naar\oud
 ```
 
 De uitvoer bevat titels en URL's; behandel het rapport daarom ook als privé.
-
