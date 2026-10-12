@@ -11,8 +11,9 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $inputFile = (Resolve-Path -LiteralPath $InputPath -ErrorAction Stop).Path
-if ([IO.Path]::GetExtension($inputFile) -ine '.mp3') {
-    throw 'Dit hulpmiddel verwacht één MP3-bestand als invoer.'
+$extension = [IO.Path]::GetExtension($inputFile)
+if ($extension -ine '.mp3' -and $extension -ine '.m4b') {
+    throw 'Dit hulpmiddel verwacht één MP3- of M4B-bestand als invoer.'
 }
 
 $ffmpeg = (Get-Command ffmpeg -ErrorAction Stop).Source
@@ -29,13 +30,20 @@ if (Test-Path -LiteralPath $outputPath) {
 
 $durationText = & $ffprobe -v error -show_entries format=duration -of 'default=noprint_wrappers=1:nokey=1' $inputFile
 if ($LASTEXITCODE -ne 0 -or -not $durationText) {
-    throw 'De duur van het MP3-bestand kon niet worden gelezen.'
+    throw 'De duur van het audioboek kon niet worden gelezen.'
 }
 $duration = [double]::Parse($durationText.Trim(), [Globalization.CultureInfo]::InvariantCulture)
 $segmentSeconds = $Minutes * 60
 $count = [int][Math]::Ceiling($duration / $segmentSeconds)
 if ($count -lt 1) {
-    throw 'Het MP3-bestand bevat geen audio.'
+    throw 'Het audioboek bevat geen audio.'
+}
+
+if ($extension -ieq '.mp3') {
+    $audioOptions = @('-c:a', 'copy')
+} else {
+    # Garmin speelt MP3 af; de AAC-audio uit M4B moet daarom worden omgezet.
+    $audioOptions = @('-c:a', 'libmp3lame', '-b:a', '96k')
 }
 
 New-Item -ItemType Directory -Path $outputPath -ErrorAction Stop | Out-Null
@@ -48,7 +56,7 @@ for ($index = 1; $index -le $count; $index++) {
     $outputFile = Join-Path $outputPath ("{0} - {1}.mp3" -f $baseName, $number)
     $title = "{0} - {1}" -f $baseName, $number
 
-    & $ffmpeg -hide_banner -loglevel error -nostdin -n -ss $start -i $inputFile -t $length -map '0:a:0' -map_metadata -1 -c:a copy -metadata "title=$title" -metadata "track=$index/$count" -id3v2_version 3 $outputFile
+    & $ffmpeg -hide_banner -loglevel error -nostdin -n -ss $start -i $inputFile -t $length -map '0:a:0' -map_metadata -1 -map_chapters -1 @audioOptions -metadata "title=$title" -metadata "track=$index/$count" -id3v2_version 3 $outputFile
     if ($LASTEXITCODE -ne 0) {
         throw "Het splitsen stopte bij stuk $number. De originele MP3 is niet gewijzigd; controleer de uitvoermap."
     }

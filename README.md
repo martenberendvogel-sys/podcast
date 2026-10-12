@@ -25,7 +25,7 @@ De oudere opdracht `inspect` blijft beschikbaar voor losse JSON-, XML- en ZIP-be
 
 Zie [de instructies voor een testback-up](docs/backup-capture.md) voordat je een bestand aanlevert.
 
-Een los audioboek kun je met [de MP3-splitser](docs/audiobook-split.md) in korte, genummerde stukken voorbereiden. Dat is een aparte side quest; het boek gaat niet in de podcastplaylist of in Git.
+Een los MP3- of M4B-audioboek kun je met [de audioboeksplitser](docs/audiobook-split.md) in korte, genummerde MP3-stukken voorbereiden. Dat is een aparte side quest; het boek gaat niet in de podcastplaylist of in Git.
 
 GitHub Actions voert de controles ook op Windows uit en publiceert bij een geslaagde run een Windows-build als artifact. Daarvoor zijn geen privé-back-ups nodig.
 

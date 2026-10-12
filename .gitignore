@@ -4,6 +4,7 @@ obj/
 *.backup
 *.opml
 *.mp3
+*.m4b
 *.partial
 podcast-sync-manifest.json
 staging/

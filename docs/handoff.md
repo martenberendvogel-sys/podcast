@@ -8,7 +8,7 @@
 - Alle geselecteerde afleveringen hebben HTTPS-MP3-links. De `prepare`-opdracht bewaart MP3's in een lokale stagingmap, schrijft een manifest, controleert SHA-256 en hergebruikt bestaande bestanden. De 20 geautomatiseerde controles slagen met een gesimuleerde audiobron.
 - `scripts/Inspect-Garmin.ps1` is een alleen-lezen inventarisatie voor Windows; dit script is nog niet op de aangesloten Garmin getest.
 - De gebruiker heeft losse MP3's al handmatig via Garmin Express én Windows Verkenner op de Garmin gezet; die basisroute is bevestigd.
-- Een aparte `scripts/Split-Audiobook.ps1` deelt een lang MP3-boek op in genummerde stukken. Het is geen onderdeel van de podcastplaylist; testen op het echte boek en horloge moet nog gebeuren.
+- Een aparte `scripts/Split-Audiobook.ps1` deelt een lang MP3- of M4B-boek op in genummerde MP3-stukken. Het is geen onderdeel van de podcastplaylist; testen op het echte boek en horloge moet nog gebeuren.
 - GitHub Actions bouwt en test de .NET-app op een Windows-runner en bewaart een Windows-artifact; de uitslag van deze nieuwe workflow moet nog worden gecontroleerd.
 
 ## Wat nog niet is bewezen
