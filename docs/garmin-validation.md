@@ -1,8 +1,14 @@
-# Eerste Garmin-proef op Windows 11
+# Garmin-validatie op Windows 11
 
-De cloudomgeving kan de fysieke Forerunner 265 niet zien. Deze proef gebeurt op de Windows-pc met het horloge via USB aangesloten.
+De cloudomgeving kan de fysieke Forerunner 265 niet zien. Praktische proeven gebeuren op een Windows-pc met het horloge via USB aangesloten.
 
-## Voorbereiding
+## Al bevestigd door de gebruiker
+
+De gebruiker downloadt MP3's al handmatig en heeft die zowel via Garmin Express als via Windows Verkenner op de Garmin gezet. De handmatige basisroute hoeft dus niet opnieuw te worden bewezen. De precieze automatische schrijflocatie en veilige verwijder-/bijwerkregels zijn nog onbekend.
+
+De eigen .NET-app kan op de beheerde pc niet worden gestart door een beveiligingsregel van de beheerder; test de app later op een persoonlijke pc waarop eigen ontwikkelcode is toegestaan.
+
+## App-proef op de persoonlijke pc
 
 1. Open de repository op Windows en installeer de .NET 8-SDK.
 2. Gebruik een volledige Podcast Addict-back-up. Bewaar die privé buiten de repository.
@@ -23,10 +29,10 @@ Sluit de Forerunner via USB aan. Draai in PowerShell vanuit de repository:
 ./scripts/Inspect-Garmin.ps1
 ```
 
-Het script inventariseert Garmin-apparaten in Windows, Verkenner en eventuele volumes. Het kopieert of verwijdert niets. Een zichtbaar apparaat bewijst nog niet dat de muziekspeler losse MP3-bestanden accepteert.
+Het script inventariseert Garmin-apparaten in Windows, Verkenner en eventuele volumes. Het kopieert of verwijdert niets. Handmatige MP3-overdracht werkt al; het script moet helpen de juiste route voor automatisering vast te stellen.
 
-## Eerste afspeelproef
+## Volgende overdrachtsproef
 
-Gebruik voor de eerste overdracht de Garmin Express-route die op deze pc al werkt. Selecteer de voorbereide MP3 uit de stagingmap, synchroniseer via Garmin Express, koppel het horloge veilig los en controleer op het horloge of de aflevering verschijnt en afspeelt.
+Gebruik één door `prepare` gemaakte MP3 voor een beperkte overdrachtsproef. Vergelijk of de al gebruikte Verkenner-route en Garmin Express-route ook met dit voorbereide bestand werken. Noteer de precieze Windows-locatie waar het horloge zichtbaar wordt en of de muziekspeler de bestandstitel en volgorde goed leest.
 
-Noteer zonder privé-URL's te delen: detectie in Windows, of Garmin Express de MP3 accepteert, of deze op het horloge verschijnt, en of afspelen werkt. Automatiseer het schrijven naar Garmin-opslag pas nadat deze route is bevestigd.
+Noteer zonder privé-URL's te delen wat voor automatische overdracht nodig is. Laat de app pas naar Garmin-opslag schrijven als doelmap, bestandsgedrag en herstel bij onderbreking zijn vastgesteld.

@@ -10,7 +10,9 @@
 | 2026-10-10 | Lees de handmatige playlist via `ordered_list.type=1` en `filter=-1` uit de volledige SQLite-back-up. | De telling kwam overeen met de app; een tweede back-up liet precies één toevoeging zien. | Bevestigd voor deze appversie |
 | 2026-10-10 | Gebruik voorlopig handmatige volledige back-ups. | Automatische back-ups verschijnen nog niet betrouwbaar in de cloudopslag van de gebruiker. | Actief; automatisering geparkeerd |
 | 2026-10-10 | Onderzoek lokale wifi-overdracht van de back-upmap naar Windows. | Automatische volledige back-ups staan inmiddels aan en de map ligt in gedeelde Android-opslag; cloud-overdracht is onbetrouwbaar. | Te testen op telefoon en Windows-pc |
-| 2026-10-10 | Bereid MP3-bestanden eerst in een lokale pc-map voor en test één bestand via Garmin Express. | De playlist heeft bruikbare MP3-links; directe USB-bestandsoverdracht is nog onbewezen. | Staging getest met gesimuleerde bron; hardwareproef volgt |
+| 2026-10-10 | Bereid MP3-bestanden eerst in een lokale pc-map voor. | De playlist heeft bruikbare MP3-links; de app mag niet ongecontroleerd naar Garmin schrijven. | Staging getest met gesimuleerde bron; automatische overdracht volgt later |
+| 2026-10-12 | De handmatige MP3-overdracht via Verkenner en Garmin Express geldt als bevestigd; onderzoek nu automatisering van deze routes. | De gebruiker heeft beide routes al gebruikt. | Exacte USB-doelmap en automatische schrijfmethode nog te testen |
+| 2026-10-12 | Splits het lange audioboek los van de podcast-sync in korte MP3-stukken. | Bij wisselen van MP3 raakt het horloge de positie in het 12-uursboek kwijt. | Hulpmiddel gemaakt; proef op persoonlijk systeem volgt |
 
 ## Werkwijze voor vervolgchats
 

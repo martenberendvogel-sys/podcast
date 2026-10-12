@@ -1,0 +1,30 @@
+name: Windows build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore locked dependencies
+        run: dotnet restore tests/PodcastSync.BackupInspector.Tests/PodcastSync.BackupInspector.Tests.csproj --locked-mode
+      - name: Run parser and staging checks
+        run: dotnet run --project tests/PodcastSync.BackupInspector.Tests/PodcastSync.BackupInspector.Tests.csproj --no-restore
+      - name: Publish Windows program
+        run: dotnet publish src/PodcastSync.BackupInspector/PodcastSync.BackupInspector.csproj --configuration Release --no-restore --output artifacts/windows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: podcast-sync-windows
+          path: artifacts/windows
+          if-no-files-found: error

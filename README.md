@@ -4,7 +4,7 @@ Onderzoeksprototype voor een betrouwbare synchronisatieketen van Podcast Addict 
 
 Lees bij hervatten eerst [de actuele projectstand](docs/handoff.md).
 
-De eerste stap leest nu de afspeellijst uit een echte Podcast Addict-back-up. Garmin-overdracht wordt pas na praktische hardwaretests ontworpen. Luisterposities zijn optioneel voor versie 1.
+De eerste stap leest nu de afspeellijst uit een echte Podcast Addict-back-up. Handmatige Garmin-overdracht werkt al; de veilige automatisering daarvan vereist nog een gerichte hardwareproef. Luisterposities zijn optioneel voor versie 1.
 
 ## Back-upinspecteur draaien
 
@@ -25,6 +25,10 @@ De oudere opdracht `inspect` blijft beschikbaar voor losse JSON-, XML- en ZIP-be
 
 Zie [de instructies voor een testback-up](docs/backup-capture.md) voordat je een bestand aanlevert.
 
+Een los audioboek kun je met [de MP3-splitser](docs/audiobook-split.md) in korte, genummerde stukken voorbereiden. Dat is een aparte side quest; het boek gaat niet in de podcastplaylist of in Git.
+
+GitHub Actions voert de controles ook op Windows uit en publiceert bij een geslaagde run een Windows-build als artifact. Daarvoor zijn geen privé-back-ups nodig.
+
 ## Huidige verificatie
 
 ```bash
@@ -38,5 +42,5 @@ Dit test JSON-, XML- en ZIP-invoer, vergelijkt twee synthetische Podcast Addict-
 1. Test op een later moment of een verwijderde playlistaflevering correct wordt herkend.
 2. Test op Windows of één MP3 uit de playlist kan worden opgehaald.
 3. Inventariseer alleen-lezen hoe de Garmin via USB door Windows wordt gepresenteerd.
-4. Importeer één voorbereide MP3 via Garmin Express en controleer afspelen op het horloge.
+4. Onderzoek welke van de al werkende handmatige Garmin-routes (Verkenner of Garmin Express) veilig te automatiseren is.
 
