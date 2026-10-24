@@ -32,9 +32,13 @@ if ($deviceItems.Count -eq 1) {
         }
     }
 }
-$recentMp3Count = $null
+$recentItemCount = $null
+$recentFiles = @()
 if ($null -ne $recent) {
-    $recentMp3Count = @($recent.GetFolder.Items() | Where-Object { -not $_.IsFolder -and $_.Name -like '*.mp3' }).Count
+    $items = $recent.GetFolder.Items()
+    $recentItemCount = $items.Count
+    $recentFiles = @($items | Where-Object { -not $_.IsFolder } |
+        ForEach-Object { [pscustomobject]@{ Name = $_.Name; Type = $_.Type; Size = $_.Size } })
 }
 
 $volumes = @(Get-Volume |
@@ -51,6 +55,8 @@ $volumes = @(Get-Volume |
         StorageFound = $null -ne $storage
         PodcastsFound = $null -ne $podcasts
         RecentPodcastsFound = $null -ne $recent
-        RecentPodcastsMp3Count = $recentMp3Count
+        RecentPodcastsItemCount = $recentItemCount
+        RecentPodcastsFileCount = $recentFiles.Count
+        FirstFiles = @($recentFiles | Select-Object -First 10)
     }
-} | ConvertTo-Json -Depth 4
+} | ConvertTo-Json -Depth 5

@@ -29,7 +29,7 @@ Sluit de Forerunner via USB aan. Draai in PowerShell vanuit de repository:
 ./scripts/Inspect-Garmin.ps1
 ```
 
-Het script inventariseert Garmin-apparaten in Windows, Verkenner en eventuele volumes. Het controleert ook of `Internal Storage\Podcasts\Recente podcasts` via de Windows-apparaatinterface bereikbaar is en telt daar MP3's. Het kopieert of verwijdert niets.
+Het script inventariseert Garmin-apparaten in Windows, Verkenner en eventuele volumes. Het controleert ook of `Internal Storage\Podcasts\Recente podcasts` via de Windows-apparaatinterface bereikbaar is en telt daar bestanden. De eerste bestandsnamen, typen en groottes worden getoond voor diagnose; deel die desgewenst zonder privé-informatie. Het kopieert of verwijdert niets.
 
 ## Volgende overdrachtsproef
 
