@@ -14,6 +14,7 @@
 - Met de volledige back-up van 24 oktober meldde `prepare --limit 1`: 14 geselecteerd, 1 gedownload, 13 nog niet voorbereid. De MP3 staat lokaal in een privé-stagingmap en speelt volgens de gebruiker op de pc af.
 - De Garmin verschijnt in Verkenner als `Deze pc\Forerunner 265\Internal Storage\Podcasts`, met bestaande podcastsubmappen. De eigen submap `Recente podcasts` is via Verkenner toegevoegd door een lege pc-map naar het horloge te kopiëren. De app-gedownloade MP3 staat daarin, toont op het horloge de juiste titel en speelt af.
 - De read-only inventarisatie vond WPD/Portable Device en het volledige doelpad, maar de eerste versie telde nul `*.mp3` op naam terwijl Verkenner het bestand toont. Mogelijk verbergt de Shell de extensie; de inventarisatie rapporteert nu ruwe bestandsaantallen en naam/type/grootte voor diagnose.
+- De tweede inventarisatie vond exact één bestand in `Recente podcasts`; Windows meldt de hashnaam zonder extensie, type `MP3 File` en grootte `0` ondanks werkende weergave. Een kopieerproef via de Windows-apparaatinterface is voorbereid met `scripts/Copy-OneToGarmin.ps1` (standaard alleen voorbeeld, `-Apply` voor één ontbrekende MP3). Die proef moet nog op de echte Garmin worden uitgevoerd.
 
 ## Wat nog niet is bewezen
 
@@ -24,7 +25,7 @@
 
 ## Eerstvolgende stap
 
-Voer de uitgebreide alleen-lezen Garmin-inventarisatie op de persoonlijke pc uit. Als die de bestaande map `Podcasts\Recente podcasts` exact vindt, onderzoek dan een veilige automatische MTP-overdracht naar uitsluitend die map, zonder bestaande podcastsubmappen te raken of bestanden te verwijderen. Zie [garmin-validation.md](garmin-validation.md).
+Bereid een tweede aflevering voor met `prepare --limit 2` en voer het nieuwe `Copy-OneToGarmin.ps1` zonder `-Apply` uit om de kopie naar de gevonden map eerst te plannen. Test daarna hooguit die ene nieuwe MTP-kopie met `-Apply` en controleer afspelen op het horloge. Raak bestaande podcastsubmappen niet aan en verwijder niets. Zie [garmin-validation.md](garmin-validation.md).
 
 Automatische zichtbare overdracht van de telefoonback-up naar een gewone Google Drive-map is nog niet ingericht; de gebruiker wil dat voor later. Gebruik voorlopig een handmatig gemaakte volledige back-up. Luisterpositie blijft optioneel voor versie 1.
 

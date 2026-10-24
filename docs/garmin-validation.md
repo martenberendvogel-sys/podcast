@@ -36,3 +36,9 @@ Het script inventariseert Garmin-apparaten in Windows, Verkenner en eventuele vo
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
 
 De map `Recente podcasts` wordt de enige door de app beheerde Garmin-map; bestaande podcastsubmappen zijn buiten scope. Verkenner toont het apparaat als draagbaar apparaat/MTP-kandidaat, dus een normaal `.NET File.Copy` naar een schijfletter is waarschijnlijk niet mogelijk. Laat de app pas naar Garmin-opslag schrijven als het mappad, kopieergedrag en herstel bij onderbreking zijn vastgesteld. Verwijder voorlopig niets van het horloge.
+
+## Voorzichtige automatische kopieerproef
+
+De Garmin meldt in Windows zijn ene bestaande MP3 zonder `.mp3` in de naam en met `Size=0`, hoewel hij afspeelt. Groottecontrole op het apparaat is daardoor onbetrouwbaar. `scripts/Copy-OneToGarmin.ps1` controleert de lokale SHA-256 en kiest maximaal één voorbereide MP3 die nog niet onder zijn sleutel in `Recente podcasts` staat. Standaard toont het script alleen het plan; met `-Apply` vraagt het Windows een kopie via de draagbare-apparaatinterface te starten. Het maakt geen mappen aan, overschrijft niets en verwijdert niets. De kopieopdracht kan asynchroon zijn: wacht op Windows en controleer vervolgens op het horloge of de aflevering echt afspeelt.
+
+Bereid voor deze proef op de persoonlijke pc eerst een tweede aflevering voor met dezelfde back-up en stagingmap, nu met `--limit 2`. De eerste MP3 wordt op SHA-256 gecontroleerd en hergebruikt. Draai daarna het kopieerscript zonder `-Apply` om te zien welke nieuwe MP3 hij zou kopiëren. Gebruik `-Apply` pas na controle van dat plan.
