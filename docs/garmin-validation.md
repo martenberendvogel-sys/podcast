@@ -29,10 +29,10 @@ Sluit de Forerunner via USB aan. Draai in PowerShell vanuit de repository:
 ./scripts/Inspect-Garmin.ps1
 ```
 
-Het script inventariseert Garmin-apparaten in Windows, Verkenner en eventuele volumes. Het kopieert of verwijdert niets. Handmatige MP3-overdracht werkt al; het script moet helpen de juiste route voor automatisering vast te stellen.
+Het script inventariseert Garmin-apparaten in Windows, Verkenner en eventuele volumes. Het controleert ook of `Internal Storage\Podcasts\Recente podcasts` via de Windows-apparaatinterface bereikbaar is en telt daar MP3's. Het kopieert of verwijdert niets.
 
 ## Volgende overdrachtsproef
 
-De eerste door `prepare` gedownloade MP3 speelt op de pc af. Maak via Verkenner onder `Podcasts` een aparte map `Recente podcasts` en kopieer uitsluitend deze ene MP3 ernaartoe. Koppel het horloge veilig los en controleer of de Garmin het bestand onder podcasts toont en afspeelt. Noteer ook of de bestandsnaam of MP3-titel op het horloge zichtbaar is.
+De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
 
 De map `Recente podcasts` wordt de enige door de app beheerde Garmin-map; bestaande podcastsubmappen zijn buiten scope. Verkenner toont het apparaat als draagbaar apparaat/MTP-kandidaat, dus een normaal `.NET File.Copy` naar een schijfletter is waarschijnlijk niet mogelijk. Laat de app pas naar Garmin-opslag schrijven als het mappad, kopieergedrag en herstel bij onderbreking zijn vastgesteld. Verwijder voorlopig niets van het horloge.

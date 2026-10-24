@@ -21,6 +21,15 @@ jobs:
         run: dotnet restore tests/PodcastSync.BackupInspector.Tests/PodcastSync.BackupInspector.Tests.csproj --locked-mode
       - name: Run parser and staging checks
         run: dotnet run --project tests/PodcastSync.BackupInspector.Tests/PodcastSync.BackupInspector.Tests.csproj --no-restore
+      - name: Parse PowerShell scripts
+        shell: pwsh
+        run: |
+          foreach ($path in Get-ChildItem scripts -Filter *.ps1) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($path.FullName, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) { throw "PowerShell syntax error in $($path.Name): $($errors[0])" }
+          }
       - name: Publish Windows program
         run: dotnet publish src/PodcastSync.BackupInspector/PodcastSync.BackupInspector.csproj --configuration Release --no-restore --output artifacts/windows
       - uses: actions/upload-artifact@v4
