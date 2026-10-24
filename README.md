@@ -8,7 +8,7 @@ De eerste stap leest nu de afspeellijst uit een echte Podcast Addict-back-up. Ha
 
 ## Back-upinspecteur draaien
 
-Deze repository gebruikt .NET 8. Installeer een SDK of gebruik in de cloudomgeving `/workspace/.dotnet/dotnet`.
+Deze repository gebruikt .NET 8. Installeer een SDK of gebruik in de cloudomgeving `/workspace/.dotnet/dotnet`. `NuGet.Config` voegt de publieke pakketbron nuget.org voor dit project toe, ook als op de pc nog geen globale NuGet-bronnen zijn ingesteld.
 
 ```bash
 dotnet restore tests/PodcastSync.BackupInspector.Tests --locked-mode
