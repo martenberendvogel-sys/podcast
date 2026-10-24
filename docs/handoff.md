@@ -11,6 +11,7 @@
 - Een aparte `scripts/Split-Audiobook.ps1` deelt een lang MP3- of M4B-boek op in genummerde MP3-stukken. Het is geen onderdeel van de podcastplaylist; testen op het echte boek en horloge moet nog gebeuren.
 - GitHub Actions bouwt en test de .NET-app op een Windows-runner en bewaart een Windows-artifact; de uitslag van deze nieuwe workflow moet nog worden gecontroleerd.
 - Op de persoonlijke pc was geen NuGet-bron ingesteld, waardoor `Microsoft.Data.Sqlite` niet kon worden hersteld (`NU1100`). De repository bevat nu `NuGet.Config` met nuget.org; herstel en `prepare --limit 1` moeten op die pc opnieuw worden geprobeerd.
+- Het pakket herstellen lukt nu op de persoonlijke pc. `prepare` stuitte op een Windows-bestandsvergrendeling van de tijdelijke `backup.db`; SQLite-pooling is voor die tijdelijke leesverbinding uitgeschakeld. De echte download moet na deze correctie opnieuw worden geprobeerd.
 
 ## Wat nog niet is bewezen
 

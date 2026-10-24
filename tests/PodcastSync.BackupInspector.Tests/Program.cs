@@ -104,7 +104,7 @@ static async Task AssertInvalidAudioAsync(PlaylistReport playlist, string direct
 static async Task CreateBackup(string backupPath, int[] playlistIds)
 {
     var databasePath = Path.ChangeExtension(backupPath, ".db");
-    using (var connection = new SqliteConnection($"Data Source={databasePath}"))
+    using (var connection = new SqliteConnection($"Data Source={databasePath};Pooling=False"))
     {
         await connection.OpenAsync();
         using var command = connection.CreateCommand();

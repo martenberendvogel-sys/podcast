@@ -41,7 +41,9 @@ public static class PodcastAddictPlaylist
             {
                 DataSource = temporaryPath,
                 Mode = SqliteOpenMode.ReadOnly,
-                Cache = SqliteCacheMode.Private
+                Cache = SqliteCacheMode.Private,
+                // A pooled connection keeps backup.db open after Dispose on Windows.
+                Pooling = false
             }.ToString();
             using var connection = new SqliteConnection(connectionString);
             await connection.OpenAsync();
