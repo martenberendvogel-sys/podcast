@@ -11,18 +11,19 @@
 - Een aparte `scripts/Split-Audiobook.ps1` deelde het echte M4B-boek op in 39 genummerde MP3-stukken. De Garmin speelt die stukken volgens de gebruiker automatisch in volgorde af. Dit staat los van de podcastplaylist.
 - GitHub Actions bouwt en test de .NET-app op een Windows-runner en bewaart een Windows-artifact; de uitslag van deze nieuwe workflow moet nog worden gecontroleerd.
 - Op de persoonlijke pc ontbrak een NuGet-bron. `NuGet.Config` met nuget.org loste `NU1100` op. Daarna blokkeerde SQLite-pooling kort de tijdelijke `backup.db` op Windows; pooling is voor die leesverbinding uitgeschakeld.
-- Met de volledige back-up van 24 oktober meldde `prepare --limit 1`: 14 geselecteerd, 1 gedownload, 13 nog niet voorbereid. De MP3 staat lokaal in een privé-stagingmap; afspelen van dit bestand en overdracht naar Garmin moeten nog worden gecontroleerd.
+- Met de volledige back-up van 24 oktober meldde `prepare --limit 1`: 14 geselecteerd, 1 gedownload, 13 nog niet voorbereid. De MP3 staat lokaal in een privé-stagingmap en speelt volgens de gebruiker op de pc af.
+- De Garmin verschijnt in Verkenner als `Deze pc\Forerunner 265\Internal Storage\Podcasts`, met bestaande podcastsubmappen. De gebruiker stelt een eigen submap `Recente podcasts` voor; die bestemming is nog niet getest.
 
 ## Wat nog niet is bewezen
 
-- Of de door `prepare` gedownloade MP3 volledig afspeelt op de pc en Garmin.
-- Of een door `prepare` gemaakte MP3 op dezelfde manier overgedragen wordt, en hoe de bestaande Verkenner-/Express-route veilig geautomatiseerd kan worden.
+- Of de door `prepare` gedownloade MP3 volledig afspeelt en in de nieuwe Garmin-map door het horloge wordt geïndexeerd.
+- Hoe de Verkenner-route veilig geautomatiseerd kan worden. De Garmin verschijnt niet als gewone schijfletter; gewone bestandspaden zijn daarom waarschijnlijk onvoldoende.
 - Rechtstreeks kopiëren via USB door onze app en automatisch synchroniseren met Garmin.
 - Herkennen van een verwijderde playlistaflevering in een derde echte back-up.
 
 ## Eerstvolgende stap
 
-Controleer het ene voorbereide MP3-bestand op de persoonlijke pc en inventariseer het aangesloten Garmin-horloge alleen-lezen. De gebruiker heeft handmatige MP3-overdracht al bewezen; onderzoek nu welke route veilig automatisch kan worden aangestuurd. Zie [garmin-validation.md](garmin-validation.md).
+Maak via Verkenner alleen de nieuwe map `Podcasts\Recente podcasts` op de Garmin en kopieer daar de ene door `prepare` gemaakte MP3 naartoe. Controleer na veilig loskoppelen of die op het horloge verschijnt en afspeelt. Raak bestaande podcastsubmappen niet aan. Onderzoek daarna een veilige automatische MTP-overdracht naar uitsluitend de nieuwe map. Zie [garmin-validation.md](garmin-validation.md).
 
 Automatische zichtbare overdracht van de telefoonback-up naar een gewone Google Drive-map is nog niet ingericht; de gebruiker wil dat voor later. Gebruik voorlopig een handmatig gemaakte volledige back-up. Luisterpositie blijft optioneel voor versie 1.
 

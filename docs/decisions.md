@@ -13,6 +13,7 @@
 | 2026-10-10 | Bereid MP3-bestanden eerst in een lokale pc-map voor. | De playlist heeft bruikbare MP3-links; de app mag niet ongecontroleerd naar Garmin schrijven. | Staging getest met gesimuleerde bron; automatische overdracht volgt later |
 | 2026-10-12 | De handmatige MP3-overdracht via Verkenner en Garmin Express geldt als bevestigd; onderzoek nu automatisering van deze routes. | De gebruiker heeft beide routes al gebruikt. | Exacte USB-doelmap en automatische schrijfmethode nog te testen |
 | 2026-10-12 | Splits het lange audioboek los van de podcast-sync in korte MP3-stukken. | Bij wisselen van MP3 raakt het horloge de positie in het 12-uursboek kwijt. | Hulpmiddel gemaakt; proef op persoonlijk systeem volgt |
+| 2026-10-24 | Beperk automatische Garmin-overdracht tot een nieuwe map `Podcasts\Recente podcasts`; raak bestaande podcastsubmappen niet aan. | Het horloge is via Verkenner bereikbaar en de gebruiker wil alle actuele playlistafleveringen in één eigen map. | Eén app-gedownloade MP3 in die map testen; MTP-automatisering nog onbewezen |
 
 ## Werkwijze voor vervolgchats
 
