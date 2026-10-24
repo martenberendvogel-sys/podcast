@@ -1,4 +1,4 @@
-# Stand van het project – 12 oktober 2026
+# Stand van het project – 24 oktober 2026
 
 ## Wat werkt
 
@@ -8,22 +8,22 @@
 - Alle geselecteerde afleveringen hebben HTTPS-MP3-links. De `prepare`-opdracht bewaart MP3's in een lokale stagingmap, schrijft een manifest, controleert SHA-256 en hergebruikt bestaande bestanden. De 20 geautomatiseerde controles slagen met een gesimuleerde audiobron.
 - `scripts/Inspect-Garmin.ps1` is een alleen-lezen inventarisatie voor Windows; dit script is nog niet op de aangesloten Garmin getest.
 - De gebruiker heeft losse MP3's al handmatig via Garmin Express én Windows Verkenner op de Garmin gezet; die basisroute is bevestigd.
-- Een aparte `scripts/Split-Audiobook.ps1` deelt een lang MP3- of M4B-boek op in genummerde MP3-stukken. Het is geen onderdeel van de podcastplaylist; testen op het echte boek en horloge moet nog gebeuren.
+- Een aparte `scripts/Split-Audiobook.ps1` deelde het echte M4B-boek op in 39 genummerde MP3-stukken. De Garmin speelt die stukken volgens de gebruiker automatisch in volgorde af. Dit staat los van de podcastplaylist.
 - GitHub Actions bouwt en test de .NET-app op een Windows-runner en bewaart een Windows-artifact; de uitslag van deze nieuwe workflow moet nog worden gecontroleerd.
-- Op de persoonlijke pc was geen NuGet-bron ingesteld, waardoor `Microsoft.Data.Sqlite` niet kon worden hersteld (`NU1100`). De repository bevat nu `NuGet.Config` met nuget.org; herstel en `prepare --limit 1` moeten op die pc opnieuw worden geprobeerd.
-- Het pakket herstellen lukt nu op de persoonlijke pc. `prepare` stuitte op een Windows-bestandsvergrendeling van de tijdelijke `backup.db`; SQLite-pooling is voor die tijdelijke leesverbinding uitgeschakeld. De echte download moet na deze correctie opnieuw worden geprobeerd.
+- Op de persoonlijke pc ontbrak een NuGet-bron. `NuGet.Config` met nuget.org loste `NU1100` op. Daarna blokkeerde SQLite-pooling kort de tijdelijke `backup.db` op Windows; pooling is voor die leesverbinding uitgeschakeld.
+- Met de volledige back-up van 24 oktober meldde `prepare --limit 1`: 14 geselecteerd, 1 gedownload, 13 nog niet voorbereid. De MP3 staat lokaal in een privé-stagingmap; afspelen van dit bestand en overdracht naar Garmin moeten nog worden gecontroleerd.
 
 ## Wat nog niet is bewezen
 
-- Een echte MP3-download vanuit de Windows-pc. De cloudproxy weigert de huidige podcastbronnen met 403; dit zegt niets definitiefs over toegang vanaf de pc.
+- Of de door `prepare` gedownloade MP3 volledig afspeelt op de pc en Garmin.
 - Of een door `prepare` gemaakte MP3 op dezelfde manier overgedragen wordt, en hoe de bestaande Verkenner-/Express-route veilig geautomatiseerd kan worden.
 - Rechtstreeks kopiëren via USB door onze app en automatisch synchroniseren met Garmin.
 - Herkennen van een verwijderde playlistaflevering in een derde echte back-up.
 
 ## Eerstvolgende stap
 
-Test `prepare ... --limit 1` en de alleen-lezen Garmin-inventarisatie later op een persoonlijke pc. Een beveiligingsregel blokkeert zelf gebouwde `.exe`-bestanden op de beheerde Windows-pc. De gebruiker heeft handmatige MP3-overdracht al bewezen; onderzoek nu welke route veilig automatisch kan worden aangestuurd. Zie [garmin-validation.md](garmin-validation.md).
+Controleer het ene voorbereide MP3-bestand op de persoonlijke pc en inventariseer het aangesloten Garmin-horloge alleen-lezen. De gebruiker heeft handmatige MP3-overdracht al bewezen; onderzoek nu welke route veilig automatisch kan worden aangestuurd. Zie [garmin-validation.md](garmin-validation.md).
 
-Automatische overdracht van de telefoonback-up via OneDrive of lokale wifi is bewust geparkeerd. Gebruik voorlopig een handmatig gemaakte volledige back-up. Luisterpositie blijft optioneel voor versie 1.
+Automatische zichtbare overdracht van de telefoonback-up naar een gewone Google Drive-map is nog niet ingericht; de gebruiker wil dat voor later. Gebruik voorlopig een handmatig gemaakte volledige back-up. Luisterpositie blijft optioneel voor versie 1.
 
 Back-ups, audiobestanden en stagingmanifesten kunnen privégegevens bevatten; ze horen niet in Git. Alleen broncode, tests en projectdocumentatie worden gecommit.

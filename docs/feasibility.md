@@ -10,6 +10,7 @@
 - De 16 afleveringen in de eerste back-up en de 17 in de tweede hebben elk een HTTPS-audiolink, een podcastfeed en een unieke afgeleide sleutel. Ze zijn volgens de back-ups niet lokaal gedownload.
 - Een OPML-export bevat abonnementen, maar geen playlistafleveringen.
 - De lokale stagingopdracht kan MP3-bestanden downloaden, een controlesom bewaren en dezelfde audio bij een tweede run verifiëren en hergebruiken; dit is met een gesimuleerde HTTPS-bron getest.
+- Op de persoonlijke Windows-pc is met een volledige back-up van 24 oktober één van 14 geselecteerde afleveringen echt gedownload via `prepare --limit 1`. Afspelen en Garmin-overdracht van dit bestand zijn nog niet gecontroleerd.
 
 ## Nog te bewijzen met echte hardware en data
 
@@ -18,7 +19,7 @@
 | Verwijdering uit de playlist | Verwijder later een testaflevering en vergelijk twee volledige back-ups. | Controleer dat `compare` alleen die aflevering als verwijderd meldt. |
 | Lokale wifi-overdracht | Test of een Android-synchronisatie-app de back-upmap onder gedeelde opslag (`Android/media`) kan lezen en nieuwe `.backup`-bestanden via het thuisnetwerk naar een Windows-map kan sturen. | Kies een beveiligde, eenrichtings-overdracht en controleer dat Windows alleen complete bestanden verwerkt. |
 | Automatische volledige back-up | In de tweede back-up staat deze instelling aan en is een lokale back-upmap ingesteld. Controleer nog of een geplande back-up zonder handmatige actie verschijnt en de nieuwste playlist bevat. | Gebruik automatische back-ups als invoer wanneer timing en volledigheid zijn bewezen. |
-| Audio voor streamingafleveringen | Voer `prepare ... --limit 1` uit op de Windows-pc. De cloudproxy weigert de huidige podcastbronnen met 403, dus een echte download is hier nog niet geverifieerd. | Bevestig dat de MP3 volledig en afspeelbaar is. |
+| Audio voor streamingafleveringen | De eerste echte download op de persoonlijke Windows-pc is gelukt. Controleer het bestand door het lokaal af te spelen. | Bevestig dat de MP3 volledig en afspeelbaar is. |
 | Garmin-opslag | Handmatige MP3-overdracht via Garmin Express en Verkenner werkt al. Inventariseer de USB-presentatie en probeer één door `prepare` gemaakte MP3. | Bepaal welke overdrachtsroute veilig geautomatiseerd kan worden. |
 
 ## Voorlopige architectuur
