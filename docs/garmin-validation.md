@@ -35,7 +35,7 @@ Met `./scripts/Inspect-Garmin.ps1 -StagingDirectory 'C:\video\AI\podcast-staging
 
 Op de persoonlijke pc vond dit overzicht alle drie werkende MP3's terug: 14 geselecteerde afleveringen in de back-up van 24 oktober, 3 voorbereid en aanwezig op de Garmin, 11 nog niet gedownload. Er waren geen onbekende of verouderde bestanden in de eigen Garmin-map. Voor de volgende echte sync is een nieuwe back-up nodig.
 
-De nieuwe volledige back-up van 25 oktober bevat 10 actuele afleveringen. Vier verdwenen uit de playlist, maar geen van die vier staat in `Recente podcasts`; alle drie bestaande Garmin-bestanden blijven gewenst. `prepare` heeft nu alle 10 actuele MP3's lokaal klaar. Alleen de zeven ontbrekende Garmin-kopieën resten voor deze snapshot.
+De nieuwe volledige back-up van 25 oktober bevat 10 actuele afleveringen. Vier verdwenen uit de playlist, maar geen van die vier stond in `Recente podcasts`; alle drie bestaande Garmin-bestanden bleven gewenst. `prepare` heeft alle 10 actuele MP3's lokaal klaargezet. De overige zeven zijn daarna één voor één gekopieerd. Het laatste `SyncPlan` meldde 10 voorbereid en 10 aanwezig op de Garmin, met 0 ontbrekende kopieën, 0 verwijderkandidaten en 0 onbekende bestanden. Dit bevestigt de bestandsselectie, niet de bytevolledigheid van elk MTP-bestand.
 
 ## Volgende overdrachtsproef
 

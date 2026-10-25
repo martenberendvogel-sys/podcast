@@ -19,7 +19,7 @@ dotnet run --project src/PodcastSync.BackupInspector -- prepare /pad/naar/nieuwe
 
 `playlist` toont de afleveringen in volgorde, met een stabiele sleutel en audiolink. `compare` toont welke afleveringen zijn toegevoegd, verwijderd of gebleven tussen twee back-ups. Er wordt nog niets naar de Garmin geschreven. De databasekoppeling is met twee echte back-ups gevalideerd: één nieuwe aflevering werd correct herkend.
 
-`prepare` haalt geselecteerde MP3-bestanden op vanaf de audiolinks en bewaart ze in een beheerde lokale map met een manifest. De opdracht verwijdert geen audio en schrijft niet naar het horloge. Begin met `--limit 1`; zonder limiet worden alle geselecteerde afleveringen voorbereid. De eerste echte download op de persoonlijke Windows-pc is gelukt; afspelen en Garmin-overdracht van dat bestand moeten nog worden getest. Zie [de Garmin-proef](docs/garmin-validation.md).
+`prepare` haalt geselecteerde MP3-bestanden op vanaf de audiolinks en bewaart ze in een beheerde lokale map met een manifest. De opdracht verwijdert geen audio en schrijft niet naar het horloge. Begin met `--limit 1`; zonder limiet worden alle geselecteerde afleveringen voorbereid. Met de back-up van 25 oktober zijn alle 10 actuele afleveringen op de persoonlijke Windows-pc voorbereid en via gecontroleerde één-voor-één kopieën in de Garmin-map geplaatst. Volledige automatische batchoverdracht en opruimen zijn nog niet gebouwd. Zie [de Garmin-proef](docs/garmin-validation.md).
 
 De oudere opdracht `inspect` blijft beschikbaar voor losse JSON-, XML- en ZIP-bestanden. Voor `.backup` gebruikt die dezelfde Podcast Addict-parser als `playlist`.
 

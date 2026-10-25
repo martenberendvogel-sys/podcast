@@ -1,4 +1,4 @@
-# Stand van het project – 24 oktober 2026
+# Stand van het project – 25 oktober 2026
 
 ## Wat werkt
 
@@ -11,25 +11,24 @@
 - Een aparte `scripts/Split-Audiobook.ps1` deelde het echte M4B-boek op in 39 genummerde MP3-stukken. De Garmin speelt die stukken volgens de gebruiker automatisch in volgorde af. Dit staat los van de podcastplaylist.
 - GitHub Actions bouwt en test de .NET-app op een Windows-runner en bewaart een Windows-artifact; de uitslag van deze nieuwe workflow moet nog worden gecontroleerd.
 - Op de persoonlijke pc ontbrak een NuGet-bron. `NuGet.Config` met nuget.org loste `NU1100` op. Daarna blokkeerde SQLite-pooling kort de tijdelijke `backup.db` op Windows; pooling is voor die leesverbinding uitgeschakeld.
-- Met de volledige back-up van 24 oktober meldde `prepare --limit 3`: 14 geselecteerd, 3 lokaal voorbereid (1 nieuw gedownload, 2 hergebruikt), 11 nog niet voorbereid. De MP3's blijven in een privé-stagingmap.
+- Met de volledige back-up van 24 oktober meldde `prepare --limit 3`: 14 geselecteerd, 3 lokaal voorbereid. De nieuwe back-up van 25 oktober bevat 10 actuele afleveringen: 4 verwijderd, niets toegevoegd. `prepare` heeft alle 10 lokaal voorbereid (7 nieuw gedownload, 3 hergebruikt).
 - De Garmin verschijnt in Verkenner als `Deze pc\Forerunner 265\Internal Storage\Podcasts`, met bestaande podcastsubmappen. De eigen submap `Recente podcasts` is via Verkenner toegevoegd door een lege pc-map naar het horloge te kopiëren. De app-gedownloade MP3 staat daarin, toont op het horloge de juiste titel en speelt af.
 - De read-only inventarisatie vond WPD/Portable Device en het volledige doelpad, maar de eerste versie telde nul `*.mp3` op naam terwijl Verkenner het bestand toont. Mogelijk verbergt de Shell de extensie; de inventarisatie rapporteert nu ruwe bestandsaantallen en naam/type/grootte voor diagnose.
 - De tweede inventarisatie vond exact één bestand in `Recente podcasts`; Windows meldt de hashnaam zonder extensie, type `MP3 File` en grootte `0` ondanks werkende weergave. `scripts/Copy-OneToGarmin.ps1` (standaard alleen voorbeeld, `-Apply` voor één ontbrekende MP3) kopieerde daarna de tweede aflevering via de Windows-apparaatinterface. De gebruiker ziet twee bestanden in de map en beide spelen op de Garmin af.
 - Een derde aflevering is lokaal voorbereid en met hetzelfde script naar de Garmin gekopieerd; alle drie zijn zichtbaar en de derde speelt af. De PowerShell-prompt kwam vrijwel direct terug, zodat `CopyHere` niet als voltooiingssignaal voor meerdere kopieën mag worden gebruikt.
 - `Inspect-Garmin.ps1 -StagingDirectory <map>` maakt nu ook een alleen-lezen `SyncPlan`. Op de persoonlijke pc gaf de back-up van 24 oktober exact: 14 geselecteerd, 3 lokaal voorbereid, 3 op Garmin, 11 nog te downloaden, 0 te kopiëren, 0 verwijderkandidaten, 0 onbekende apparaatsleutels en 0 lokale problemen. De planner vond alle drie werkende MP3's op het horloge.
-- De verse back-up van 25 oktober bevat 10 playlistafleveringen: 4 verwijderd ten opzichte van 24 oktober, geen toegevoegd en 10 behouden. Alle drie al op de Garmin aanwezige afleveringen zijn behouden, dus er is nu niets te verwijderen. `prepare` heeft alle 10 actuele MP3's lokaal klaar: 7 nieuw gedownload, 3 hergebruikt, 0 pending. Zeven actuele afleveringen ontbreken nog op de Garmin.
+- Alle 10 actuele MP3's zijn via gecontroleerde één-voor-één acties in `Podcasts\Recente podcasts` geplaatst. De laatste `SyncPlan` meldde: 10 geselecteerd, 10 voorbereid, 10 op Garmin, 0 nog te downloaden/kopiëren, 0 verwijderkandidaten, 0 onbekende bestanden en 0 lokale problemen. Enkele kopieën zijn op het horloge afgespeeld; niet alle tien zijn inhoudelijk gecontroleerd.
 
 ## Wat nog niet is bewezen
 
 - Of de door `prepare` gedownloade MP3 helemaal tot het einde afspeelt; verschijnen en starten in de nieuwe Garmin-map zijn bevestigd.
 - Een betrouwbaar voltooiingssignaal voor MTP-kopieën. `CopyHere` keert vrijwel direct terug en Garmin rapporteert grootte `0`, dus naam of PowerShell-prompt alleen is geen bytecontrole.
 - Veilige bulkoverdracht van alle geselecteerde afleveringen en het verwijderen van oude bestanden uit uitsluitend de eigen Garmin-map.
-- Een verse volledige Podcast Addict-back-up als bron voor opschonen. De huidige back-up van 24 oktober is geschikt voor een kopieertimingproef, niet voor de definitieve opruimactie als de telefoonplaylist inmiddels is veranderd.
-- Herkennen van een verwijderde playlistaflevering in een derde echte back-up.
+- Veilige MTP-verwijdering van een eerder beheerde aflevering die in een volgende verse back-up niet meer geselecteerd is; bij de back-up van 25 oktober was geen van de vier verwijderde afleveringen op de Garmin aanwezig.
 
 ## Eerstvolgende stap
 
-Breng de zeven ontbrekende, lokaal voorbereide afleveringen gecontroleerd naar `Recente podcasts` zonder bestaande bestanden te overschrijven. `Copy-OneToGarmin.ps1` kan ze één voor één kopiëren; een veilige onbewaakte batch vereist nog een betrouwbaar voltooiingssignaal. Verwijder niets: alle drie bestaande Garmin-afleveringen staan nog in de actuele playlist. Zie [garmin-validation.md](garmin-validation.md).
+Controleer desgewenst enkele van de recent gekopieerde afleveringen op het horloge. Bouw daarna een betrouwbare voltooiingscontrole voor MTP-kopieën voordat een onbewaakte batch wordt toegestaan. Test de opruimregel pas bij een volgende verse back-up met een aflevering die daadwerkelijk uit de beheerde Garmin-map moet verdwijnen. Zie [garmin-validation.md](garmin-validation.md).
 
 De gewenste definitieve sync is incrementeel: de actuele Podcast Addict-playlist is leidend; ontbrekende afleveringen toevoegen, bestaande behouden en alleen niet meer geselecteerde, eerder beheerde bestanden uit `Podcasts\Recente podcasts` verwijderen. Een verse back-up en volledige lokale voorbereiding zijn vereist voordat er iets op de Garmin wordt opgeruimd. De verwijderstap is nog niet geïmplementeerd.
 
