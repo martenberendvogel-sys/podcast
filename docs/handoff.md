@@ -21,6 +21,7 @@
 - De Garmin toont ondanks de ene fysieke map twee afzonderlijke podcastgroepen: 6 afleveringen van `All in the Game` en 4 van `America podcasts`. Binnen een groep speelt hij door, maar de gebruiker kan niet alle 10 achter elkaar starten. De oorzaak lijkt audiometadata of Garmin's podcastgroepering; het exacte veld en een ondersteunde playlistfunctie zijn nog niet vastgesteld.
 - Twee lokaal geïnspecteerde MP3's hebben dezelfde artiest en genre, maar verschillende ID3-albums (`All in the Game` en `Amerika Podcast`). `Make-GarminAlbumTest.ps1` maakte twee aparte testkopieën met één album en trackvolgorde, zonder originele of beheerde Garmin-bestanden te wijzigen.
 - De twee testkopieën uit verschillende podcasts verschijnen samen in één Garmin-groep `Podcast Sync Test`; de knop 'volgende' gaat van de eerste naar de tweede podcast. `Prepare-GarminAlbum.ps1` kan lokaal alle geselecteerde afleveringen als aparte, genummerde kopieën met gedeeld album `Recente podcasts` voorbereiden. De tien huidige Garmin-bestanden blijven staan totdat een veilige vervanging is ontworpen en de nieuwe set lokaal is gecontroleerd.
+- `Prepare-GarminAlbum.ps1` is op de persoonlijke pc uitgevoerd: tien lokale Garmin-kopieën zijn gemaakt in Podcast Addict-volgorde, met gedeeld album en eigen titel. Er is nog niets van deze set naar de Garmin geschreven. Een veilige optie voor migratie is de nieuwe set tijdelijk in een aparte Garmin-map naast de oude te testen, mits er voldoende vrije ruimte is; geen oude bestanden vooraf verwijderen.
 
 ## Wat nog niet is bewezen
 
@@ -32,7 +33,7 @@
 
 ## Eerstvolgende stap
 
-Maak en controleer eerst de tien lokale Garmin-kopieën met gedeeld album; raak de huidige tien op het horloge nog niet aan. Ontwerp daarna een herstelbare vervanging van alleen `Podcasts\Recente podcasts`. Bouw daarnaast een betrouwbare voltooiingscontrole voor MTP-kopieën voordat een onbewaakte batch wordt toegestaan. Test de opruimregel pas bij een volgende verse back-up met een aflevering die daadwerkelijk uit de beheerde Garmin-map moet verdwijnen. Zie [garmin-validation.md](garmin-validation.md).
+Controleer de omvang van de nieuwe lokale set en de vrije ruimte op het horloge. Test de nieuwe set bij voldoende ruimte eerst in een aparte Garmin-map naast de oude; verwijder of overschrijf de huidige tien nog niet. Ontwerp daarna een herstelbare vervanging van alleen `Podcasts\Recente podcasts`. Bouw daarnaast een betrouwbare voltooiingscontrole voor MTP-kopieën voordat een onbewaakte batch wordt toegestaan. Test de opruimregel pas bij een volgende verse back-up met een aflevering die daadwerkelijk uit de beheerde Garmin-map moet verdwijnen. Zie [garmin-validation.md](garmin-validation.md).
 
 De gewenste definitieve sync is incrementeel: de actuele Podcast Addict-playlist is leidend; ontbrekende afleveringen toevoegen, bestaande behouden en alleen niet meer geselecteerde, eerder beheerde bestanden uit `Podcasts\Recente podcasts` verwijderen. Een verse back-up en volledige lokale voorbereiding zijn vereist voordat er iets op de Garmin wordt opgeruimd. De verwijderstap is nog niet geïmplementeerd.
 
