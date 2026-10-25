@@ -55,7 +55,17 @@ De eerste volledige tien-bestandenproef staat inmiddels op de Garmin. Eén gedee
 ./scripts/Make-GarminAlbumTest.ps1 -StagingDirectory 'C:\video\AI\podcast-staging' -OutputDirectory 'C:\video\AI\Podcast Sync Volgorde Test' -ReverseTrack
 ```
 
-Kopieer daarna uitsluitend die drie test-MP3's in een aparte testmap onder `Forerunner 265\Internal Storage\Podcasts`, naast `Recente podcasts`. Controleer of de Garmin ze als 1 → 2 → 3 toont én zo doorschakelt, inclusief de grens tussen de twee bronpodcasts. Pas na bevestiging kan `Prepare-GarminAlbum.ps1` de tien huidige afleveringen opnieuw in een **nieuwe** uitvoermap maken; verwijder of vervang de huidige tien niet op basis van alleen deze hypothese.
+Kopieer daarna uitsluitend die drie test-MP3's in een aparte testmap onder `Forerunner 265\Internal Storage\Podcasts`, naast `Recente podcasts`. Controleer of de Garmin de gewenste eerste, tweede en derde **titel** achtereenvolgens afspeelt, inclusief de grens tussen de twee bronpodcasts. De getoonde tracknummers mogen daarvoor van 3 naar 1 aftellen. Pas na bevestiging kan `Prepare-GarminAlbum.ps1` de tien huidige afleveringen opnieuw in een **nieuwe** uitvoermap maken; verwijder of vervang de huidige tien niet op basis van alleen deze hypothese.
+
+De proef bevestigde dat Garmin afspeelt van hoog naar laag tracknummer: track 3 bevatte de gewenste eerste titel, gevolgd door 2 en 1. De tien nieuwe, omgekeerd getagde kopieën staan inmiddels in `Podcasts\Recente podcasts`: track 10 bevat de gewenste eerste titel en 'volgende' brengt track 9 met de gewenste tweede titel. Het cijfer op het horloge is dus niet de Podcast Addict-playlistpositie.
+
+Voor de volgende automatiseringsstap moet eerst worden vastgesteld of Windows de ID3-tracktags van de MTP-bestanden kan uitlezen. Bij een nieuwe playlist verandert immers mogelijk de tag van een bestaand bestand zonder dat zijn hashachtige bestandsnaam verandert. De nieuwe, alleen-lezen proef gebruikt het privémanifest van de huidige lokale Garmin-klare set:
+
+```powershell
+./scripts/Inspect-GarminOrder.ps1 -GarminReadyDirectory 'C:\video\AI\Garmin klaar omgekeerd'
+```
+
+Het script vergelijkt geselecteerde sleutels met de bestanden in `Podcasts\Recente podcasts` en toont voor elk bestand het verwachte en, indien beschikbaar, door Windows gerapporteerde tracknummer en album. Geen schrijfacties. MTP-naam, metadata en de door Windows gerapporteerde grootte bewijzen niet dat de overdracht bytevolledig is.
 
 ## Volgende overdrachtsproef
 

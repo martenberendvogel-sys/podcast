@@ -67,8 +67,8 @@ for ($index = 0; $index -lt $selected.Count; $index++) {
     $key = $selected[$index]
     $source = Join-Path $stagingPath "$key.mp3"
     $destination = Join-Path $outputPath "$key.mp3"
-    # The first ten-file trial displayed/advanced 10, 9, ... after selecting 1.
-    # Reverse the tags; validate this hypothesis with the isolated three-file test.
+    # Garmin plays this shared album in descending track-number order.
+    # Reverse the tags so the first desired episode gets the highest number.
     $trackNumber = $selected.Count - $index
     $track = '{0}/{1}' -f $trackNumber, $selected.Count
 
