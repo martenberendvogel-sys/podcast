@@ -62,7 +62,7 @@ for ($index = 0; $index -lt $examples.Count; $index++) {
     if ($LASTEXITCODE -ne 0) {
         throw "FFmpeg stopte bij testbestand $($index + 1). De originele MP3's zijn niet gewijzigd."
     }
-    Write-Host "Testbestand $($index + 1), track $track: $($episode.Podcast) -> $outputFile"
+    Write-Host "Testbestand $($index + 1), track ${track}: $($episode.Podcast) -> $outputFile"
 }
 
 Write-Host "Klaar. $($examples.Count) kopieen hebben album $album en behouden hun eigen afleveringstitel."
