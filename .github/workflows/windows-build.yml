@@ -21,10 +21,11 @@ jobs:
         run: dotnet restore tests/PodcastSync.BackupInspector.Tests/PodcastSync.BackupInspector.Tests.csproj --locked-mode
       - name: Run parser and staging checks
         run: dotnet run --project tests/PodcastSync.BackupInspector.Tests/PodcastSync.BackupInspector.Tests.csproj --no-restore
-      - name: Restore and build read-only WPD probe
+      - name: Build WPD sync and run plan tests
         run: |
           dotnet restore src/PodcastSync.MtpProbe/PodcastSync.MtpProbe.csproj --locked-mode
           dotnet build src/PodcastSync.MtpProbe/PodcastSync.MtpProbe.csproj --no-restore --configuration Release
+          dotnet run --project src/PodcastSync.MtpProbe/PodcastSync.MtpProbe.csproj --no-restore -- self-test
       - name: Parse PowerShell scripts
         shell: pwsh
         run: |

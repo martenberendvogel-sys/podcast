@@ -4,12 +4,16 @@ using System.Text.RegularExpressions;
 using MediaDevices;
 
 var command = args.Length == 0 ? "probe" : args[0];
-if (!((args.Length <= 1 && command == "probe") ||
-      (args.Length == 2 && (command == "copy-test" || command == "delete-test"))))
+if (!((args.Length == 1 && command == "self-test") ||
+      (args.Length <= 1 && command == "probe") ||
+      (args.Length == 2 && (command == "copy-test" || command == "delete-test")) ||
+      (args.Length == 3 && (command == "sync-plan" || command == "sync-apply"))))
 {
-    Console.Error.WriteLine("Gebruik: ... -- probe | copy-test <lokale-test.mp3> | delete-test <lokale-test.mp3>");
+    Console.Error.WriteLine("Gebruik: ... -- probe | self-test | copy-test <test.mp3> | delete-test <test.mp3> | sync-plan <back-up> <Garmin-klare-map> | sync-apply <back-up> <Garmin-klare-map>");
     return 2;
 }
+
+if (command == "self-test") return GarminSyncSelfTest.Run();
 
 if (!OperatingSystem.IsWindows())
 {
@@ -50,6 +54,24 @@ try
                 Files = files,
                 Warning = "Alleen lezen. Geen bestand naar de Garmin gekopieerd of verwijderd."
             });
+        }
+        else if (command is "sync-plan" or "sync-apply")
+        {
+            if (recent is null) throw new InvalidOperationException("De exacte Garmin-testmap ontbreekt.");
+            if (command == "sync-apply") GarminSync.RequireFreshBackup(args[1]);
+            var manifest = await GarminSync.ValidateReadyAsync(args[1], args[2]);
+            var plan = GarminSync.Inspect(garmin, recent, manifest);
+            if (command == "sync-plan")
+                Print(new { Action = "sync-plan", SelectedCount = manifest.SelectedKeys.Length, Plan = plan,
+                    Warning = "Alleen lezen. sync-apply vereist een back-up van maximaal 48 uur oud en voert pas na volledige lokale en Garmin-controle wijzigingen uit." });
+            else
+            {
+                if (plan.Unknown.Length != 0)
+                    throw new InvalidOperationException("Onbekende bestanden in de Garmin-testmap; geen wijzigingen uitgevoerd.");
+                Print(new { Action = "sync-apply", Before = plan });
+                var after = GarminSync.Apply(garmin, recent, manifest, args[2], plan);
+                Print(new { Action = "sync-apply", After = after });
+            }
         }
         else
         {

@@ -16,6 +16,14 @@ De proef toont of `Internal Storage\Podcasts\Recente podcasts` via WPD bereikbaa
 
 De alleen-lezen proef is inmiddels op de aangesloten Forerunner geslaagd: alle tien MP3's en hun echte WPD-groottes zijn zichtbaar. Voor een geïsoleerde rondreisproef zijn nu `copy-test` en `delete-test` beschikbaar. Ze accepteren uitsluitend een lokaal bestand uit `Podcast Sync Volgorde Test` en raken geen hashvormige playlistbestanden aan. `copy-test` leest de upload terug en vergelijkt SHA-256; `delete-test` controleert dezelfde inhoud vóór verwijdering. Gebruik deze acties alleen stap voor stap op de test-Garmin.
 
+Ook de directe WPD-rondreisproef is geslaagd, inclusief volledige terugleescontrole en verwijderen zonder Windows-pop-up. Een eerste incrementele sync is nu beschikbaar als aparte experimentele opdrachten. `sync-plan` leest alleen; `sync-apply` vereist een back-up met Podcast Addict-datum in de bestandsnaam van maximaal 48 uur oud en wijzigt uitsluitend hashvormige MP3's in `Podcasts\Recente podcasts`. Gebruik op dit moment eerst alleen het plan:
+
+```powershell
+dotnet run --project .\src\PodcastSync.MtpProbe -- sync-plan 'C:\video\AI\PodcastAddict_20261025_113232.backup' 'C:\video\AI\Garmin klaar omgekeerd'
+```
+
+Het programma valideert back-upvolgorde, lokaal manifest en SHA-256, en leest bestaande Garmin-MP3's volledig terug. `sync-apply` is nog niet met een veranderde echte playlist op de Garmin getest; voer die opdracht pas uit nadat het plan is beoordeeld. Onbekende bestanden of submappen in de testmap blokkeren automatische wijzigingen. Bij een mislukte vervanging stopt de opdracht; het lokale MP3-bestand blijft beschikbaar om een volgende run te herstellen.
+
 ## Back-upinspecteur draaien
 
 Deze repository gebruikt .NET 8. Installeer een SDK of gebruik in de cloudomgeving `/workspace/.dotnet/dotnet`. `NuGet.Config` voegt de publieke pakketbron nuget.org voor dit project toe, ook als op de pc nog geen globale NuGet-bronnen zijn ingesteld.
