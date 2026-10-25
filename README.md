@@ -6,6 +6,14 @@ Lees bij hervatten eerst [de actuele projectstand](docs/handoff.md).
 
 De eerste stap leest nu de afspeellijst uit een echte Podcast Addict-back-up. Handmatige Garmin-overdracht werkt al; de veilige automatisering daarvan vereist nog een gerichte hardwareproef. Luisterposities zijn optioneel voor versie 1.
 
+Een aparte, alleen-lezen Windows-proef gebruikt nu de directe WPD/MTP-interface in plaats van Verkenner. Sluit de Garmin aan en voer uit:
+
+```powershell
+dotnet run --project .\src\PodcastSync.MtpProbe -- probe
+```
+
+De proef toont of `Internal Storage\Podcasts\Recente podcasts` via WPD bereikbaar is en welke bestanden/groottes het apparaat rechtstreeks meldt. Hij kopieert of verwijdert niets. Deze route is nog niet op het horloge getest; zie [de projectstand](docs/handoff.md).
+
 ## Back-upinspecteur draaien
 
 Deze repository gebruikt .NET 8. Installeer een SDK of gebruik in de cloudomgeving `/workspace/.dotnet/dotnet`. `NuGet.Config` voegt de publieke pakketbron nuget.org voor dit project toe, ook als op de pc nog geen globale NuGet-bronnen zijn ingesteld.

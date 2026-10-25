@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net8.0-windows7.0": {
+      "MediaDevices": {
+        "type": "Direct",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "V9xdkpJ6vXulDRlmfFzliTzYty1naSsaCervJb5PFv4JHTiThpKJJ7C4xM0Mmo35O811YquDTCyv09YiBmMARw=="
+      }
+    }
+  }
+}

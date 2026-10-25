@@ -73,6 +73,8 @@ Ook de uitgebreide proef is geslaagd: 10 behouden, alle actielijsten leeg. De ge
 
 De gebruiker heeft de rondreisproef gedaan: het testbestand verscheen na `-Action Copy` en verdween na `-Action Delete`; bij verwijderen liet Windows een bevestigingsvenster zien. De huidige Windows Shell-verb `delete` kan daarom niet zonder gebruiker als onbemande sync-stap gelden. `CopyHere` geeft evenmin een betrouwbaar eindesignaal. Onderzoek directe WPD/MTP-toegang of ontwerp een expliciet bevestigde semi-automatische sync; gebruik geen UI-automatisering om de Windows-dialoog stilzwijgend weg te klikken.
 
+`src/PodcastSync.MtpProbe` test directe WPD/MTP-toegang via het .NET-pakket `MediaDevices` 2.0.0 (Windows-only). De eerste opdracht `dotnet run --project .\src\PodcastSync.MtpProbe -- probe` is alleen-lezen. Hij inventariseert de exacte doelmap en WPD-bestandsgroottes, zonder Garmin-writes. De proef bouwt in de cloud, maar moet nog op de aangesloten Forerunner worden uitgevoerd voordat upload of verwijdering met deze bibliotheek wordt gebouwd.
+
 ## Volgende overdrachtsproef
 
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
