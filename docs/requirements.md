@@ -12,6 +12,7 @@ De gebruiker luistert op Android met Podcast Addict en moet tijdens een hardloop
 - Overdracht telefoon naar pc: via het thuisnetwerk; de methode wordt pas gekozen na een praktische proef.
 - Garmin: detecteren bij USB-aansluiting, vervolgens alleen synchroniseren als een ondersteunde overdrachtsroute is bewezen.
 - Houd de Garmin-selectie gelijk aan de actuele Podcast Addict-playlist: voeg ontbrekende geselecteerde afleveringen toe en verwijder alleen bestanden in `Podcasts\Recente podcasts` die de tool zelf beheert en die niet meer geselecteerd zijn. Gebruik een verse volledige back-up als bron; een oude back-up kan al beluisterde afleveringen opnieuw toevoegen.
+- Maak het mogelijk de geselecteerde afleveringen in playlistvolgorde achter elkaar af te spelen, ook als ze van verschillende podcasts komen. Alleen samen in één Garmin-map staan is daarvoor niet voldoende.
 - Voorkom dubbele overdrachten en houd lokaal bij wat is overgezet.
 - Toon uiteindelijk een eenvoudige synchronisatiestatus in een GUI.
 
@@ -48,6 +49,8 @@ De Windows-tool herkent de aangesloten Garmin en inventariseert alleen-lezen de 
 ### 4. Automatische eenrichtingssynchronisatie
 
 Bij aansluiten weerspiegelt de Garmin de playlistselectie: de tool verwerkt alleen ontbrekende, gewijzigde of niet meer geselecteerde afleveringen, laat voltooiing zien en maakt geen dubbele of incomplete overdrachten.
+
+De volledige selectie moet ook als één afspeelreeks beschikbaar zijn; Garmin-groepering per afzonderlijke podcast mag de volgorde niet opbreken.
 
 ## Buiten versie 1
 

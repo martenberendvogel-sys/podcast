@@ -37,6 +37,8 @@ Op de persoonlijke pc vond dit overzicht alle drie werkende MP3's terug: 14 gese
 
 De nieuwe volledige back-up van 25 oktober bevat 10 actuele afleveringen. Vier verdwenen uit de playlist, maar geen van die vier stond in `Recente podcasts`; alle drie bestaande Garmin-bestanden bleven gewenst. `prepare` heeft alle 10 actuele MP3's lokaal klaargezet. De overige zeven zijn daarna één voor één gekopieerd. Het laatste `SyncPlan` meldde 10 voorbereid en 10 aanwezig op de Garmin, met 0 ontbrekende kopieën, 0 verwijderkandidaten en 0 onbekende bestanden. Dit bevestigt de bestandsselectie, niet de bytevolledigheid van elk MTP-bestand.
 
+De Garmin presenteert deze 10 bestanden ondanks de ene map als twee afzonderlijke podcastgroepen (6 `All in the Game`, 4 `America podcasts`). De gebruiker kan nog geen doorlopende reeks van alle 10 starten. Onderzoek een ondersteunde Garmin-afspeellijst of welke audiotags de groepering sturen voordat er bestanden op het horloge worden vervangen.
+
 ## Volgende overdrachtsproef
 
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
