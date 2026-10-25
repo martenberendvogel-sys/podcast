@@ -31,6 +31,8 @@ Sluit de Forerunner via USB aan. Draai in PowerShell vanuit de repository:
 
 Het script inventariseert Garmin-apparaten in Windows, Verkenner en eventuele volumes. Het controleert ook of `Internal Storage\Podcasts\Recente podcasts` via de Windows-apparaatinterface bereikbaar is en telt daar bestanden. De eerste bestandsnamen, typen en groottes worden getoond voor diagnose; deel die desgewenst zonder privé-informatie. Het kopieert of verwijdert niets.
 
+Met `./scripts/Inspect-Garmin.ps1 -StagingDirectory 'C:\video\AI\podcast-staging'` vergelijkt het script bovendien de geselecteerde playlist met lokaal voorbereide bestanden en de Garmin-map. `SyncPlan` toont hoeveel nog moeten worden gedownload of gekopieerd en welke eerder voorbereide sleutels niet meer geselecteerd zijn. Dit is uitsluitend een voorstel: het verwijdert niets, en een oude back-up mag niet als basis voor opruimen dienen.
+
 ## Volgende overdrachtsproef
 
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
@@ -44,3 +46,5 @@ De Garmin meldt in Windows zijn ene bestaande MP3 zonder `.mp3` in de naam en me
 Bereid voor deze proef op de persoonlijke pc eerst een tweede aflevering voor met dezelfde back-up en stagingmap, nu met `--limit 2`. De eerste MP3 wordt op SHA-256 gecontroleerd en hergebruikt. Draai daarna het kopieerscript zonder `-Apply` om te zien welke nieuwe MP3 hij zou kopiëren. Gebruik `-Apply` pas na controle van dat plan.
 
 De proef is op de persoonlijke pc geslaagd: de tweede aflevering werd door `Copy-OneToGarmin.ps1 -Apply` naar de bestaande map gestuurd, beide bestanden zijn zichtbaar en spelen op het horloge. Nog niet bewezen: of `CopyHere` op voltooiing wacht, betrouwbaar de volledige playlist kan overzetten en een onderbroken overdracht kan herkennen.
+
+Een derde aflevering werd eveneens via `-Apply` gekopieerd en speelt af. De PowerShell-prompt kwam vrijwel direct terug; `CopyHere` mag daarom niet als voltooiingssignaal voor een batch worden gebruikt. Op het horloge waren daarna drie bestanden zichtbaar. De volgende stap is een veilig, incrementeel plan maken en een betrouwbare voltooiingscontrole ontwerpen voordat meerdere kopieën of verwijderingen automatisch gebeuren.
