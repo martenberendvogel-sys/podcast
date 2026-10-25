@@ -39,6 +39,14 @@ De nieuwe volledige back-up van 25 oktober bevat 10 actuele afleveringen. Vier v
 
 De Garmin presenteert deze 10 bestanden ondanks de ene map als twee afzonderlijke podcastgroepen (6 `All in the Game`, 4 `America podcasts`). De gebruiker kan nog geen doorlopende reeks van alle 10 starten. Onderzoek een ondersteunde Garmin-afspeellijst of welke audiotags de groepering sturen voordat er bestanden op het horloge worden vervangen.
 
+`ffprobe` op één bestand uit elke groep toont dezelfde artiest (`BNR Nieuwsradio`) en hetzelfde genre (`Podcast`), maar verschillende albums (`All in the Game` en `Amerika Podcast`). Dit maakt het albumveld een sterke hypothese voor de groepering; het is nog niet op de Garmin bewezen. `scripts/Make-GarminAlbumTest.ps1` maakt daarom twee aparte lokale kopieën met hetzelfde album `Podcast Sync Test` en tracknummers 1 en 2, zonder audio opnieuw te coderen of de stagingbestanden te wijzigen. Proefopdracht:
+
+```powershell
+./scripts/Make-GarminAlbumTest.ps1 -StagingDirectory 'C:\video\AI\podcast-staging' -OutputDirectory 'C:\video\AI\Podcast Sync Test'
+```
+
+Kopieer uitsluitend die nieuwe testmap via Verkenner naar `Forerunner 265\Internal Storage\Podcasts`, dus niet naar de beheerde map `Recente podcasts`. Kijk of de twee afleveringen op de Garmin als één groep verschijnen en of aflevering 2 automatisch start na 1. Laat de tien bestaande bestanden met rust. De testmap kan later apart worden opgeruimd nadat de uitkomst vaststaat.
+
 ## Volgende overdrachtsproef
 
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
