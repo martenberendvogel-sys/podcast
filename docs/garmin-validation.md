@@ -47,6 +47,8 @@ De Garmin presenteert deze 10 bestanden ondanks de ene map als twee afzonderlijk
 
 Kopieer uitsluitend die nieuwe testmap via Verkenner naar `Forerunner 265\Internal Storage\Podcasts`, dus niet naar de beheerde map `Recente podcasts`. Kijk of de twee afleveringen op de Garmin als één groep verschijnen en of aflevering 2 automatisch start na 1. Laat de tien bestaande bestanden met rust. De testmap kan later apart worden opgeruimd nadat de uitkomst vaststaat.
 
+De gebruiker ziet nu beide testafleveringen uit verschillende podcasts onder één Garmin-groep `Podcast Sync Test`. Dit ondersteunt de albumhypothese; de overgang van aflevering 1 naar 2 moet nog apart worden bevestigd. `scripts/Prepare-GarminAlbum.ps1` is voorbereid om op de pc alle geselecteerde MP3's als aparte kopieën met album `Recente podcasts` en playlistvolgnummer te maken. Het valideert eerst de lokale bronbestanden, bewaart hun titel en schrijft niets naar de Garmin. De uitvoermap bevat een privémanifest met titels en checksums. Gebruik dit pas voor vervanging op het horloge nadat de afspeelvolgorde met de twee testbestanden is bevestigd en een veilige migratie van de huidige tien bestanden is ontworpen.
+
 ## Volgende overdrachtsproef
 
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.

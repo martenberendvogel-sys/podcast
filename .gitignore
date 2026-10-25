@@ -7,5 +7,6 @@ obj/
 *.m4b
 *.partial
 podcast-sync-manifest.json
+podcast-sync-garmin-ready.json
 staging/
 
