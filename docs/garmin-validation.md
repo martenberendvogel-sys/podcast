@@ -69,6 +69,8 @@ Het script vergelijkt geselecteerde sleutels met de bestanden in `Podcasts\Recen
 
 Op de persoonlijke pc vond deze proef de tien geselecteerde bestanden, zonder ontbrekende of onverwachte namen; voor alle tien kwamen het MTP-tracknummer en album overeen met het lokale manifest. De volgende versie van hetzelfde script valideert ook lokale controlesommen en rapporteert een expliciet alleen-lezen plan: `KeepCount`, `MissingKeys`, `NeedsRetagOrReplaceKeys`, `UnverifiedMetadataKeys` en `RemovalCandidateKeys`. Een verwijderkandidaat wordt nooit automatisch verwijderd op basis van deze proef.
 
+Ook de uitgebreide proef is geslaagd: 10 behouden, alle actielijsten leeg. De gebruiker beschouwt `Recente podcasts` momenteel als de project-testmap; deze is pas productie nadat de hele keten af is. `Test-GarminMtpRoundtrip.ps1` test daarom een kopie en later een verwijdering van precies één herkenbaar, niet-hashvormig MP3-bestand **in deze map**. De tien bestaande hashvormige playlistbestanden kunnen door dit script niet worden geselecteerd. Standaard toont het script alleen het plan; `-Action Copy` en `-Action Delete` zijn aparte acties. De bron is één van de drie lokale bestanden in `C:\video\AI\Podcast Sync Volgorde Test`.
+
 ## Volgende overdrachtsproef
 
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
