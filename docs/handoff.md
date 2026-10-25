@@ -17,6 +17,7 @@
 - De tweede inventarisatie vond exact één bestand in `Recente podcasts`; Windows meldt de hashnaam zonder extensie, type `MP3 File` en grootte `0` ondanks werkende weergave. `scripts/Copy-OneToGarmin.ps1` (standaard alleen voorbeeld, `-Apply` voor één ontbrekende MP3) kopieerde daarna de tweede aflevering via de Windows-apparaatinterface. De gebruiker ziet twee bestanden in de map en beide spelen op de Garmin af.
 - Een derde aflevering is lokaal voorbereid en met hetzelfde script naar de Garmin gekopieerd; alle drie zijn zichtbaar en de derde speelt af. De PowerShell-prompt kwam vrijwel direct terug, zodat `CopyHere` niet als voltooiingssignaal voor meerdere kopieën mag worden gebruikt.
 - `Inspect-Garmin.ps1 -StagingDirectory <map>` maakt nu ook een alleen-lezen `SyncPlan`. Op de persoonlijke pc gaf de back-up van 24 oktober exact: 14 geselecteerd, 3 lokaal voorbereid, 3 op Garmin, 11 nog te downloaden, 0 te kopiëren, 0 verwijderkandidaten, 0 onbekende apparaatsleutels en 0 lokale problemen. De planner vond alle drie werkende MP3's op het horloge.
+- De verse back-up van 25 oktober bevat 10 playlistafleveringen: 4 verwijderd ten opzichte van 24 oktober, geen toegevoegd en 10 behouden. Alle drie al op de Garmin aanwezige afleveringen zijn behouden, dus er is nu niets te verwijderen. `prepare` heeft alle 10 actuele MP3's lokaal klaar: 7 nieuw gedownload, 3 hergebruikt, 0 pending. Zeven actuele afleveringen ontbreken nog op de Garmin.
 
 ## Wat nog niet is bewezen
 
@@ -28,7 +29,7 @@
 
 ## Eerstvolgende stap
 
-Maak een verse volledige Podcast Addict-back-up en vergelijk die met de back-up van 24 oktober; gebruik daarna dezelfde stagingmap om de nieuwe playlist te plannen. Onderzoek daarnaast een betrouwbaar voltooiingssignaal voor MTP-overdracht voordat meerdere afleveringen of verwijderingen worden geautomatiseerd. Zie [garmin-validation.md](garmin-validation.md).
+Breng de zeven ontbrekende, lokaal voorbereide afleveringen gecontroleerd naar `Recente podcasts` zonder bestaande bestanden te overschrijven. `Copy-OneToGarmin.ps1` kan ze één voor één kopiëren; een veilige onbewaakte batch vereist nog een betrouwbaar voltooiingssignaal. Verwijder niets: alle drie bestaande Garmin-afleveringen staan nog in de actuele playlist. Zie [garmin-validation.md](garmin-validation.md).
 
 De gewenste definitieve sync is incrementeel: de actuele Podcast Addict-playlist is leidend; ontbrekende afleveringen toevoegen, bestaande behouden en alleen niet meer geselecteerde, eerder beheerde bestanden uit `Podcasts\Recente podcasts` verwijderen. Een verse back-up en volledige lokale voorbereiding zijn vereist voordat er iets op de Garmin wordt opgeruimd. De verwijderstap is nog niet geïmplementeerd.
 
