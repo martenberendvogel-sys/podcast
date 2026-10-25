@@ -3,7 +3,9 @@ param(
     [string] $StagingDirectory,
 
     [Parameter(Mandatory = $true)]
-    [string] $OutputDirectory
+    [string] $OutputDirectory,
+
+    [switch] $ReverseTrack
 )
 
 $ErrorActionPreference = 'Stop'
@@ -18,7 +20,14 @@ if ($manifest.Version -ne 1) { throw 'Onbekende manifestversie.' }
 
 $groups = @($manifest.SelectedEpisodes | Group-Object Podcast)
 if ($groups.Count -lt 2) { throw 'Voor deze proef zijn minstens twee verschillende podcasts nodig.' }
-$examples = @($groups | Select-Object -First 2 | ForEach-Object { $_.Group[0] })
+if ($ReverseTrack) {
+    if ($groups[0].Count -lt 2) { throw 'Voor de volgordeproef zijn twee afleveringen uit de eerste podcast nodig.' }
+    $examples = @($groups[0].Group | Select-Object -First 2) + @($groups[1].Group[0])
+    $album = 'Podcast Sync Volgorde Test'
+} else {
+    $examples = @($groups | Select-Object -First 2 | ForEach-Object { $_.Group[0] })
+    $album = 'Podcast Sync Test'
+}
 $ffmpeg = (Get-Command ffmpeg -ErrorAction Stop).Source
 
 $outputPath = [IO.Path]::GetFullPath($OutputDirectory)
@@ -26,7 +35,7 @@ if (Test-Path -LiteralPath $outputPath) {
     throw "De testmap bestaat al: $outputPath. Kies een nieuwe map; bestaande bestanden worden niet overschreven."
 }
 
-# Validate both inputs before creating output, so an incomplete staging file
+# Validate all inputs before creating output, so an incomplete staging file
 # cannot be mistaken for a successful Garmin test copy.
 foreach ($episode in $examples) {
     if ($episode.Key -cnotmatch '^[0-9a-f]{64}$') { throw 'Ongeldige afleveringssleutel.' }
@@ -42,18 +51,19 @@ foreach ($episode in $examples) {
 }
 
 New-Item -ItemType Directory -Path $outputPath -ErrorAction Stop | Out-Null
-for ($index = 0; $index -lt 2; $index++) {
+for ($index = 0; $index -lt $examples.Count; $index++) {
     $episode = $examples[$index]
     $source = Join-Path $stagingPath "$($episode.Key).mp3"
     $outputFile = Join-Path $outputPath ('{0:D2} - {1}.mp3' -f ($index + 1), $episode.Key.Substring(0, 8))
-    $track = '{0}/2' -f ($index + 1)
+    $trackNumber = if ($ReverseTrack) { $examples.Count - $index } else { $index + 1 }
+    $track = '{0}/{1}' -f $trackNumber, $examples.Count
 
-    & $ffmpeg -hide_banner -loglevel error -nostdin -n -i $source -map '0:a:0' -map_metadata 0 -c:a copy -metadata 'album=Podcast Sync Test' -metadata "track=$track" -id3v2_version 3 $outputFile
+    & $ffmpeg -hide_banner -loglevel error -nostdin -n -i $source -map '0:a:0' -map_metadata 0 -c:a copy -metadata "album=$album" -metadata "track=$track" -id3v2_version 3 $outputFile
     if ($LASTEXITCODE -ne 0) {
         throw "FFmpeg stopte bij testbestand $($index + 1). De originele MP3's zijn niet gewijzigd."
     }
-    Write-Host "Testbestand $($index + 1): $($episode.Podcast) -> $outputFile"
+    Write-Host "Testbestand $($index + 1), track $track: $($episode.Podcast) -> $outputFile"
 }
 
-Write-Host 'Klaar. Beide kopieen hebben album Podcast Sync Test en behouden hun eigen afleveringstitel.'
+Write-Host "Klaar. $($examples.Count) kopieen hebben album $album en behouden hun eigen afleveringstitel."
 Write-Host 'Deze proef schrijft niets naar de Garmin.'

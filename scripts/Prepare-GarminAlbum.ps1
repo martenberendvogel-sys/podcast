@@ -67,7 +67,10 @@ for ($index = 0; $index -lt $selected.Count; $index++) {
     $key = $selected[$index]
     $source = Join-Path $stagingPath "$key.mp3"
     $destination = Join-Path $outputPath "$key.mp3"
-    $track = '{0}/{1}' -f ($index + 1), $selected.Count
+    # The first ten-file trial displayed/advanced 10, 9, ... after selecting 1.
+    # Reverse the tags; validate this hypothesis with the isolated three-file test.
+    $trackNumber = $selected.Count - $index
+    $track = '{0}/{1}' -f $trackNumber, $selected.Count
 
     & $ffmpeg -hide_banner -loglevel error -nostdin -n -i $source -map '0:a:0' -map_metadata 0 -c:a copy -metadata 'album=Recente podcasts' -metadata "track=$track" -id3v2_version 3 $destination
     if ($LASTEXITCODE -ne 0) {
@@ -76,6 +79,7 @@ for ($index = 0; $index -lt $selected.Count; $index++) {
     $ready = Get-Item -LiteralPath $destination
     $readyFiles += [pscustomobject]@{
         Rank = $index + 1
+        TrackNumber = $trackNumber
         Key = $key
         Podcast = $episodes[$key].Podcast
         Title = $episodes[$key].Title
@@ -88,6 +92,7 @@ for ($index = 0; $index -lt $selected.Count; $index++) {
 [pscustomobject]@{
     Version = 1
     Album = 'Recente podcasts'
+    OrderMode = 'GarminPodcastDescendingTrack'
     SelectedKeys = $selected
     Files = $readyFiles
 } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $outputPath 'podcast-sync-garmin-ready.json') -Encoding UTF8

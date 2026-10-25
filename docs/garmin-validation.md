@@ -49,6 +49,14 @@ Kopieer uitsluitend die nieuwe testmap via Verkenner naar `Forerunner 265\Intern
 
 De gebruiker ziet beide testafleveringen uit verschillende podcasts onder één Garmin-groep `Podcast Sync Test`, en de knop 'volgende' gaat van aflevering 1 naar 2. Dit bevestigt dat de gezamenlijke albumnaam voor deze twee podcasts een doorlopende groep oplevert; automatisch doorspelen na het einde is nog niet apart getest. `scripts/Prepare-GarminAlbum.ps1` kan op de pc alle geselecteerde MP3's als aparte kopieën met album `Recente podcasts` en playlistvolgnummer maken. Het valideert eerst de lokale bronbestanden, bewaart hun titel en schrijft niets naar de Garmin. De uitvoermap bevat een privémanifest met titels en checksums. Maak die lokale set vóór vervanging op het horloge; ontwerp daarna een veilige migratie van de huidige tien bestanden.
 
+De eerste volledige tien-bestandenproef staat inmiddels op de Garmin. Eén gedeeld album werkt, maar de volgorde is verkeerd: het horloge toont 10 bovenaan en 1 onderaan; na 1 gaat 'volgende' naar 10, daarna 9. De oude lokale uitvoermap `Garmin klaar 20261025` heeft de verkeerde tracktags en mag niet opnieuw als definitieve set worden gebruikt. Een nieuwe, geïsoleerde proef met drie tracks test omgekeerde ID3-tracknummers (3, 2, 1) bij gewenste afspeelvolgorde (1, 2, 3). Het testscript schrijft alleen naar een nieuwe pc-map:
+
+```powershell
+./scripts/Make-GarminAlbumTest.ps1 -StagingDirectory 'C:\video\AI\podcast-staging' -OutputDirectory 'C:\video\AI\Podcast Sync Volgorde Test' -ReverseTrack
+```
+
+Kopieer daarna uitsluitend die drie test-MP3's in een aparte testmap onder `Forerunner 265\Internal Storage\Podcasts`, naast `Recente podcasts`. Controleer of de Garmin ze als 1 → 2 → 3 toont én zo doorschakelt, inclusief de grens tussen de twee bronpodcasts. Pas na bevestiging kan `Prepare-GarminAlbum.ps1` de tien huidige afleveringen opnieuw in een **nieuwe** uitvoermap maken; verwijder of vervang de huidige tien niet op basis van alleen deze hypothese.
+
 ## Volgende overdrachtsproef
 
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
