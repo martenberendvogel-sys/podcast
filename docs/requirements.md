@@ -11,7 +11,7 @@ De gebruiker luistert op Android met Podcast Addict en moet tijdens een hardloop
 - Invoer: een export/back-up waaruit de geselecteerde playlist of wachtrij kan worden bepaald. Audiobestanden hoeven niet vooraf op de telefoon te zijn gedownload.
 - Overdracht telefoon naar pc: via het thuisnetwerk; de methode wordt pas gekozen na een praktische proef.
 - Garmin: detecteren bij USB-aansluiting, vervolgens alleen synchroniseren als een ondersteunde overdrachtsroute is bewezen.
-- Houd de Garmin-selectie gelijk aan de Podcast Addict-playlist: voeg ontbrekende geselecteerde afleveringen toe en verwijder alleen bestanden die de tool zelf eerder heeft beheerd en die niet meer geselecteerd zijn.
+- Houd de Garmin-selectie gelijk aan de actuele Podcast Addict-playlist: voeg ontbrekende geselecteerde afleveringen toe en verwijder alleen bestanden in `Podcasts\Recente podcasts` die de tool zelf beheert en die niet meer geselecteerd zijn. Gebruik een verse volledige back-up als bron; een oude back-up kan al beluisterde afleveringen opnieuw toevoegen.
 - Voorkom dubbele overdrachten en houd lokaal bij wat is overgezet.
 - Toon uiteindelijk een eenvoudige synchronisatiestatus in een GUI.
 
@@ -52,6 +52,6 @@ Bij aansluiten weerspiegelt de Garmin de playlistselectie: de tool verwerkt alle
 ## Buiten versie 1
 
 - Synchronisatie of herstel van luisterposities (nice to have).
-- Verwijderen van volledig beluisterde afleveringen.
+- Afleveringen als beluisterd herkennen op basis van de Garmin-luisterpositie; verwijderen gebeurt in versie 1 alleen als ze uit de Podcast Addict-playlist zijn verdwenen.
 - Opslaglimieten en slimme selectie voor hardlopen.
 

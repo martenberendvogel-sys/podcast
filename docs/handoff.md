@@ -21,11 +21,14 @@
 - Of de door `prepare` gedownloade MP3 helemaal tot het einde afspeelt; verschijnen en starten in de nieuwe Garmin-map zijn bevestigd.
 - Of Windows `CopyHere` pas na een voltooide MTP-kopie terugkeert; deze Shell-actie kan asynchroon zijn. Door Garmin gerapporteerde bestandsgrootte is `0`, dus verificatie op bytes ontbreekt.
 - Veilige bulkoverdracht van alle geselecteerde afleveringen en het verwijderen van oude bestanden uit uitsluitend de eigen Garmin-map.
+- Een verse volledige Podcast Addict-back-up als bron voor opschonen. De huidige back-up van 24 oktober is geschikt voor een kopieertimingproef, niet voor de definitieve opruimactie als de telefoonplaylist inmiddels is veranderd.
 - Herkennen van een verwijderde playlistaflevering in een derde echte back-up.
 
 ## Eerstvolgende stap
 
 Bepaal eerst of de kopieeropdracht terugkeerde vóór of nádat Windows klaar was met overdragen. Daarna kan de kopieerproef veilig worden uitgebreid naar meerdere afleveringen, met behoud van de eigen mapgrens en zonder verwijdering. Zie [garmin-validation.md](garmin-validation.md).
+
+De gewenste definitieve sync is incrementeel: de actuele Podcast Addict-playlist is leidend; ontbrekende afleveringen toevoegen, bestaande behouden en alleen niet meer geselecteerde, eerder beheerde bestanden uit `Podcasts\Recente podcasts` verwijderen. Een verse back-up en volledige lokale voorbereiding zijn vereist voordat er iets op de Garmin wordt opgeruimd. De verwijderstap is nog niet geïmplementeerd.
 
 Automatische zichtbare overdracht van de telefoonback-up naar een gewone Google Drive-map is nog niet ingericht; de gebruiker wil dat voor later. Gebruik voorlopig een handmatig gemaakte volledige back-up. Luisterpositie blijft optioneel voor versie 1.
 
