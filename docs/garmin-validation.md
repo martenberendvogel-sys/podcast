@@ -71,6 +71,8 @@ Op de persoonlijke pc vond deze proef de tien geselecteerde bestanden, zonder on
 
 Ook de uitgebreide proef is geslaagd: 10 behouden, alle actielijsten leeg. De gebruiker beschouwt `Recente podcasts` momenteel als de project-testmap; deze is pas productie nadat de hele keten af is. `Test-GarminMtpRoundtrip.ps1` test daarom een kopie en later een verwijdering van precies één herkenbaar, niet-hashvormig MP3-bestand **in deze map**. De tien bestaande hashvormige playlistbestanden kunnen door dit script niet worden geselecteerd. Standaard toont het script alleen het plan; `-Action Copy` en `-Action Delete` zijn aparte acties. De bron is één van de drie lokale bestanden in `C:\video\AI\Podcast Sync Volgorde Test`.
 
+De gebruiker heeft de rondreisproef gedaan: het testbestand verscheen na `-Action Copy` en verdween na `-Action Delete`; bij verwijderen liet Windows een bevestigingsvenster zien. De huidige Windows Shell-verb `delete` kan daarom niet zonder gebruiker als onbemande sync-stap gelden. `CopyHere` geeft evenmin een betrouwbaar eindesignaal. Onderzoek directe WPD/MTP-toegang of ontwerp een expliciet bevestigde semi-automatische sync; gebruik geen UI-automatisering om de Windows-dialoog stilzwijgend weg te klikken.
+
 ## Volgende overdrachtsproef
 
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
