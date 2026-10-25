@@ -33,6 +33,8 @@ Het script inventariseert Garmin-apparaten in Windows, Verkenner en eventuele vo
 
 Met `./scripts/Inspect-Garmin.ps1 -StagingDirectory 'C:\video\AI\podcast-staging'` vergelijkt het script bovendien de geselecteerde playlist met lokaal voorbereide bestanden en de Garmin-map. `SyncPlan` toont hoeveel nog moeten worden gedownload of gekopieerd en welke eerder voorbereide sleutels niet meer geselecteerd zijn. Dit is uitsluitend een voorstel: het verwijdert niets, en een oude back-up mag niet als basis voor opruimen dienen.
 
+Op de persoonlijke pc vond dit overzicht alle drie werkende MP3's terug: 14 geselecteerde afleveringen in de back-up van 24 oktober, 3 voorbereid en aanwezig op de Garmin, 11 nog niet gedownload. Er waren geen onbekende of verouderde bestanden in de eigen Garmin-map. Voor de volgende echte sync is een nieuwe back-up nodig.
+
 ## Volgende overdrachtsproef
 
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
