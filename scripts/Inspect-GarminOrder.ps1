@@ -66,6 +66,15 @@ for ($index = 0; $index -lt $selected.Count; $index++) {
     if ($file.Rank -ne $index + 1 -or $file.TrackNumber -ne $selected.Count - $index) {
         throw 'De tracknummers in het manifest komen niet overeen met de gewenste playlistvolgorde.'
     }
+    $audioPath = Join-Path $readyPath "$($file.Key).mp3"
+    if (-not (Test-Path -LiteralPath $audioPath -PathType Leaf)) {
+        throw "Garmin-klare MP3 ontbreekt: $($file.Key)"
+    }
+    $audio = Get-Item -LiteralPath $audioPath
+    $hash = (Get-FileHash -LiteralPath $audioPath -Algorithm SHA256).Hash
+    if ($audio.Length -ne $file.Bytes -or $hash -ine $file.Sha256) {
+        throw "De Garmin-klare MP3 wijkt af van het manifest: $($file.Key)"
+    }
 }
 
 $shell = New-Object -ComObject Shell.Application
@@ -90,9 +99,11 @@ for ($index = 0; $index -lt 350; $index++) {
 $observed = @()
 foreach ($item in @($folder.Items() | Where-Object { -not $_.IsFolder })) {
     $key = $item.Name -replace '(?i)\.mp3$', ''
-    $known = $key -cmatch '^[0-9a-f]{64}$' -and $expected.ContainsKey($key)
+    $managedName = $key -cmatch '^[0-9a-f]{64}$'
+    $known = $managedName -and $expected.ContainsKey($key)
     $observed += [pscustomobject]@{
         Name = $item.Name
+        Key = if ($managedName) { $key } else { $null }
         Selected = $known
         ExpectedRank = if ($known) { $expected[$key].Rank } else { $null }
         ExpectedTrack = if ($known) { $expected[$key].TrackNumber } else { $null }
@@ -101,11 +112,28 @@ foreach ($item in @($folder.Items() | Where-Object { -not $_.IsFolder })) {
     }
 }
 $presentKeys = @($observed | Where-Object Selected | ForEach-Object { $_.Name -replace '(?i)\.mp3$', '' })
+$missingKeys = @($selected | Where-Object { $presentKeys -notcontains $_ })
+$keepKeys = @($observed | Where-Object {
+    $_.Selected -and $_.DeviceTrack -eq ([string] $_.ExpectedTrack) -and $_.DeviceAlbum -eq $manifest.Album
+} | ForEach-Object Key)
+$unverifiedKeys = @($observed | Where-Object {
+    $_.Selected -and ([string]::IsNullOrWhiteSpace($_.DeviceTrack) -or [string]::IsNullOrWhiteSpace($_.DeviceAlbum))
+} | ForEach-Object Key)
+$replaceKeys = @($observed | Where-Object {
+    $_.Selected -and $keepKeys -notcontains $_.Key -and $unverifiedKeys -notcontains $_.Key
+} | ForEach-Object Key)
+$removalCandidates = @($observed | Where-Object { $null -ne $_.Key -and -not $_.Selected } | ForEach-Object Key)
+$duplicateKeys = @($observed | Where-Object Selected | Group-Object Key | Where-Object { $_.Count -gt 1 } | ForEach-Object Name)
 [pscustomobject]@{
     ExpectedCount = $selected.Count
     DeviceFileCount = $observed.Count
-    MissingKeys = @($selected | Where-Object { $presentKeys -notcontains $_ })
-    UnexpectedNames = @($observed | Where-Object { -not $_.Selected } | ForEach-Object Name)
+    KeepCount = $keepKeys.Count
+    MissingKeys = $missingKeys
+    NeedsRetagOrReplaceKeys = $replaceKeys
+    UnverifiedMetadataKeys = $unverifiedKeys
+    RemovalCandidateKeys = $removalCandidates
+    DuplicateKeys = $duplicateKeys
+    UnexpectedNames = @($observed | Where-Object { $null -eq $_.Key } | ForEach-Object Name)
     Files = $observed
-    Warning = 'Alleen lezen. MTP-metadata kan ontbreken of verouderd zijn; naam en tags bewijzen geen volledige kopie. Er is niets gekopieerd of verwijderd.'
+    Warning = 'Alleen lezen. MTP-metadata kan ontbreken of verouderd zijn; naam en tags bewijzen geen volledige kopie. Verwijderkandidaten zijn geen verwijderopdracht. Er is niets gekopieerd of verwijderd.'
 } | ConvertTo-Json -Depth 5

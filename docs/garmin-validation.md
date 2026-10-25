@@ -67,6 +67,8 @@ Voor de volgende automatiseringsstap moet eerst worden vastgesteld of Windows de
 
 Het script vergelijkt geselecteerde sleutels met de bestanden in `Podcasts\Recente podcasts` en toont voor elk bestand het verwachte en, indien beschikbaar, door Windows gerapporteerde tracknummer en album. Geen schrijfacties. MTP-naam, metadata en de door Windows gerapporteerde grootte bewijzen niet dat de overdracht bytevolledig is.
 
+Op de persoonlijke pc vond deze proef de tien geselecteerde bestanden, zonder ontbrekende of onverwachte namen; voor alle tien kwamen het MTP-tracknummer en album overeen met het lokale manifest. De volgende versie van hetzelfde script valideert ook lokale controlesommen en rapporteert een expliciet alleen-lezen plan: `KeepCount`, `MissingKeys`, `NeedsRetagOrReplaceKeys`, `UnverifiedMetadataKeys` en `RemovalCandidateKeys`. Een verwijderkandidaat wordt nooit automatisch verwijderd op basis van deze proef.
+
 ## Volgende overdrachtsproef
 
 De eerste door `prepare` gedownloade MP3 speelt op de pc én in de nieuwe Garmin-map `Podcasts\Recente podcasts` af. De Garmin toont de juiste MP3-titel, ondanks de hashachtige bestandsnaam. De map is gemaakt door een lege pc-map via Verkenner naar de Garmin te kopiëren; direct een map aanmaken op het apparaat lukte niet.
