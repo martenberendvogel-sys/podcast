@@ -12,7 +12,9 @@ Een aparte, alleen-lezen Windows-proef gebruikt nu de directe WPD/MTP-interface 
 dotnet run --project .\src\PodcastSync.MtpProbe -- probe
 ```
 
-De proef toont of `Internal Storage\Podcasts\Recente podcasts` via WPD bereikbaar is en welke bestanden/groottes het apparaat rechtstreeks meldt. Hij kopieert of verwijdert niets. Deze route is nog niet op het horloge getest; zie [de projectstand](docs/handoff.md).
+De proef toont of `Internal Storage\Podcasts\Recente podcasts` via WPD bereikbaar is en welke bestanden/groottes het apparaat rechtstreeks meldt. Hij kopieert of verwijdert niets; zie [de projectstand](docs/handoff.md).
+
+De alleen-lezen proef is inmiddels op de aangesloten Forerunner geslaagd: alle tien MP3's en hun echte WPD-groottes zijn zichtbaar. Voor een geïsoleerde rondreisproef zijn nu `copy-test` en `delete-test` beschikbaar. Ze accepteren uitsluitend een lokaal bestand uit `Podcast Sync Volgorde Test` en raken geen hashvormige playlistbestanden aan. `copy-test` leest de upload terug en vergelijkt SHA-256; `delete-test` controleert dezelfde inhoud vóór verwijdering. Gebruik deze acties alleen stap voor stap op de test-Garmin.
 
 ## Back-upinspecteur draaien
 

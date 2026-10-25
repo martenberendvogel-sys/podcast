@@ -73,7 +73,9 @@ Ook de uitgebreide proef is geslaagd: 10 behouden, alle actielijsten leeg. De ge
 
 De gebruiker heeft de rondreisproef gedaan: het testbestand verscheen na `-Action Copy` en verdween na `-Action Delete`; bij verwijderen liet Windows een bevestigingsvenster zien. De huidige Windows Shell-verb `delete` kan daarom niet zonder gebruiker als onbemande sync-stap gelden. `CopyHere` geeft evenmin een betrouwbaar eindesignaal. Onderzoek directe WPD/MTP-toegang of ontwerp een expliciet bevestigde semi-automatische sync; gebruik geen UI-automatisering om de Windows-dialoog stilzwijgend weg te klikken.
 
-`src/PodcastSync.MtpProbe` test directe WPD/MTP-toegang via het .NET-pakket `MediaDevices` 2.0.0 (Windows-only). De eerste opdracht `dotnet run --project .\src\PodcastSync.MtpProbe -- probe` is alleen-lezen. Hij inventariseert de exacte doelmap en WPD-bestandsgroottes, zonder Garmin-writes. De proef bouwt in de cloud, maar moet nog op de aangesloten Forerunner worden uitgevoerd voordat upload of verwijdering met deze bibliotheek wordt gebouwd.
+`src/PodcastSync.MtpProbe` test directe WPD/MTP-toegang via het .NET-pakket `MediaDevices` 2.0.0 (Windows-only). De eerste opdracht `dotnet run --project .\src\PodcastSync.MtpProbe -- probe` is alleen-lezen. Hij inventariseert de exacte doelmap en WPD-bestandsgroottes, zonder Garmin-writes.
+
+De proef op de Forerunner is geslaagd: de directe WPD-route zag alle tien MP3's met echte bestandsgroottes. De nieuwe acties `copy-test <lokale-test.mp3>` en `delete-test <lokale-test.mp3>` blijven strikt binnen `Podcasts\Recente podcasts` en accepteren uitsluitend de herkenbare MP3 uit de lokale map `Podcast Sync Volgorde Test`; de tien hashbestanden zijn uitgesloten. `copy-test` gebruikt WPD-upload, leest het bestand terug en vergelijkt grootte plus SHA-256. `delete-test` verifieert diezelfde inhoud voordat het één exact bestand verwijdert. Deze schrijfacties zijn nog niet op het horloge getest. Als de upload of readback mislukt, verwijder dan niet blindelings: inspecteer eerst de Garmin-map.
 
 ## Volgende overdrachtsproef
 
