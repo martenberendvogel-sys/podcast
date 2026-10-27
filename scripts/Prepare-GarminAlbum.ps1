@@ -72,7 +72,8 @@ for ($index = 0; $index -lt $selected.Count; $index++) {
     $trackNumber = $selected.Count - $index
     $track = '{0}/{1}' -f $trackNumber, $selected.Count
 
-    & $ffmpeg -hide_banner -loglevel error -nostdin -n -i $source -map '0:a:0' -map_metadata 0 -c:a copy -metadata 'album=Recente podcasts' -metadata "track=$track" -id3v2_version 3 $destination
+    # Garmin may split one album into separate groups when artist tags differ or are missing.
+    & $ffmpeg -hide_banner -loglevel error -nostdin -n -i $source -map '0:a:0' -map_metadata 0 -c:a copy -metadata 'album=Recente podcasts' -metadata 'artist=Podcast Sync' -metadata 'album_artist=Podcast Sync' -metadata "track=$track" -id3v2_version 3 $destination
     if ($LASTEXITCODE -ne 0) {
         throw "FFmpeg stopte bij playlistpositie $($index + 1). Originele MP3's zijn niet gewijzigd."
     }

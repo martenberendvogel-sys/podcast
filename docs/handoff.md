@@ -1,5 +1,7 @@
 # Stand van het project – 25 oktober 2026
 
+Update 27 oktober: een verse back-up met tien afleveringen is volledig voorbereid en via `sync-apply` naar de Garmin-testmap overgezet. Een nieuwe `sync-plan` verifieerde byte voor byte tien behouden bestanden en geen verdere acties. De eerste F1-aflevering verschijnt op het horloge toch in een aparte groep. De F1-MP3 heeft geen artiesttags; de BNR-MP3's hebben `BNR Nieuwsradio`. De voorbereiding zet nu voor nieuwe kopieën `artist` en `album_artist` op `Podcast Sync`. Test eerst twee aparte bestanden uit de eerste twee playlistposities met `Make-GarminAlbumTest.ps1 -ArtistGroupingTest` en `copy-test`, voordat de tien bestaande bestanden worden vervangen. De oorzaak en oplossing zijn nog niet op de Garmin bevestigd. De nieuwe back-up en audio zijn privé en staan niet in Git.
+
 ## Wat werkt
 
 - `main` bevat een .NET 8 CLI voor `playlist`, `compare` en `prepare`.

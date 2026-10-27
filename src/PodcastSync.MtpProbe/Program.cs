@@ -131,9 +131,10 @@ static string ResolveTestSource(string path)
 {
     var source = Path.GetFullPath(path);
     if (!File.Exists(source) ||
-        !string.Equals(Path.GetFileName(Path.GetDirectoryName(source)), "Podcast Sync Volgorde Test", StringComparison.Ordinal) ||
+        !(string.Equals(Path.GetFileName(Path.GetDirectoryName(source)), "Podcast Sync Volgorde Test", StringComparison.Ordinal) ||
+          string.Equals(Path.GetFileName(Path.GetDirectoryName(source)), "Podcast Sync Artiest Test", StringComparison.Ordinal)) ||
         !Regex.IsMatch(Path.GetFileName(source), @"^0[1-3] - [0-9a-f]{8}\.mp3$", RegexOptions.CultureInvariant))
-        throw new ArgumentException("Gebruik een bestaand MP3-bestand uit de lokale map Podcast Sync Volgorde Test.");
+        throw new ArgumentException("Gebruik een bestaand MP3-bestand uit de lokale map Podcast Sync Volgorde Test of Podcast Sync Artiest Test.");
     if (new FileInfo(source).Length < 1024)
         throw new InvalidDataException("Het lokale testbestand is onverwacht klein.");
     return source;
