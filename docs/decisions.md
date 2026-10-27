@@ -15,6 +15,7 @@
 | 2026-10-12 | Splits het lange audioboek los van de podcast-sync in korte MP3-stukken. | Bij wisselen van MP3 raakt het horloge de positie in het 12-uursboek kwijt. | Hulpmiddel gemaakt; proef op persoonlijk systeem volgt |
 | 2026-10-24 | Beperk automatische Garmin-overdracht tot een nieuwe map `Podcasts\Recente podcasts`; raak bestaande podcastsubmappen niet aan. | Het horloge is via Verkenner bereikbaar en de gebruiker wil alle actuele playlistafleveringen in één eigen map. | Twee app-gedownloade MP3's spelen af, waaronder één automatisch via Windows Shell gekopieerd; bulk en verwijdering nog onbewezen |
 | 2026-10-25 | Gebruik de actuele Podcast Addict-playlist als bron van waarheid: kopieer ontbrekende afleveringen en ruim alleen eerder beheerde afleveringen op die niet meer in die playlist staan. | Een volledige wis-en-herkopieeractie zou onnodig tijd kosten en posities van blijvende afleveringen verstoren; een oude back-up zou verwijderde afleveringen weer toevoegen. | Besloten; veilige MTP-verwijdering nog niet gebouwd of getest |
+| 2026-10-27 | `Internal Storage\Podcasts\Recente podcasts` is de definitieve, uitsluitend door Podcast Sync beheerde Garmin-map. Andere Garmin-mappen blijven buiten scope. | De echte incrementele sync, uniforme groep en volgorde van tien afleveringen zijn op het horloge bevestigd; de gebruiker heeft de map expliciet als definitief aangewezen. | Actief; onbekende bestanden en submappen blokkeren automatische wijzigingen |
 
 ## Werkwijze voor vervolgchats
 

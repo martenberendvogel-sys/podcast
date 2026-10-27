@@ -57,7 +57,7 @@ try
         }
         else if (command is "sync-plan" or "sync-apply")
         {
-            if (recent is null) throw new InvalidOperationException("De exacte Garmin-testmap ontbreekt.");
+            if (recent is null) throw new InvalidOperationException("De exacte beheerde Garmin-map ontbreekt.");
             if (command == "sync-apply") GarminSync.RequireFreshBackup(args[1]);
             var manifest = await GarminSync.ValidateReadyAsync(args[1], args[2]);
             var plan = GarminSync.Inspect(garmin, recent, manifest);
@@ -67,7 +67,7 @@ try
             else
             {
                 if (plan.Unknown.Length != 0)
-                    throw new InvalidOperationException("Onbekende bestanden in de Garmin-testmap; geen wijzigingen uitgevoerd.");
+                    throw new InvalidOperationException("Onbekende bestanden in de beheerde Garmin-map; geen wijzigingen uitgevoerd.");
                 Print(new { Action = "sync-apply", Before = plan });
                 var after = GarminSync.Apply(garmin, recent, manifest, args[2], plan);
                 Print(new { Action = "sync-apply", After = after });
@@ -75,7 +75,7 @@ try
         }
         else
         {
-            if (recent is null) throw new InvalidOperationException("De exacte Garmin-testmap ontbreekt.");
+            if (recent is null) throw new InvalidOperationException("De exacte beheerde Garmin-map ontbreekt.");
             var source = ResolveTestSource(args[1]);
             var destination = Path.Combine(recent, Path.GetFileName(source));
 

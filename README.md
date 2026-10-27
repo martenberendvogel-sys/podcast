@@ -4,7 +4,7 @@ Onderzoeksprototype voor een betrouwbare synchronisatieketen van Podcast Addict 
 
 Lees bij hervatten eerst [de actuele projectstand](docs/handoff.md).
 
-De Windows-proef leest een handmatig gemaakte Podcast Addict-back-up, downloadt de actuele playlist, zet uniforme Garmin-tags en synchroniseert de eigen testmap `Podcasts\Recente podcasts` op een Forerunner 265. Een echte gewijzigde playlist en groepering/volgorde van tien afleveringen zijn op het horloge bevestigd. Luisterposities en automatische aanlevering van de telefoonback-up zijn nog niet inbegrepen.
+De Windows-app leest een handmatig gemaakte Podcast Addict-back-up, downloadt de actuele playlist, zet uniforme Garmin-tags en synchroniseert de definitieve beheerde map `Podcasts\Recente podcasts` op een Forerunner 265. Een echte gewijzigde playlist en groepering/volgorde van tien afleveringen zijn op het horloge bevestigd. Andere Garmin-mappen blijven buiten scope. Luisterposities en automatische aanlevering van de telefoonback-up zijn nog niet inbegrepen.
 
 ## Eén opdracht voor voorbereiding en synchronisatie
 
@@ -24,7 +24,7 @@ dotnet run --project .\src\PodcastSync.MtpProbe -- probe
 
 De proef toont of `Internal Storage\Podcasts\Recente podcasts` via WPD bereikbaar is en welke bestanden/groottes het apparaat rechtstreeks meldt. Hij kopieert of verwijdert niets; zie [de projectstand](docs/handoff.md).
 
-De alleen-lezen proef is inmiddels op de aangesloten Forerunner geslaagd: alle tien MP3's en hun echte WPD-groottes zijn zichtbaar. Voor een geïsoleerde rondreisproef zijn nu `copy-test` en `delete-test` beschikbaar. Ze accepteren uitsluitend een lokaal bestand uit `Podcast Sync Volgorde Test` en raken geen hashvormige playlistbestanden aan. `copy-test` leest de upload terug en vergelijkt SHA-256; `delete-test` controleert dezelfde inhoud vóór verwijdering. Gebruik deze acties alleen stap voor stap op de test-Garmin.
+De alleen-lezen proef is inmiddels op de aangesloten Forerunner geslaagd: alle tien MP3's en hun echte WPD-groottes zijn zichtbaar. Voor een geïsoleerde rondreisproef zijn `copy-test` en `delete-test` beschikbaar. Ze accepteren uitsluitend herkenbare proefbestanden uit de exacte lokale testmappen en raken geen hashvormige playlistbestanden aan. `copy-test` leest de upload terug en vergelijkt SHA-256; `delete-test` controleert dezelfde inhoud vóór verwijdering.
 
 Ook de directe WPD-rondreisproef is geslaagd, inclusief volledige terugleescontrole en verwijderen zonder Windows-pop-up. De afzonderlijke opdrachten `sync-plan` en `sync-apply` blijven beschikbaar voor diagnose. `sync-plan` leest alleen; `sync-apply` vereist een back-up met Podcast Addict-datum in de bestandsnaam van maximaal 48 uur oud en wijzigt uitsluitend hashvormige MP3's in `Podcasts\Recente podcasts`. Een voorbeeld van het plan:
 
@@ -32,7 +32,7 @@ Ook de directe WPD-rondreisproef is geslaagd, inclusief volledige terugleescontr
 dotnet run --project .\src\PodcastSync.MtpProbe -- sync-plan 'C:\video\AI\PodcastAddict_20261025_113232.backup' 'C:\video\AI\Garmin klaar omgekeerd'
 ```
 
-Het programma valideert back-upvolgorde, lokaal manifest en SHA-256, en leest bestaande Garmin-MP3's volledig terug. `sync-apply` is met een veranderde echte playlist en daarna met tien hertagde afleveringen op de Garmin getest. Onbekende bestanden of submappen in de testmap blokkeren automatische wijzigingen. Bij een mislukte vervanging stopt de opdracht; het lokale MP3-bestand blijft beschikbaar om een volgende run te herstellen.
+Het programma valideert back-upvolgorde, lokaal manifest en SHA-256, en leest bestaande Garmin-MP3's volledig terug. `sync-apply` is met een veranderde echte playlist en daarna met tien hertagde afleveringen op de Garmin getest. Onbekende bestanden of submappen in de beheerde map blokkeren automatische wijzigingen. Bij een mislukte vervanging stopt de opdracht; het lokale MP3-bestand blijft beschikbaar om een volgende run te herstellen.
 
 ## Back-upinspecteur draaien
 

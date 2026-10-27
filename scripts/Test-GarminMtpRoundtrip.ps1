@@ -37,7 +37,7 @@ if ($devices.Count -ne 1) { throw 'Precies één aangesloten Forerunner 265 is v
 $storage = Find-FolderItem $devices[0].GetFolder 'Internal Storage'
 $podcasts = if ($null -ne $storage) { Find-FolderItem $storage.GetFolder 'Podcasts' } else { $null }
 $recent = if ($null -ne $podcasts) { Find-FolderItem $podcasts.GetFolder 'Recente podcasts' } else { $null }
-if ($null -eq $recent) { throw 'De Garmin-testmap Podcasts\Recente podcasts ontbreekt.' }
+if ($null -eq $recent) { throw 'De beheerde Garmin-map Podcasts\Recente podcasts ontbreekt.' }
 $destination = $recent.GetFolder
 $matches = @($destination.Items() | Where-Object {
     -not $_.IsFolder -and ($_.Name -eq $baseName -or $_.Name -eq $leaf)
@@ -59,11 +59,11 @@ if ($Action -eq 'Plan') {
 if ($Action -eq 'Copy') {
     if ($matches.Count -ne 0) { throw 'Het testbestand staat al op de Garmin; er wordt niets overschreven.' }
     $destination.CopyHere($source, 0)
-    Write-Host "Kopieeropdracht gestart voor $leaf. Wacht tot Windows klaar is; controleer daarna de testmap en het horloge."
+    Write-Host "Kopieeropdracht gestart voor $leaf. Wacht tot Windows klaar is; controleer daarna de beheerde map en het horloge."
     return
 }
 
 if ($matches.Count -ne 1) { throw 'Het exacte testbestand staat niet op de Garmin; er wordt niets verwijderd.' }
 # Only the uniquely identified, non-hash test MP3 can reach this call.
 $matches[0].InvokeVerb('delete')
-Write-Host "Verwijderopdracht gevraagd voor $leaf. Bevestig een eventuele Windows-dialoog en controleer daarna de testmap."
+Write-Host "Verwijderopdracht gevraagd voor $leaf. Bevestig een eventuele Windows-dialoog en controleer daarna de beheerde map."

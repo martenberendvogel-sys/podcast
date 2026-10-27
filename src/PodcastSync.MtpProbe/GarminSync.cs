@@ -66,7 +66,7 @@ internal static class GarminSync
     {
         var selected = manifest.SelectedKeys.ToHashSet(StringComparer.Ordinal);
         if (device.GetDirectories(recent).Any())
-            throw new InvalidOperationException("De Garmin-testmap bevat submappen; automatische sync is geblokkeerd.");
+            throw new InvalidOperationException("De beheerde Garmin-map bevat submappen; automatische sync is geblokkeerd.");
         var states = new List<DeviceState>();
         foreach (var path in device.GetFiles(recent))
         {
@@ -109,7 +109,7 @@ internal static class GarminSync
 
     internal static SyncPlan Apply(MediaDevice device, string recent, ReadyManifest manifest, string readyDirectory, SyncPlan plan)
     {
-        if (plan.Unknown.Length != 0) throw new InvalidOperationException("Onbekende bestanden in de Garmin-testmap; niets gewijzigd.");
+        if (plan.Unknown.Length != 0) throw new InvalidOperationException("Onbekende bestanden in de beheerde Garmin-map; niets gewijzigd.");
         if (plan.Add.Length == 0 && plan.Replace.Length == 0 && plan.Remove.Length == 0) return plan;
         var directory = Path.GetFullPath(readyDirectory);
         foreach (var key in plan.Add)
