@@ -4,7 +4,17 @@ Onderzoeksprototype voor een betrouwbare synchronisatieketen van Podcast Addict 
 
 Lees bij hervatten eerst [de actuele projectstand](docs/handoff.md).
 
-De eerste stap leest nu de afspeellijst uit een echte Podcast Addict-back-up. Handmatige Garmin-overdracht werkt al; de veilige automatisering daarvan vereist nog een gerichte hardwareproef. Luisterposities zijn optioneel voor versie 1.
+De Windows-proef leest een handmatig gemaakte Podcast Addict-back-up, downloadt de actuele playlist, zet uniforme Garmin-tags en synchroniseert de eigen testmap `Podcasts\Recente podcasts` op een Forerunner 265. Een echte gewijzigde playlist en groepering/volgorde van tien afleveringen zijn op het horloge bevestigd. Luisterposities en automatische aanlevering van de telefoonback-up zijn nog niet inbegrepen.
+
+## Eén opdracht voor voorbereiding en synchronisatie
+
+Maak eerst een **nieuwe volledige** Podcast Addict-back-up en kopieer die naar de pc. Sluit de Forerunner 265 via USB aan. Dit is één PowerShell-opdracht, ook als scripts in je huidige sessie geblokkeerd zijn:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File "$env:USERPROFILE\podcast\scripts\Sync-Podcasts.ps1" -BackupPath 'C:\video\AI\PodcastAddict_YYYYMMDD_HHMMSS.backup' -Apply
+```
+
+Vervang de voorbeeldnaam door die van de nieuwe back-up. Het script gebruikt standaard `podcast-staging` naast de back-up en maakt een aparte, controleerbare Garmin-klare map voor deze back-up. Eerst worden alle lokale bestanden voorbereid en het alleen-lezen Garmin-plan getoond; met `-Apply` wordt daarna uitsluitend `Internal Storage\Podcasts\Recente podcasts` bijgewerkt. Zonder `-Apply` stopt het na het plan. Het onderliggende programma weigert een back-up ouder dan 48 uur, onbekende bestanden of submappen in de doelmap en onvolledige lokale bestanden. Bij een onderbroken overdracht blijft de lokale set staan; dezelfde opdracht kan opnieuw worden uitgevoerd, nadat het plan is gecontroleerd. De privé-back-up en MP3's worden niet in Git opgeslagen.
 
 Een aparte, alleen-lezen Windows-proef gebruikt nu de directe WPD/MTP-interface in plaats van Verkenner. Sluit de Garmin aan en voer uit:
 
@@ -16,13 +26,13 @@ De proef toont of `Internal Storage\Podcasts\Recente podcasts` via WPD bereikbaa
 
 De alleen-lezen proef is inmiddels op de aangesloten Forerunner geslaagd: alle tien MP3's en hun echte WPD-groottes zijn zichtbaar. Voor een geïsoleerde rondreisproef zijn nu `copy-test` en `delete-test` beschikbaar. Ze accepteren uitsluitend een lokaal bestand uit `Podcast Sync Volgorde Test` en raken geen hashvormige playlistbestanden aan. `copy-test` leest de upload terug en vergelijkt SHA-256; `delete-test` controleert dezelfde inhoud vóór verwijdering. Gebruik deze acties alleen stap voor stap op de test-Garmin.
 
-Ook de directe WPD-rondreisproef is geslaagd, inclusief volledige terugleescontrole en verwijderen zonder Windows-pop-up. Een eerste incrementele sync is nu beschikbaar als aparte experimentele opdrachten. `sync-plan` leest alleen; `sync-apply` vereist een back-up met Podcast Addict-datum in de bestandsnaam van maximaal 48 uur oud en wijzigt uitsluitend hashvormige MP3's in `Podcasts\Recente podcasts`. Gebruik op dit moment eerst alleen het plan:
+Ook de directe WPD-rondreisproef is geslaagd, inclusief volledige terugleescontrole en verwijderen zonder Windows-pop-up. De afzonderlijke opdrachten `sync-plan` en `sync-apply` blijven beschikbaar voor diagnose. `sync-plan` leest alleen; `sync-apply` vereist een back-up met Podcast Addict-datum in de bestandsnaam van maximaal 48 uur oud en wijzigt uitsluitend hashvormige MP3's in `Podcasts\Recente podcasts`. Een voorbeeld van het plan:
 
 ```powershell
 dotnet run --project .\src\PodcastSync.MtpProbe -- sync-plan 'C:\video\AI\PodcastAddict_20261025_113232.backup' 'C:\video\AI\Garmin klaar omgekeerd'
 ```
 
-Het programma valideert back-upvolgorde, lokaal manifest en SHA-256, en leest bestaande Garmin-MP3's volledig terug. `sync-apply` is nog niet met een veranderde echte playlist op de Garmin getest; voer die opdracht pas uit nadat het plan is beoordeeld. Onbekende bestanden of submappen in de testmap blokkeren automatische wijzigingen. Bij een mislukte vervanging stopt de opdracht; het lokale MP3-bestand blijft beschikbaar om een volgende run te herstellen.
+Het programma valideert back-upvolgorde, lokaal manifest en SHA-256, en leest bestaande Garmin-MP3's volledig terug. `sync-apply` is met een veranderde echte playlist en daarna met tien hertagde afleveringen op de Garmin getest. Onbekende bestanden of submappen in de testmap blokkeren automatische wijzigingen. Bij een mislukte vervanging stopt de opdracht; het lokale MP3-bestand blijft beschikbaar om een volgende run te herstellen.
 
 ## Back-upinspecteur draaien
 

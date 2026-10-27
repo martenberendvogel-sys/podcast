@@ -2,6 +2,8 @@
 
 Update 27 oktober: een verse back-up met tien afleveringen is volledig voorbereid en via `sync-apply` naar de Garmin-testmap overgezet. Een nieuwe `sync-plan` verifieerde byte voor byte tien behouden bestanden en geen verdere acties. De eerste F1-aflevering verscheen aanvankelijk apart: de F1-MP3 had geen artiesttags, de BNR-MP3's hadden `BNR Nieuwsradio`. Een tweebestandenproef met gelijke `artist` en `album_artist` (`Podcast Sync`) verscheen als één groep en speelde in de juiste volgorde door. Beide proefbestanden zijn daarna gecontroleerd verwijderd. Alle tien afleveringen zijn opnieuw voorbereid met de gedeelde artiesttags en door `sync-apply` vervangen; het resultaat was tien `Keep`, geen resterende acties. De gebruiker bevestigde op het horloge één groep `Recente podcasts` met de juiste volgorde. De back-up en audio zijn privé en staan niet in Git. De volgende stap is de handmatige reeks opdrachten vereenvoudigen; automatische aanlevering van de telefoonback-up blijft een apart later onderdeel.
 
+De reeks is nu samengebracht in `scripts/Sync-Podcasts.ps1 -BackupPath <verse.backup> -Apply`: `prepare`, lokale Garmin-albumkopieën, `sync-plan`, `sync-apply`. Zonder `-Apply` blijft het bij voorbereiding en plan. De lokale Garmin-klare map is deterministisch per back-up en wordt bij een herstart hergebruikt na validatie. Dit nieuwe wikkelscript moet nog op de persoonlijke Windows-pc worden uitgevoerd; de onderliggende opdrachten zijn daar al afzonderlijk bewezen.
+
 ## Wat werkt
 
 - `main` bevat een .NET 8 CLI voor `playlist`, `compare` en `prepare`.

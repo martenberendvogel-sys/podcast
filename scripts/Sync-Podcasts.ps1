@@ -1,0 +1,72 @@
+param(
+    [Parameter(Mandatory = $true)]
+    [string] $BackupPath,
+
+    [string] $StagingDirectory,
+
+    [switch] $Apply
+)
+
+$ErrorActionPreference = 'Stop'
+
+$backup = (Resolve-Path -LiteralPath $BackupPath -ErrorAction Stop).Path
+if (-not (Test-Path -LiteralPath $backup -PathType Leaf)) {
+    throw "Back-upbestand ontbreekt: $backup"
+}
+$match = [regex]::Match([IO.Path]::GetFileName($backup), '^PodcastAddict_(\d{8})_(\d{6})\.backup$')
+if (-not $match.Success) {
+    throw 'Gebruik een volledige Podcast Addict-back-up met naam PodcastAddict_YYYYMMDD_HHMMSS.backup.'
+}
+$stamp = $match.Groups[1].Value + $match.Groups[2].Value
+if ($Apply) {
+    try {
+        $backupTime = [datetime]::ParseExact($stamp, 'yyyyMMddHHmmss', [Globalization.CultureInfo]::InvariantCulture)
+    } catch {
+        throw 'De datum in de back-upnaam is ongeldig.'
+    }
+    if ($backupTime -lt [datetime]::Now.AddHours(-48) -or $backupTime -gt [datetime]::Now.AddHours(1)) {
+        throw 'Maak eerst een nieuwe volledige Podcast Addict-back-up (maximaal 48 uur oud); niets op de Garmin gewijzigd.'
+    }
+}
+
+$parent = [IO.Path]::GetDirectoryName($backup)
+$staging = if ([string]::IsNullOrWhiteSpace($StagingDirectory)) {
+    Join-Path $parent 'podcast-staging'
+} else {
+    [IO.Path]::GetFullPath($StagingDirectory)
+}
+$ready = Join-Path $parent "Garmin klaar Podcast Sync $stamp"
+$inspector = Join-Path $PSScriptRoot '..\src\PodcastSync.BackupInspector\PodcastSync.BackupInspector.csproj'
+$mtp = Join-Path $PSScriptRoot '..\src\PodcastSync.MtpProbe\PodcastSync.MtpProbe.csproj'
+$prepareAlbum = Join-Path $PSScriptRoot 'Prepare-GarminAlbum.ps1'
+
+if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
+    throw '.NET 8 SDK ontbreekt of dotnet staat niet op PATH.'
+}
+
+Write-Host "1/3 Playlist voorbereiden vanuit $backup"
+& dotnet run --project $inspector -- prepare $backup $staging
+if ($LASTEXITCODE -ne 0) { throw 'Playlist voorbereiden mislukt; Garmin niet gewijzigd.' }
+
+if (Test-Path -LiteralPath $ready) {
+    Write-Host "2/3 Bestaande lokale Garmin-set controleren: $ready"
+} else {
+    Write-Host "2/3 Nieuwe lokale Garmin-set maken: $ready"
+    & $prepareAlbum -StagingDirectory $staging -OutputDirectory $ready
+}
+
+Write-Host '3/3 Garmin-plan controleren (alleen lezen)'
+& dotnet run --project $mtp -- sync-plan $backup $ready
+if ($LASTEXITCODE -ne 0) { throw 'Garmin-plan mislukt; geen synchronisatie uitgevoerd.' }
+
+if (-not $Apply) {
+    Write-Host 'Alleen voorbereiding en plan uitgevoerd. Voeg -Apply toe om de Garmin te synchroniseren.'
+    return
+}
+
+Write-Host 'Synchronisatie uitvoeren; laat de Garmin aangesloten.'
+& dotnet run --project $mtp -- sync-apply $backup $ready
+if ($LASTEXITCODE -ne 0) {
+    throw 'Synchronisatie gestopt. Bewaar de lokale set en bekijk eerst het plan voordat je opnieuw probeert.'
+}
+Write-Host 'Klaar. Controleer op het horloge de groep Recente podcasts en de afspeelvolgorde.'
