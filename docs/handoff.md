@@ -6,6 +6,8 @@ De reeks is nu samengebracht in `scripts/Sync-Podcasts.ps1 -BackupPath <verse.ba
 
 Het wikkelscript is inmiddels op de persoonlijke Windows-pc uitgevoerd, eerst zonder `-Apply` en daarna met `-Apply` als nul-wijzigingenproef; beide plannen rapporteerden tien `Keep` en verder lege lijsten. De gebruiker heeft vervolgens `Internal Storage\Podcasts\Recente podcasts` expliciet tot definitieve beheerde map verklaard. Alleen deze map mag door de sync worden gewijzigd; bestaande andere podcastmappen blijven buiten scope. De vroegere aanduiding "testmap" in de chronologische proefnotities hieronder is historisch.
 
+Voor automatische back-upoverdracht is nu de exacte Android-MTP-map bekend: `Interne opslag\Android\media\com.bambuna.podcastaddict\backup` op een Samsung S24 FE. `PodcastSync.MtpProbe -- phone-probe <exacte telefoonnaam>` inventariseert deze map via WPD alleen-lezen; dit moet nog op de aangesloten telefoon worden getest. Er wordt nog niets vanaf de telefoon gekopieerd. Ook met een standaard-USB-configuratie kan Android nog vragen om ontgrendeling/toestemming.
+
 ## Wat werkt
 
 - `main` bevat een .NET 8 CLI voor `playlist`, `compare` en `prepare`.

@@ -6,10 +6,11 @@ using MediaDevices;
 var command = args.Length == 0 ? "probe" : args[0];
 if (!((args.Length == 1 && command == "self-test") ||
       (args.Length <= 1 && command == "probe") ||
+      (args.Length == 2 && command == "phone-probe") ||
       (args.Length == 2 && (command == "copy-test" || command == "delete-test")) ||
       (args.Length == 3 && (command == "sync-plan" || command == "sync-apply"))))
 {
-    Console.Error.WriteLine("Gebruik: ... -- probe | self-test | copy-test <test.mp3> | delete-test <test.mp3> | sync-plan <back-up> <Garmin-klare-map> | sync-apply <back-up> <Garmin-klare-map>");
+    Console.Error.WriteLine("Gebruik: ... -- probe | phone-probe <telefoonnaam> | self-test | copy-test <test.mp3> | delete-test <test.mp3> | sync-plan <back-up> <Garmin-klare-map> | sync-apply <back-up> <Garmin-klare-map>");
     return 2;
 }
 
@@ -23,6 +24,12 @@ if (!OperatingSystem.IsWindows())
 
 try
 {
+    if (command == "phone-probe")
+    {
+        Print(PhoneBackupProbe.Inspect(args[1]));
+        return 0;
+    }
+
     var devices = MediaDeviceManager.Instance.GetDevices()?
         .Where(device => string.Equals(device.FriendlyName, "Forerunner 265", StringComparison.Ordinal))
         .ToArray() ?? [];
