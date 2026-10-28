@@ -60,6 +60,36 @@ try
     Assert(changedStage.Downloaded == 2 && changedStage.Pending == 0, "Nieuwe afleveringen zijn niet voorbereid.");
     Assert(File.Exists(Path.Combine(stageDirectory, previousPlaylist.Episodes[0].Key + ".mp3")), "Eerdere audio is ten onrechte verwijderd.");
 
+    var interruptedDirectory = Path.Combine(root, "interrupted-download");
+    await PlaylistStager.PrepareAsync(previousPlaylist, interruptedDirectory, 1, client);
+    var interruptedPath = Path.Combine(interruptedDirectory, previousPlaylist.Episodes[1].Key + ".partial");
+    await File.WriteAllBytesAsync(interruptedPath, [1, 2, 3]);
+    var recoveredStage = await PlaylistStager.PrepareAsync(previousPlaylist, interruptedDirectory, null, client);
+    Assert(recoveredStage.RecoveredPartialDownloads == 1 && recoveredStage.Downloaded == 1 &&
+        recoveredStage.Pending == 0 && !File.Exists(interruptedPath), "Een onderbroken download is niet veilig hersteld.");
+
+    var stagingLockPath = Path.Combine(interruptedDirectory, ".podcast-sync-staging.lock");
+    using (var heldLock = new FileStream(stagingLockPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+    {
+        try
+        {
+            await PlaylistStager.PrepareAsync(previousPlaylist, interruptedDirectory, null, client);
+            throw new InvalidOperationException("Een tweede stagingrun werd toegelaten.");
+        }
+        catch (InvalidOperationException exception) when (exception.Message.Contains("andere voorbereiding", StringComparison.Ordinal))
+        {
+            // Expected: a second process must not touch an active download.
+        }
+    }
+
+    var interruptedManifestDirectory = Path.Combine(root, "interrupted-manifest");
+    Directory.CreateDirectory(interruptedManifestDirectory);
+    var interruptedManifest = Path.Combine(interruptedManifestDirectory, "podcast-sync-manifest.json.partial");
+    await File.WriteAllTextAsync(interruptedManifest, "onvolledig");
+    var recoveredManifestStage = await PlaylistStager.PrepareAsync(previousPlaylist, interruptedManifestDirectory, 1, client);
+    Assert(recoveredManifestStage.Downloaded == 1 && !File.Exists(interruptedManifest),
+        "Een onderbroken eerste manifestsave is niet veilig hersteld.");
+
     var invalidDirectory = Path.Combine(root, "invalid-audio");
     using var invalidClient = new HttpClient(new FixedResponseHandler(() => new HttpResponseMessage(HttpStatusCode.OK)
     {
@@ -75,7 +105,7 @@ try
     }));
     await AssertInvalidAudioAsync(previousPlaylist, redirectDirectory, redirectClient);
 
-    Console.WriteLine("20 parser-, playlist- en voorbereidingscontroles geslaagd.");
+    Console.WriteLine("Parser-, playlist-, stagingherstel- en gelijktijdigheidscontroles geslaagd.");
     return 0;
 }
 finally

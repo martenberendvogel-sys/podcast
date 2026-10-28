@@ -20,11 +20,13 @@ public sealed record StagingResult(
     int Downloaded,
     int Reused,
     int Pending,
-    int PreviouslyStagedButNoLongerSelected);
+    int PreviouslyStagedButNoLongerSelected,
+    int RecoveredPartialDownloads);
 
 public static class PlaylistStager
 {
     private const string ManifestName = "podcast-sync-manifest.json";
+    private const string LockName = ".podcast-sync-staging.lock";
     private const long MaximumAudioBytes = 512L * 1024 * 1024;
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
     private static readonly Regex KeyPattern = new("^[0-9a-f]{64}$", RegexOptions.CultureInvariant);
@@ -44,9 +46,29 @@ public static class PlaylistStager
         if (drive.DriveType is DriveType.Removable or DriveType.CDRom or DriveType.Network)
             throw new InvalidOperationException("Kies een lokale map op de pc; voorbereiding op een USB-apparaat of netwerkschijf is niet toegestaan.");
         Directory.CreateDirectory(directory);
+        var lockPath = Path.Combine(directory, LockName);
+        FileStream lockStream;
+        try
+        {
+            lockStream = new FileStream(lockPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+        }
+        catch (IOException exception)
+        {
+            throw new InvalidOperationException("Deze stagingmap wordt al door een andere voorbereiding gebruikt; start geen tweede sync.", exception);
+        }
+        await using var stagingLock = lockStream;
         var manifestPath = Path.Combine(directory, ManifestName);
-        if (!File.Exists(manifestPath) && Directory.EnumerateFileSystemEntries(directory).Any())
-            throw new InvalidOperationException("De uitvoermap bevat al bestanden zonder Podcast Sync-manifest. Kies een lege map.");
+        var manifestTemporaryPath = manifestPath + ".partial";
+        if (!File.Exists(manifestPath))
+        {
+            var pathComparison = OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+            var hasUnmanagedEntries = Directory.EnumerateFileSystemEntries(directory).Any(path =>
+                !string.Equals(path, lockPath, pathComparison) &&
+                !string.Equals(path, manifestTemporaryPath, pathComparison));
+            if (hasUnmanagedEntries)
+                throw new InvalidOperationException("De uitvoermap bevat al bestanden zonder Podcast Sync-manifest. Kies een lege map.");
+            if (File.Exists(manifestTemporaryPath)) File.Delete(manifestTemporaryPath);
+        }
 
         var manifest = File.Exists(manifestPath)
             ? JsonSerializer.Deserialize<StagingManifest>(await File.ReadAllTextAsync(manifestPath, cancellationToken))
@@ -71,6 +93,7 @@ public static class PlaylistStager
 
         var downloaded = 0;
         var reused = 0;
+        var recoveredPartialDownloads = 0;
         foreach (var episode in playlist.Episodes.Take(limit ?? int.MaxValue))
         {
             if (!KeyPattern.IsMatch(episode.Key)) throw new InvalidDataException("Ongeldige afleveringssleutel.");
@@ -90,7 +113,11 @@ public static class PlaylistStager
             var uri = ValidateAudioUrl(episode.AudioUrl, requireMp3Path: true);
             var temporaryPath = Path.Combine(directory, episode.Key + ".partial");
             if (File.Exists(temporaryPath))
-                throw new InvalidDataException($"Er staat nog een onvolledige download op playlistpositie {episode.Rank}.");
+            {
+                // The exclusive staging lock rules out a concurrent new-version download.
+                File.Delete(temporaryPath);
+                recoveredPartialDownloads++;
+            }
 
             try
             {
@@ -112,7 +139,7 @@ public static class PlaylistStager
         }
 
         return new StagingResult(directory, selectedKeys.Count, downloaded, reused,
-            selectedKeys.Count(key => !files.ContainsKey(key)), removedCount);
+            selectedKeys.Count(key => !files.ContainsKey(key)), removedCount, recoveredPartialDownloads);
     }
 
     private static async Task<StagedAudio> DownloadAsync(

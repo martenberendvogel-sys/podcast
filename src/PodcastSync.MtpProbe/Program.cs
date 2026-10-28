@@ -36,6 +36,20 @@ try
         return 0;
     }
 
+    var lockDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PodcastSync");
+    Directory.CreateDirectory(lockDirectory);
+    FileStream garminLock;
+    try
+    {
+        garminLock = new FileStream(Path.Combine(lockDirectory, "garmin.lock"),
+            FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+    }
+    catch (IOException exception)
+    {
+        throw new InvalidOperationException("Een andere Garmin-opdracht draait nog; start geen tweede overdracht.", exception);
+    }
+    using var activeGarminLock = garminLock;
+
     var devices = MediaDeviceManager.Instance.GetDevices()?
         .Where(device => string.Equals(device.FriendlyName, "Forerunner 265", StringComparison.Ordinal))
         .ToArray() ?? [];

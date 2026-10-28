@@ -16,6 +16,16 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+$lockDirectory = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'PodcastSync'
+New-Item -ItemType Directory -Path $lockDirectory -Force | Out-Null
+$lockPath = Join-Path $lockDirectory 'sync.lock'
+try {
+    $syncLock = [IO.FileStream]::new($lockPath, [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
+} catch [IO.IOException] {
+    throw 'Er draait al een Podcast Sync-opdracht. Start geen tweede synchronisatie.'
+}
+try {
+
 $inspector = Join-Path $PSScriptRoot '..\src\PodcastSync.BackupInspector\PodcastSync.BackupInspector.csproj'
 $mtp = Join-Path $PSScriptRoot '..\src\PodcastSync.MtpProbe\PodcastSync.MtpProbe.csproj'
 $prepareAlbum = Join-Path $PSScriptRoot 'Prepare-GarminAlbum.ps1'
@@ -91,3 +101,7 @@ if ($LASTEXITCODE -ne 0) {
     throw 'Synchronisatie gestopt. Bewaar de lokale set en bekijk eerst het plan voordat je opnieuw probeert.'
 }
 Write-Host 'Klaar. Controleer op het horloge de groep Recente podcasts en de afspeelvolgorde.'
+
+} finally {
+    $syncLock.Dispose()
+}
