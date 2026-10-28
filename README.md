@@ -40,6 +40,8 @@ dotnet run --project .\src\PodcastSync.MtpProbe -- phone-copy-latest '<telefoonn
 
 De selectie gebruikt de gedateerde originele Podcast Addict-bestandsnaam. Een bestaande lokale kopie wordt byte voor byte met de telefoon vergeleken en nooit overschreven. Een nieuwe kopie wordt eerst onder een tijdelijke naam geschreven, daarna opnieuw met de telefoon vergeleken via SHA-256 en pas dan onder de originele naam opgeslagen. De telefoon wordt niet gewijzigd. De `-PhoneName`-route in `Sync-Podcasts.ps1` gebruikt deze stap en is op de persoonlijke pc volledig getest.
 
+Bekende beperking van `v0.1.0`: als een MP3-download wordt afgebroken, blijft in `podcast-staging` een `<64-tekens-sleutel>.partial` achter. De volgende run stopt dan bewust vóór Garmin-wijzigingen. Controleer dat er geen sync meer draait, verwijder uitsluitend dat onvolledige bestand en draai eerst opnieuw zonder `-Apply`. Verwijder de stagingmap, MP3-cache en het manifest niet. Een volgende versie krijgt gecontroleerd herstel van onderbroken downloads en bescherming tegen gelijktijdige runs. Gebruik voor zichtbare voortgang bij voorkeur een gewoon PowerShell-venster in plaats van PowerShell ISE.
+
 Een aparte, alleen-lezen Windows-proef gebruikt nu de directe WPD/MTP-interface in plaats van Verkenner. Sluit de Garmin aan en voer uit:
 
 ```powershell
