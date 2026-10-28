@@ -4,6 +4,8 @@ Onderzoeksprototype voor een betrouwbare synchronisatieketen van Podcast Addict 
 
 Lees bij hervatten eerst [de actuele projectstand](docs/handoff.md).
 
+De op telefoon en Garmin geteste basisversie is vastgelegd als [v0.1.0](docs/releases/v0.1.0.md). Nieuwe functies ontwikkelen we verder op `main`.
+
 De Windows-app haalt de nieuwste, op de telefoon gemaakte Podcast Addict-back-up via USB op, downloadt de actuele playlist, zet uniforme Garmin-tags en synchroniseert de definitieve beheerde map `Podcasts\Recente podcasts` op een Forerunner 265. De volledige telefoon-naar-Garmin-keten is met een gewijzigde playlist op de apparaten bevestigd. Andere Garmin-mappen blijven buiten scope. De back-up **aanmaken in Podcast Addict** en de telefoon ontgrendelen voor USB blijven handmatig; luisterposities zijn niet inbegrepen.
 
 ## Eén opdracht voor voorbereiding en synchronisatie
