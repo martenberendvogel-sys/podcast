@@ -76,12 +76,16 @@ internal static class PhoneBackupProbe
                     input.CopyTo(output);
                     output.Flush(flushToDisk: true);
                 }
-                using var localStream = File.OpenRead(temporary);
-                using var remoteStream = remote.OpenRead();
-                if (checked((ulong)new FileInfo(temporary).Length) != remote.Length ||
-                    !CryptographicOperations.FixedTimeEquals(
+                if (checked((ulong)new FileInfo(temporary).Length) != remote.Length)
+                    throw new IOException("De lokale back-up heeft niet dezelfde grootte als de telefoonback-up.");
+                // Close both streams before File.Move: Windows cannot rename an open file.
+                using (var localStream = File.OpenRead(temporary))
+                using (var remoteStream = remote.OpenRead())
+                {
+                    if (!CryptographicOperations.FixedTimeEquals(
                         SHA256.HashData(localStream), SHA256.HashData(remoteStream)))
-                    throw new IOException("De lokale back-up wijkt af van de opnieuw gelezen telefoonback-up.");
+                        throw new IOException("De lokale back-up wijkt af van de opnieuw gelezen telefoonback-up.");
+                }
                 File.Move(temporary, target);
             }
             finally
