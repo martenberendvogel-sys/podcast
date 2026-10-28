@@ -4,7 +4,7 @@ Onderzoeksprototype voor een betrouwbare synchronisatieketen van Podcast Addict 
 
 Lees bij hervatten eerst [de actuele projectstand](docs/handoff.md).
 
-De Windows-app leest een handmatig gemaakte Podcast Addict-back-up, downloadt de actuele playlist, zet uniforme Garmin-tags en synchroniseert de definitieve beheerde map `Podcasts\Recente podcasts` op een Forerunner 265. Een echte gewijzigde playlist en groepering/volgorde van tien afleveringen zijn op het horloge bevestigd. Andere Garmin-mappen blijven buiten scope. Luisterposities en automatische aanlevering van de telefoonback-up zijn nog niet inbegrepen.
+De Windows-app haalt de nieuwste, op de telefoon gemaakte Podcast Addict-back-up via USB op, downloadt de actuele playlist, zet uniforme Garmin-tags en synchroniseert de definitieve beheerde map `Podcasts\Recente podcasts` op een Forerunner 265. De volledige telefoon-naar-Garmin-keten is met een gewijzigde playlist op de apparaten bevestigd. Andere Garmin-mappen blijven buiten scope. De back-up **aanmaken in Podcast Addict** en de telefoon ontgrendelen voor USB blijven handmatig; luisterposities zijn niet inbegrepen.
 
 ## Eén opdracht voor voorbereiding en synchronisatie
 
@@ -36,7 +36,7 @@ De op de telefoon bevestigde opdracht kopieert de nieuwste back-up naar een **be
 dotnet run --project .\src\PodcastSync.MtpProbe -- phone-copy-latest '<telefoonnaam uit Verkenner>' 'C:\video\AI'
 ```
 
-De selectie gebruikt de gedateerde originele Podcast Addict-bestandsnaam. Een bestaande lokale kopie wordt byte voor byte met de telefoon vergeleken en nooit overschreven. Een nieuwe kopie wordt eerst onder een tijdelijke naam geschreven, daarna opnieuw met de telefoon vergeleken via SHA-256 en pas dan onder de originele naam opgeslagen. De telefoon wordt niet gewijzigd. De `-PhoneName`-route in `Sync-Podcasts.ps1` gebruikt deze stap; die gecombineerde route moet nog op de pc worden getest.
+De selectie gebruikt de gedateerde originele Podcast Addict-bestandsnaam. Een bestaande lokale kopie wordt byte voor byte met de telefoon vergeleken en nooit overschreven. Een nieuwe kopie wordt eerst onder een tijdelijke naam geschreven, daarna opnieuw met de telefoon vergeleken via SHA-256 en pas dan onder de originele naam opgeslagen. De telefoon wordt niet gewijzigd. De `-PhoneName`-route in `Sync-Podcasts.ps1` gebruikt deze stap en is op de persoonlijke pc volledig getest.
 
 Een aparte, alleen-lezen Windows-proef gebruikt nu de directe WPD/MTP-interface in plaats van Verkenner. Sluit de Garmin aan en voer uit:
 
