@@ -12,6 +12,8 @@ De gebruiker heeft `phone-probe` op de S24 FE uitgevoerd: de exacte map en één
 
 De eerste echte `phone-copy-latest`-run op Windows gaf `The process cannot access the file because it is being used by another process`. De code hield de tijdelijke lokale back-up nog open tijdens `File.Move`; de streams worden nu vóór het hernoemen gesloten. De proef moet opnieuw worden uitgevoerd. Een verborgen `.PodcastAddict_*.backup.*.partial` kan van de mislukte poging zijn achtergebleven; de nieuwe run raakt die niet aan. Er is niets op de Garmin gewijzigd.
 
+De herhaalde USB-kopieerproef is geslaagd: `PodcastAddict_20261028_164753.backup` (7.692.792 bytes) werd vanaf de S24 FE naar `C:\video\AI` gekopieerd (`Reused=false`) en bij een tweede telefoonlezing kwam SHA-256 overeen. `Sync-Podcasts.ps1` heeft nu naast de bestaande `-BackupPath`-route een `-PhoneName <naam> -BackupDirectory <bestaande map>`-route. Die haalt eerst de nieuwste back-up gecontroleerd op en doorloopt daarna de bestaande voorbereiding, het Garmin-plan en optioneel `-Apply`. Deze gecombineerde route is nog niet op de persoonlijke pc getest. Android kan nog steeds om USB-toestemming vragen; de app kan geen nieuwe back-up *in* Podcast Addict starten.
+
 ## Wat werkt
 
 - `main` bevat een .NET 8 CLI voor `playlist`, `compare` en `prepare`.

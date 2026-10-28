@@ -8,15 +8,21 @@ De Windows-app leest een handmatig gemaakte Podcast Addict-back-up, downloadt de
 
 ## Eén opdracht voor voorbereiding en synchronisatie
 
-Maak eerst een **nieuwe volledige** Podcast Addict-back-up en kopieer die naar de pc. Sluit de Forerunner 265 via USB aan. Dit is één PowerShell-opdracht, ook als scripts in je huidige sessie geblokkeerd zijn:
+Maak eerst een **nieuwe volledige** Podcast Addict-back-up. Sluit de ontgrendelde telefoon (USB-modus Bestandsoverdracht) én de Forerunner 265 aan. Deze ene PowerShell-opdracht haalt de nieuwste gedateerde back-up van de telefoon, controleert de pc-kopie en synchroniseert daarna de Garmin:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File "$env:USERPROFILE\podcast\scripts\Sync-Podcasts.ps1" -PhoneName '<telefoonnaam uit Verkenner>' -BackupDirectory 'C:\video\AI' -Apply
+```
+
+Zonder `-Apply` stopt de opdracht na voorbereiding en het alleen-lezen Garmin-plan. De telefoon moet via MTP toegankelijk zijn; Android kan nog om ontgrendeling of toestemming vragen. Als je de back-up liever zelf naar de pc kopieert, werkt de bestaande route met expliciet bestand nog steeds:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File "$env:USERPROFILE\podcast\scripts\Sync-Podcasts.ps1" -BackupPath 'C:\video\AI\PodcastAddict_YYYYMMDD_HHMMSS.backup' -Apply
 ```
 
-Vervang de voorbeeldnaam door die van de nieuwe back-up. Het script gebruikt standaard `podcast-staging` naast de back-up en maakt een aparte, controleerbare Garmin-klare map voor deze back-up. Eerst worden alle lokale bestanden voorbereid en het alleen-lezen Garmin-plan getoond; met `-Apply` wordt daarna uitsluitend `Internal Storage\Podcasts\Recente podcasts` bijgewerkt. Zonder `-Apply` stopt het na het plan. Het onderliggende programma weigert een back-up ouder dan 48 uur, onbekende bestanden of submappen in de doelmap en onvolledige lokale bestanden. Bij een onderbroken overdracht blijft de lokale set staan; dezelfde opdracht kan opnieuw worden uitgevoerd, nadat het plan is gecontroleerd. De privé-back-up en MP3's worden niet in Git opgeslagen.
+Vervang de voorbeeldnaam door die van de nieuwe back-up. Beide routes gebruiken standaard `podcast-staging` naast de back-up en maken een aparte, controleerbare Garmin-klare map voor die back-up. Eerst worden alle lokale bestanden voorbereid en het alleen-lezen Garmin-plan getoond; met `-Apply` wordt daarna uitsluitend `Internal Storage\Podcasts\Recente podcasts` bijgewerkt. Het onderliggende programma weigert een back-up ouder dan 48 uur, onbekende bestanden of submappen in de doelmap en onvolledige lokale bestanden. Bij een onderbroken overdracht blijft de lokale set staan; dezelfde opdracht kan opnieuw worden uitgevoerd, nadat het plan is gecontroleerd. De privé-back-up en MP3's worden niet in Git opgeslagen.
 
-De automatische back-upoverdracht vanaf Android is de volgende stap. Op een aangesloten, ontgrendelde Samsung-telefoon verschijnt de Podcast Addict-map in Verkenner onder `Interne opslag\Android\media\com.bambuna.podcastaddict\backup`. De eerste WPD-controle is bewust alleen-lezen:
+Op een aangesloten, ontgrendelde Samsung-telefoon verschijnt de Podcast Addict-map in Verkenner onder `Interne opslag\Android\media\com.bambuna.podcastaddict\backup`. De eerste WPD-controle is bewust alleen-lezen:
 
 ```powershell
 dotnet run --project .\src\PodcastSync.MtpProbe -- phone-probe '<telefoonnaam uit Verkenner>'
@@ -24,13 +30,13 @@ dotnet run --project .\src\PodcastSync.MtpProbe -- phone-probe '<telefoonnaam ui
 
 Deze opdracht zoekt exact één telefoon met die naam, toont de gevonden back-upmap, bestandsnamen en groottes en kopieert nog niets. De telefoon moet in USB-modus Bestandsoverdracht staan; Android kan om ontgrendeling of toestemming blijven vragen.
 
-De volgende, nog op de telefoon te valideren opdracht kopieert de nieuwste back-up naar een **bestaande** lokale map:
+De op de telefoon bevestigde opdracht kopieert de nieuwste back-up naar een **bestaande** lokale map:
 
 ```powershell
 dotnet run --project .\src\PodcastSync.MtpProbe -- phone-copy-latest '<telefoonnaam uit Verkenner>' 'C:\video\AI'
 ```
 
-De selectie gebruikt de gedateerde originele Podcast Addict-bestandsnaam. Een bestaande lokale kopie wordt byte voor byte met de telefoon vergeleken en nooit overschreven. Een nieuwe kopie wordt eerst onder een tijdelijke naam geschreven, daarna opnieuw met de telefoon vergeleken via SHA-256 en pas dan onder de originele naam opgeslagen. De telefoon wordt niet gewijzigd. Dit kopiëren is nog niet gekoppeld aan `Sync-Podcasts.ps1`; gebruik daarna de gerapporteerde `LocalPath` als `-BackupPath`.
+De selectie gebruikt de gedateerde originele Podcast Addict-bestandsnaam. Een bestaande lokale kopie wordt byte voor byte met de telefoon vergeleken en nooit overschreven. Een nieuwe kopie wordt eerst onder een tijdelijke naam geschreven, daarna opnieuw met de telefoon vergeleken via SHA-256 en pas dan onder de originele naam opgeslagen. De telefoon wordt niet gewijzigd. De `-PhoneName`-route in `Sync-Podcasts.ps1` gebruikt deze stap; die gecombineerde route moet nog op de pc worden getest.
 
 Een aparte, alleen-lezen Windows-proef gebruikt nu de directe WPD/MTP-interface in plaats van Verkenner. Sluit de Garmin aan en voer uit:
 

@@ -1,6 +1,13 @@
+[CmdletBinding(DefaultParameterSetName = 'BackupFile')]
 param(
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true, ParameterSetName = 'BackupFile')]
     [string] $BackupPath,
+
+    [Parameter(Mandatory = $true, ParameterSetName = 'Phone')]
+    [string] $PhoneName,
+
+    [Parameter(Mandatory = $true, ParameterSetName = 'Phone')]
+    [string] $BackupDirectory,
 
     [string] $StagingDirectory,
 
@@ -8,6 +15,28 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+
+$inspector = Join-Path $PSScriptRoot '..\src\PodcastSync.BackupInspector\PodcastSync.BackupInspector.csproj'
+$mtp = Join-Path $PSScriptRoot '..\src\PodcastSync.MtpProbe\PodcastSync.MtpProbe.csproj'
+$prepareAlbum = Join-Path $PSScriptRoot 'Prepare-GarminAlbum.ps1'
+if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
+    throw '.NET 8 SDK ontbreekt of dotnet staat niet op PATH.'
+}
+
+if ($PSCmdlet.ParameterSetName -eq 'Phone') {
+    Write-Host 'Nieuwste Podcast Addict-back-up gecontroleerd van telefoon ophalen'
+    & dotnet build $mtp
+    if ($LASTEXITCODE -ne 0) { throw 'Bouwen van de telefoonkopieerfunctie mislukt; Garmin niet gewijzigd.' }
+    $copyOutput = & dotnet run --no-build --project $mtp -- phone-copy-latest $PhoneName $BackupDirectory
+    if ($LASTEXITCODE -ne 0) { throw 'Telefoonback-up ophalen mislukt; Garmin niet gewijzigd.' }
+    $copyJson = $copyOutput -join [Environment]::NewLine
+    Write-Host $copyJson
+    $copy = $copyJson | ConvertFrom-Json
+    if (-not $copy.Sha256Matches -or [string]::IsNullOrWhiteSpace($copy.LocalPath)) {
+        throw 'De gekopieerde telefoonback-up is niet bevestigd; Garmin niet gewijzigd.'
+    }
+    $BackupPath = $copy.LocalPath
+}
 
 $backup = (Resolve-Path -LiteralPath $BackupPath -ErrorAction Stop).Path
 if (-not (Test-Path -LiteralPath $backup -PathType Leaf)) {
@@ -36,14 +65,6 @@ $staging = if ([string]::IsNullOrWhiteSpace($StagingDirectory)) {
     [IO.Path]::GetFullPath($StagingDirectory)
 }
 $ready = Join-Path $parent "Garmin klaar Podcast Sync $stamp"
-$inspector = Join-Path $PSScriptRoot '..\src\PodcastSync.BackupInspector\PodcastSync.BackupInspector.csproj'
-$mtp = Join-Path $PSScriptRoot '..\src\PodcastSync.MtpProbe\PodcastSync.MtpProbe.csproj'
-$prepareAlbum = Join-Path $PSScriptRoot 'Prepare-GarminAlbum.ps1'
-
-if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
-    throw '.NET 8 SDK ontbreekt of dotnet staat niet op PATH.'
-}
-
 Write-Host "1/3 Playlist voorbereiden vanuit $backup"
 & dotnet run --project $inspector -- prepare $backup $staging
 if ($LASTEXITCODE -ne 0) { throw 'Playlist voorbereiden mislukt; Garmin niet gewijzigd.' }
