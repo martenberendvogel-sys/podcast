@@ -24,6 +24,14 @@ dotnet run --project .\src\PodcastSync.MtpProbe -- phone-probe '<telefoonnaam ui
 
 Deze opdracht zoekt exact één telefoon met die naam, toont de gevonden back-upmap, bestandsnamen en groottes en kopieert nog niets. De telefoon moet in USB-modus Bestandsoverdracht staan; Android kan om ontgrendeling of toestemming blijven vragen.
 
+De volgende, nog op de telefoon te valideren opdracht kopieert de nieuwste back-up naar een **bestaande** lokale map:
+
+```powershell
+dotnet run --project .\src\PodcastSync.MtpProbe -- phone-copy-latest '<telefoonnaam uit Verkenner>' 'C:\video\AI'
+```
+
+De selectie gebruikt de gedateerde originele Podcast Addict-bestandsnaam. Een bestaande lokale kopie wordt byte voor byte met de telefoon vergeleken en nooit overschreven. Een nieuwe kopie wordt eerst onder een tijdelijke naam geschreven, daarna opnieuw met de telefoon vergeleken via SHA-256 en pas dan onder de originele naam opgeslagen. De telefoon wordt niet gewijzigd. Dit kopiëren is nog niet gekoppeld aan `Sync-Podcasts.ps1`; gebruik daarna de gerapporteerde `LocalPath` als `-BackupPath`.
+
 Een aparte, alleen-lezen Windows-proef gebruikt nu de directe WPD/MTP-interface in plaats van Verkenner. Sluit de Garmin aan en voer uit:
 
 ```powershell

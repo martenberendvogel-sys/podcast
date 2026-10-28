@@ -6,7 +6,9 @@ De reeks is nu samengebracht in `scripts/Sync-Podcasts.ps1 -BackupPath <verse.ba
 
 Het wikkelscript is inmiddels op de persoonlijke Windows-pc uitgevoerd, eerst zonder `-Apply` en daarna met `-Apply` als nul-wijzigingenproef; beide plannen rapporteerden tien `Keep` en verder lege lijsten. De gebruiker heeft vervolgens `Internal Storage\Podcasts\Recente podcasts` expliciet tot definitieve beheerde map verklaard. Alleen deze map mag door de sync worden gewijzigd; bestaande andere podcastmappen blijven buiten scope. De vroegere aanduiding "testmap" in de chronologische proefnotities hieronder is historisch.
 
-Voor automatische back-upoverdracht is nu de exacte Android-MTP-map bekend: `Interne opslag\Android\media\com.bambuna.podcastaddict\backup` op een Samsung S24 FE. `PodcastSync.MtpProbe -- phone-probe <exacte telefoonnaam>` inventariseert deze map via WPD alleen-lezen; dit moet nog op de aangesloten telefoon worden getest. Er wordt nog niets vanaf de telefoon gekopieerd. Ook met een standaard-USB-configuratie kan Android nog vragen om ontgrendeling/toestemming.
+Voor automatische back-upoverdracht is nu de exacte Android-MTP-map bekend: `Interne opslag\Android\media\com.bambuna.podcastaddict\backup` op een Samsung S24 FE. `PodcastSync.MtpProbe -- phone-probe <exacte telefoonnaam>` inventariseert deze map via WPD alleen-lezen en is op de aangesloten telefoon getest. Die proef kopieerde nog niets. Ook met een standaard-USB-configuratie kan Android nog vragen om ontgrendeling/toestemming.
+
+De gebruiker heeft `phone-probe` op de S24 FE uitgevoerd: de exacte map en één back-up van 7.670.597 bytes zijn zichtbaar. `phone-copy-latest <telefoonnaam> <bestaande lokale map>` is nu toegevoegd als aparte gecontroleerde kopieerproef: kies de nieuwste gedateerde back-up, hergebruik alleen een byte-identieke bestaande kopie, of schrijf een nieuwe kopie eerst tijdelijk en vergelijk SHA-256 met een tweede telefoonlezing voordat de definitieve naam verschijnt. Deze schrijfactie is nog niet op de persoonlijke pc uitgevoerd en wijzigt de telefoon niet. Koppel hem pas na hardwarebevestiging aan de enkele Garmin-opdracht.
 
 ## Wat werkt
 

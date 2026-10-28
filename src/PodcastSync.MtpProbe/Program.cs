@@ -7,10 +7,11 @@ var command = args.Length == 0 ? "probe" : args[0];
 if (!((args.Length == 1 && command == "self-test") ||
       (args.Length <= 1 && command == "probe") ||
       (args.Length == 2 && command == "phone-probe") ||
+      (args.Length == 3 && command == "phone-copy-latest") ||
       (args.Length == 2 && (command == "copy-test" || command == "delete-test")) ||
       (args.Length == 3 && (command == "sync-plan" || command == "sync-apply"))))
 {
-    Console.Error.WriteLine("Gebruik: ... -- probe | phone-probe <telefoonnaam> | self-test | copy-test <test.mp3> | delete-test <test.mp3> | sync-plan <back-up> <Garmin-klare-map> | sync-apply <back-up> <Garmin-klare-map>");
+    Console.Error.WriteLine("Gebruik: ... -- probe | phone-probe <telefoonnaam> | phone-copy-latest <telefoonnaam> <lokale-map> | self-test | copy-test <test.mp3> | delete-test <test.mp3> | sync-plan <back-up> <Garmin-klare-map> | sync-apply <back-up> <Garmin-klare-map>");
     return 2;
 }
 
@@ -27,6 +28,11 @@ try
     if (command == "phone-probe")
     {
         Print(PhoneBackupProbe.Inspect(args[1]));
+        return 0;
+    }
+    if (command == "phone-copy-latest")
+    {
+        Print(PhoneBackupProbe.CopyLatest(args[1], args[2]));
         return 0;
     }
 
