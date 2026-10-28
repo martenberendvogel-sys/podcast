@@ -26,6 +26,10 @@ jobs:
           dotnet restore src/PodcastSync.MtpProbe/PodcastSync.MtpProbe.csproj --locked-mode
           dotnet build src/PodcastSync.MtpProbe/PodcastSync.MtpProbe.csproj --no-restore --configuration Release
           dotnet run --project src/PodcastSync.MtpProbe/PodcastSync.MtpProbe.csproj --no-restore -- self-test
+      - name: Build desktop preview and check plan parsing
+        run: |
+          dotnet build src/PodcastSync.Desktop/PodcastSync.Desktop.csproj --configuration Release
+          dotnet run --project src/PodcastSync.Desktop/PodcastSync.Desktop.csproj --configuration Release --no-build -- --self-test
       - name: Parse PowerShell scripts
         shell: pwsh
         run: |

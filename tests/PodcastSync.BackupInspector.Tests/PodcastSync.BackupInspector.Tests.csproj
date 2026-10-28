@@ -7,6 +7,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/PodcastSync.BackupInspector/PodcastSync.BackupInspector.csproj" />
+    <Compile Include="../../src/PodcastSync.Desktop/SyncOutput.cs" Link="Desktop/SyncOutput.cs" />
+    <Compile Include="../../src/PodcastSync.Desktop/SyncOutputSelfTest.cs" Link="Desktop/SyncOutputSelfTest.cs" />
   </ItemGroup>
 </Project>
 

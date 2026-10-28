@@ -105,6 +105,7 @@ try
     }));
     await AssertInvalidAudioAsync(previousPlaylist, redirectDirectory, redirectClient);
 
+    PodcastSync.Desktop.SyncOutputSelfTest.Run();
     Console.WriteLine("Parser-, playlist-, stagingherstel- en gelijktijdigheidscontroles geslaagd.");
     return 0;
 }

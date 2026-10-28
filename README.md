@@ -6,6 +6,20 @@ Lees bij hervatten eerst [de actuele projectstand](docs/handoff.md).
 
 De op telefoon en Garmin geteste basisversie is vastgelegd als [v0.1.0](docs/releases/v0.1.0.md). Nieuwe functies ontwikkelen we verder op `main`.
 
+## Eerste venster op Windows (`main`, nog niet op apparaten getest)
+
+Een eerste Windows-venster staat nu op `main`. Het gebruikt dezelfde bewezen `Sync-Podcasts.ps1`-route: vul de exacte telefoonnaam uit Verkenner en een bestaande lokale back-upmap in, klik op **Plan controleren**, lees de acties, en klik pas daarna op **Synchroniseer**. De uitvoer blijft live zichtbaar; een mislukte opdracht schakelt synchroniseren uit. Het venster onthoudt alleen de twee ingevulde instellingen onder `%LOCALAPPDATA%\PodcastSync\desktop-settings.json`, niet in Git. Bij synchroniseren wordt exact de gecontroleerde lokale back-up vastgepind, zodat een nieuwe telefoonback-up niet ongemerkt tussen plan en uitvoering wordt gekozen.
+
+Op de persoonlijke Windows-pc met de volledige ontwikkelrepo, .NET 8 SDK en FFmpeg op `PATH`:
+
+```powershell
+cd "$env:USERPROFILE\podcast"
+dotnet build .\src\PodcastSync.Desktop -c Release
+Start-Process '.\src\PodcastSync.Desktop\bin\Release\net8.0-windows\PodcastSync.Desktop.exe'
+```
+
+Maak vooraf een nieuwe volledige back-up in Podcast Addict, ontgrendel de telefoon, zet USB op bestandsoverdracht en sluit de Garmin aan. Dit is een **proefvenster**, nog geen zelfstandig installatiepakket; de stabiele `v0.1.0`-opdracht blijft ongewijzigd beschikbaar. De cloud kon bouwen en de planparser testen, maar de bediening en USB-route van dit venster moeten nog op Windows worden gevalideerd.
+
 De Windows-app haalt de nieuwste, op de telefoon gemaakte Podcast Addict-back-up via USB op, downloadt de actuele playlist, zet uniforme Garmin-tags en synchroniseert de definitieve beheerde map `Podcasts\Recente podcasts` op een Forerunner 265. De volledige telefoon-naar-Garmin-keten is met een gewijzigde playlist op de apparaten bevestigd. Andere Garmin-mappen blijven buiten scope. De back-up **aanmaken in Podcast Addict** en de telefoon ontgrendelen voor USB blijven handmatig; luisterposities zijn niet inbegrepen.
 
 ## Eén opdracht voor voorbereiding en synchronisatie
@@ -40,7 +54,7 @@ dotnet run --project .\src\PodcastSync.MtpProbe -- phone-copy-latest '<telefoonn
 
 De selectie gebruikt de gedateerde originele Podcast Addict-bestandsnaam. Een bestaande lokale kopie wordt byte voor byte met de telefoon vergeleken en nooit overschreven. Een nieuwe kopie wordt eerst onder een tijdelijke naam geschreven, daarna opnieuw met de telefoon vergeleken via SHA-256 en pas dan onder de originele naam opgeslagen. De telefoon wordt niet gewijzigd. De `-PhoneName`-route in `Sync-Podcasts.ps1` gebruikt deze stap en is op de persoonlijke pc volledig getest.
 
-Bekende beperking van `v0.1.0`: als een MP3-download wordt afgebroken, blijft in `podcast-staging` een `<64-tekens-sleutel>.partial` achter. De volgende run stopt dan bewust vóór Garmin-wijzigingen. Controleer dat er geen sync meer draait, verwijder uitsluitend dat onvolledige bestand en draai eerst opnieuw zonder `-Apply`. Verwijder de stagingmap, MP3-cache en het manifest niet. Een volgende versie krijgt gecontroleerd herstel van onderbroken downloads en bescherming tegen gelijktijdige runs. Gebruik voor zichtbare voortgang bij voorkeur een gewoon PowerShell-venster in plaats van PowerShell ISE.
+Bekende beperking van `v0.1.0`: als een MP3-download wordt afgebroken, blijft in `podcast-staging` een `<64-tekens-sleutel>.partial` achter. De volgende run stopt dan bewust vóór Garmin-wijzigingen. Controleer dat er geen sync meer draait, verwijder uitsluitend dat onvolledige bestand en draai eerst opnieuw zonder `-Apply`. Verwijder de stagingmap, MP3-cache en het manifest niet. Gebruik voor zichtbare voortgang bij voorkeur een gewoon PowerShell-venster in plaats van PowerShell ISE.
 
 Op `main` wordt dit voor de volgende versie verbeterd: een nieuwe run houdt de stagingmap exclusief vast, ruimt alleen de exact geselecteerde onvolledige `.partial`-download op en downloadt die aflevering opnieuw. Een tweede volledige sync of Garmin-opdracht wordt geblokkeerd zolang de eerste loopt. Een onbekende `.mp3` zonder manifest blijft bewust een fout. De normale Windows-route en het hervatten van een onderbroken Garmin-overdracht zijn getest; automatisch `.partial`-herstel is nog alleen met synthetische audio getest. De vaste `v0.1.0`-tag verandert niet.
 
