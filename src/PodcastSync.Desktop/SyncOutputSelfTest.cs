@@ -4,6 +4,7 @@ internal static class SyncOutputSelfTest
 {
     internal static void Run()
     {
+        GarminCleanupSelfTest.Run();
         const string output = """
             Before output
             {"Action":"phone-copy-latest","Sha256Matches":true,"LocalPath":"C:\\video\\AI\\PodcastAddict_20261028_164753.backup"}
