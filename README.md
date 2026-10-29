@@ -18,6 +18,8 @@ dotnet build .\src\PodcastSync.Desktop -c Release
 Start-Process '.\src\PodcastSync.Desktop\bin\Release\net8.0-windows\PodcastSync.Desktop.exe'
 ```
 
+Voor de volgende proef maakt de Windows-bouwcontrole ook een [draagbaar Windows x64-pakket](docs/portable.md) als GitHub Actions-artifact. Dat bevat het venster, de benodigde .NET-programma's en scripts en heeft na uitpakken geen broncodecheckout of .NET SDK nodig. FFmpeg blijft voorlopig apart nodig. Het pakket is nog niet op de persoonlijke pc getest; gebruik voor gewone synchronisatie tot die proef gerust de hierboven bewezen ontwikkelroute of `v0.1.0`.
+
 Maak vooraf een nieuwe volledige back-up in Podcast Addict, ontgrendel de telefoon, zet USB op bestandsoverdracht en sluit de Garmin aan. Dit is een **proefvenster**, nog geen zelfstandig installatiepakket; de stabiele `v0.1.0`-opdracht blijft ongewijzigd beschikbaar. Op 29 oktober is de volledige vensterroute op de persoonlijke Windows-pc geslaagd: 8 actuele afleveringen bleven na synchronisatie op de Garmin over. Het automatisch **maken** van de back-up in Podcast Addict is een apart, nog open onderzoekspunt.
 
 De Windows-app haalt de nieuwste, op de telefoon gemaakte Podcast Addict-back-up via USB op, downloadt de actuele playlist, zet uniforme Garmin-tags en synchroniseert de definitieve beheerde map `Podcasts\Recente podcasts` op een Forerunner 265. De volledige telefoon-naar-Garmin-keten is met een gewijzigde playlist op de apparaten bevestigd. Andere Garmin-mappen blijven buiten scope. De back-up **aanmaken in Podcast Addict** en de telefoon ontgrendelen voor USB blijven handmatig; luisterposities zijn niet inbegrepen.

@@ -9,4 +9,5 @@ obj/
 podcast-sync-manifest.json
 podcast-sync-garmin-ready.json
 staging/
+artifacts/
 

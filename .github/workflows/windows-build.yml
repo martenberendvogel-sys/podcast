@@ -39,10 +39,11 @@ jobs:
             [System.Management.Automation.Language.Parser]::ParseFile($path.FullName, [ref]$tokens, [ref]$errors) | Out-Null
             if ($errors.Count -gt 0) { throw "PowerShell syntax error in $($path.Name): $($errors[0])" }
           }
-      - name: Publish Windows program
-        run: dotnet publish src/PodcastSync.BackupInspector/PodcastSync.BackupInspector.csproj --configuration Release --no-restore --output artifacts/windows
+      - name: Build portable Windows x64 package
+        shell: pwsh
+        run: .\scripts\Build-Portable.ps1 -OutputDirectory 'artifacts/podcast-sync-portable-win-x64'
       - uses: actions/upload-artifact@v4
         with:
-          name: podcast-sync-windows
-          path: artifacts/windows
+          name: podcast-sync-portable-win-x64
+          path: artifacts/podcast-sync-portable-win-x64
           if-no-files-found: error
