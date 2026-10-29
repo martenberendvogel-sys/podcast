@@ -25,6 +25,8 @@
 
 ## Voorlopige architectuur
 
+Bij de succesvolle Windows-vensterproef op 29 oktober werd een **handmatig aangemaakte** nieuwe back-up via ontgrendelde USB/MTP opgehaald en verwerkt. MTP geeft toegang tot het bestaande bestand, niet tot een opdracht om Podcast Addict een nieuwe back-up te laten maken. De volgende gerichte proef is daarom de ingebouwde automatische back-up op de telefoon: leg tijdstip en interval vast, wijzig daarna de playlist, wacht op de geplande run en vergelijk bestandsnaam/tijdstip en playlistinhoud met de telefoon. Alleen als Podcast Addict een gedocumenteerde externe actie aanbiedt, onderzoeken we daarna een knop in onze Windows-app om die actie te starten. Dit is nog niet bewezen.
+
 Voorlopig levert de gebruiker een handmatig gemaakte volledige back-up met de gewenste selectie aan de Windows .NET-app. Automatische volledige back-ups staan nu aan op de telefoon, maar automatische overdracht naar OneDrive werkt nog niet betrouwbaar. Overdracht via wifi onderzoeken we later; dezelfde wifi alleen geeft Windows geen toegang tot Android-bestanden. De Windows-app haalt waar mogelijk de geselecteerde audio op bij de oorspronkelijke podcastbron en houdt een lokale synchronisatiestatus bij. Handmatige Garmin-overdracht werkt via Verkenner en Garmin Express; USB-detectie en automatisch kopiëren volgen pas na een gerichte proef met de exacte doelmap en bestandsregels. Luisterposities en tweerichtingssynchronisatie vallen buiten versie 1.
 
 ## Veiligheidsgrens
