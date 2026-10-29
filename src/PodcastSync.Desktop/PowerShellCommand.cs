@@ -7,7 +7,7 @@ internal static class PowerShellCommand
     internal static string Encode(string script, string[] arguments)
     {
         static string Quote(string value) => "'" + value.Replace("'", "''") + "'";
-        var command = new StringBuilder("$ErrorActionPreference='Stop'; $OutputEncoding=[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); & ");
+        var command = new StringBuilder("$ErrorActionPreference='Stop'; $OutputEncoding=[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); try { & ");
         command.Append(Quote(script));
         for (var index = 0; index < arguments.Length; index++)
         {
@@ -17,7 +17,7 @@ internal static class PowerShellCommand
                 throw new ArgumentException("Onbekende syncparameter.");
             command.Append(' ').Append(parameter).Append(' ').Append(Quote(arguments[++index]));
         }
-        command.Append("; if (-not $?) { exit 1 }");
+        command.Append("; if (-not $?) { exit 1 } } catch { [Console]::Error.WriteLine($_.Exception.Message); exit 1 }");
         return Convert.ToBase64String(Encoding.Unicode.GetBytes(command.ToString()));
     }
 }

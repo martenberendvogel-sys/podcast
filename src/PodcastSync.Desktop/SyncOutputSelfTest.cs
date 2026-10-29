@@ -65,6 +65,15 @@ internal static class SyncOutputSelfTest
             process.WaitForExit();
             if (process.ExitCode != 0 || output.TrimEnd() != phone + Environment.NewLine + folder)
                 throw new Exception("Windows PowerShell UTF-8-rondreis mislukt: " + error);
+
+            File.WriteAllText(script, "param($PhoneName, $BackupDirectory)\nthrow $PhoneName");
+            using var failing = System.Diagnostics.Process.Start(start)!;
+            var failureOutput = failing.StandardOutput.ReadToEnd();
+            var failureError = failing.StandardError.ReadToEnd();
+            failing.WaitForExit();
+            if (failing.ExitCode == 0 || !failureError.Contains(phone, StringComparison.Ordinal)
+                || failureError.Contains("CLIXML", StringComparison.Ordinal) || failureOutput.Length != 0)
+                throw new Exception("Windows PowerShell-fout komt niet als leesbare tekst terug: " + failureError);
         }
         finally
         {
