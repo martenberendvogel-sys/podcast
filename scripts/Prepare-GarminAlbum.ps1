@@ -88,7 +88,7 @@ for ($index = 0; $index -lt $selected.Count; $index++) {
         Sha256 = (Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant()
     }
     $title = $episodes[$key].Title -replace '[\r\n]', ' '
-    Write-Host "[Voortgang] Garmin-kopie $($index + 1)/$($selected.Count): $title"
+    Write-Output "[Voortgang] Garmin-kopie $($index + 1)/$($selected.Count): $title"
 }
 
 [pscustomobject]@{
@@ -99,4 +99,4 @@ for ($index = 0; $index -lt $selected.Count; $index++) {
     Files = $readyFiles
 } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $outputPath 'podcast-sync-garmin-ready.json') -Encoding UTF8
 
-Write-Host "Klaar: $($selected.Count) aparte MP3-kopieen in $outputPath. Niets is naar de Garmin geschreven."
+Write-Output "Klaar: $($selected.Count) aparte MP3-kopieen in $outputPath. Niets is naar de Garmin geschreven."

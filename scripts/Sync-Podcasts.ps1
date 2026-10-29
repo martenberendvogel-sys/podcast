@@ -49,7 +49,7 @@ if (-not $portable) {
 }
 
 if ($PSCmdlet.ParameterSetName -eq 'Phone') {
-    Write-Host 'Nieuwste Podcast Addict-back-up gecontroleerd van telefoon ophalen'
+    Write-Output 'Nieuwste Podcast Addict-back-up gecontroleerd van telefoon ophalen'
     if ($portable) {
         $copyOutput = & $mtpExe phone-copy-latest $PhoneName $BackupDirectory
     } else {
@@ -59,7 +59,7 @@ if ($PSCmdlet.ParameterSetName -eq 'Phone') {
     }
     if ($LASTEXITCODE -ne 0) { throw 'Telefoonback-up ophalen mislukt; Garmin niet gewijzigd.' }
     $copyJson = $copyOutput -join [Environment]::NewLine
-    Write-Host $copyJson
+    Write-Output $copyJson
     $copy = $copyJson | ConvertFrom-Json
     if (-not $copy.Sha256Matches -or [string]::IsNullOrWhiteSpace($copy.LocalPath)) {
         throw 'De gekopieerde telefoonback-up is niet bevestigd; Garmin niet gewijzigd.'
@@ -94,7 +94,7 @@ $staging = if ([string]::IsNullOrWhiteSpace($StagingDirectory)) {
     [IO.Path]::GetFullPath($StagingDirectory)
 }
 $ready = Join-Path $parent "Garmin klaar Podcast Sync $stamp"
-Write-Host "1/3 Playlist voorbereiden vanuit $backup"
+Write-Output "1/3 Playlist voorbereiden vanuit $backup"
 if ($portable) {
     & $inspectorExe prepare $backup $staging
 } else {
@@ -103,13 +103,13 @@ if ($portable) {
 if ($LASTEXITCODE -ne 0) { throw 'Playlist voorbereiden mislukt; Garmin niet gewijzigd.' }
 
 if (Test-Path -LiteralPath $ready) {
-    Write-Host "2/3 Bestaande lokale Garmin-set controleren: $ready"
+    Write-Output "2/3 Bestaande lokale Garmin-set controleren: $ready"
 } else {
-    Write-Host "2/3 Nieuwe lokale Garmin-set maken: $ready"
+    Write-Output "2/3 Nieuwe lokale Garmin-set maken: $ready"
     & $prepareAlbum -StagingDirectory $staging -OutputDirectory $ready
 }
 
-Write-Host '3/3 Garmin-plan controleren (alleen lezen)'
+Write-Output '3/3 Garmin-plan controleren (alleen lezen)'
 if ($portable) {
     & $mtpExe sync-plan $backup $ready
 } else {
@@ -118,11 +118,11 @@ if ($portable) {
 if ($LASTEXITCODE -ne 0) { throw 'Garmin-plan mislukt; geen synchronisatie uitgevoerd.' }
 
 if (-not $Apply) {
-    Write-Host 'Alleen voorbereiding en plan uitgevoerd. Voeg -Apply toe om de Garmin te synchroniseren.'
+    Write-Output 'Alleen voorbereiding en plan uitgevoerd. Voeg -Apply toe om de Garmin te synchroniseren.'
     return
 }
 
-Write-Host 'Synchronisatie uitvoeren; laat de Garmin aangesloten.'
+Write-Output 'Synchronisatie uitvoeren; laat de Garmin aangesloten.'
 if ($portable) {
     & $mtpExe sync-apply $backup $ready
 } else {
@@ -131,7 +131,7 @@ if ($portable) {
 if ($LASTEXITCODE -ne 0) {
     throw 'Synchronisatie gestopt. Bewaar de lokale set en bekijk eerst het plan voordat je opnieuw probeert.'
 }
-Write-Host 'Klaar. Controleer op het horloge de groep Recente podcasts en de afspeelvolgorde.'
+Write-Output 'Klaar. Controleer op het horloge de groep Recente podcasts en de afspeelvolgorde.'
 
 } finally {
     $syncLock.Dispose()

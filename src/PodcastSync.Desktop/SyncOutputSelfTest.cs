@@ -47,7 +47,7 @@ internal static class SyncOutputSelfTest
         var script = Path.Combine(directory, "encoding.ps1");
         try
         {
-            File.WriteAllText(script, "param($PhoneName, $BackupDirectory)\nWrite-Output $PhoneName\nWrite-Output $BackupDirectory");
+            File.WriteAllText(script, "param($PhoneName, $BackupDirectory)\nWrite-Progress -Activity 'Preparing modules' -Status 'Test'\nWrite-Output $PhoneName\nWrite-Output $BackupDirectory");
             const string phone = "Marco's telefoon; $(geen-opdracht) ge\u00efrriteerd";
             const string folder = "C:\\Priv\u00e9\\podcasts";
             var start = new System.Diagnostics.ProcessStartInfo("powershell.exe")
@@ -63,7 +63,7 @@ internal static class SyncOutputSelfTest
             var output = process.StandardOutput.ReadToEnd();
             var error = process.StandardError.ReadToEnd();
             process.WaitForExit();
-            if (process.ExitCode != 0 || output.TrimEnd() != phone + Environment.NewLine + folder)
+            if (process.ExitCode != 0 || error.Length != 0 || output.TrimEnd() != phone + Environment.NewLine + folder)
                 throw new Exception("Windows PowerShell UTF-8-rondreis mislukt: " + error);
 
             File.WriteAllText(script, "param($PhoneName, $BackupDirectory)\nthrow $PhoneName");

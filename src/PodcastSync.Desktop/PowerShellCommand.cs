@@ -7,7 +7,7 @@ internal static class PowerShellCommand
     internal static string Encode(string script, string[] arguments)
     {
         static string Quote(string value) => "'" + value.Replace("'", "''") + "'";
-        var command = new StringBuilder("$ErrorActionPreference='Stop'; $OutputEncoding=[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); try { & ");
+        var command = new StringBuilder("$ErrorActionPreference='Stop'; $ProgressPreference='SilentlyContinue'; $OutputEncoding=[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); try { & ");
         command.Append(Quote(script));
         for (var index = 0; index < arguments.Length; index++)
         {
