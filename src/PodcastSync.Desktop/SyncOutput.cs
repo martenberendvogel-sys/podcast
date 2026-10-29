@@ -9,6 +9,8 @@ internal static class SyncOutput
 {
     internal static SyncPlan ParsePlan(string output)
     {
+        // Progress titles may contain braces or quotes; they are not JSON records.
+        output = string.Join('\n', output.Split('\n').Where(line => !line.StartsWith("[Voortgang] ", StringComparison.Ordinal)));
         string? backupPath = null;
         JsonElement? plan = null;
         foreach (var json in JsonObjects(output))

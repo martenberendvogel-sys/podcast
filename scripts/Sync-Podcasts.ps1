@@ -15,6 +15,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
 
 $lockDirectory = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'PodcastSync'
 New-Item -ItemType Directory -Path $lockDirectory -Force | Out-Null

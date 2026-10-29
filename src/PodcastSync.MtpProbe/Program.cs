@@ -3,6 +3,8 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using MediaDevices;
 
+Console.OutputEncoding = new System.Text.UTF8Encoding(false);
+
 var command = args.Length == 0 ? "probe" : args[0];
 if (!((args.Length == 1 && command == "self-test") ||
       (args.Length <= 1 && command == "probe") ||

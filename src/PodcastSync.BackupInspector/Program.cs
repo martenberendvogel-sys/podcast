@@ -1,5 +1,7 @@
 using PodcastSync.BackupInspector;
 
+Console.OutputEncoding = new System.Text.UTF8Encoding(false);
+
 if (!((args.Length == 2 && (args[0] == "inspect" || args[0] == "playlist")) ||
       (args.Length == 3 && (args[0] == "compare" || args[0] == "prepare")) ||
       (args.Length == 5 && args[0] == "prepare" && args[3] == "--limit")))
@@ -24,7 +26,8 @@ try
         {
             Timeout = TimeSpan.FromMinutes(30)
         };
-        Console.WriteLine(ReportWriter.ToJson(await PlaylistStager.PrepareAsync(playlist, args[2], limit, client)));
+        Console.WriteLine(ReportWriter.ToJson(await PlaylistStager.PrepareAsync(playlist, args[2], limit, client,
+            progress: message => Console.WriteLine("[Voortgang] " + message.Replace('\r', ' ').Replace('\n', ' ')))));
     }
     else if (args[0] == "compare")
     {

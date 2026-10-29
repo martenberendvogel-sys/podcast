@@ -36,7 +36,8 @@ public static class PlaylistStager
         string outputDirectory,
         int? limit,
         HttpClient client,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        Action<string>? progress = null)
     {
         if (limit is < 1) throw new ArgumentOutOfRangeException(nameof(limit), "De limiet moet positief zijn.");
         if (string.IsNullOrWhiteSpace(outputDirectory)) throw new ArgumentException("Geef een uitvoermap op.", nameof(outputDirectory));
@@ -100,6 +101,7 @@ public static class PlaylistStager
             var audioPath = Path.Combine(directory, episode.Key + ".mp3");
             if (files.TryGetValue(episode.Key, out var known))
             {
+                progress?.Invoke($"Cache controleren {episode.Rank}/{playlist.Episodes.Count}: {episode.Title}");
                 if (!File.Exists(audioPath) || new FileInfo(audioPath).Length != known.Bytes ||
                     !string.Equals(await HashFileAsync(audioPath, cancellationToken), known.Sha256, StringComparison.Ordinal))
                     throw new InvalidDataException($"De eerder opgeslagen audio op playlistpositie {episode.Rank} is gewijzigd of ontbreekt.");
@@ -121,12 +123,14 @@ public static class PlaylistStager
 
             try
             {
+                progress?.Invoke($"Downloaden {episode.Rank}/{playlist.Episodes.Count}: {episode.Title}");
                 var staged = await DownloadAsync(client, uri, temporaryPath, episode.Key, cancellationToken);
                 File.Move(temporaryPath, audioPath);
                 files.Add(episode.Key, staged);
                 manifest = manifest with { Files = files.Values.OrderBy(file => file.Key, StringComparer.Ordinal).ToList() };
                 await SaveManifestAsync(manifestPath, manifest, cancellationToken);
                 downloaded++;
+                progress?.Invoke($"Download klaar {episode.Rank}/{playlist.Episodes.Count}: {episode.Title}");
             }
             catch (HttpRequestException exception)
             {

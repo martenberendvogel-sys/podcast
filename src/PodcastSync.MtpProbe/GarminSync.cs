@@ -55,6 +55,7 @@ internal static class GarminSync
                 !Regex.IsMatch(file.Sha256, "^[0-9a-f]{64}$", RegexOptions.CultureInvariant))
                 throw new InvalidDataException("Ongeldige sleutel, volgorde of controlesom in de Garmin-klare set.");
             var path = Path.Combine(directory, key + ".mp3");
+            Progress($"Lokale Garmin-kopie controleren {index + 1}/{manifest.SelectedKeys.Length}: {file.Title}");
             if (!File.Exists(path) || new FileInfo(path).Length != file.Bytes ||
                 !string.Equals(await HashFileAsync(path), file.Sha256, StringComparison.OrdinalIgnoreCase))
                 throw new InvalidDataException($"Garmin-klare MP3 ontbreekt of wijkt af: {key}");
@@ -68,12 +69,17 @@ internal static class GarminSync
         if (device.GetDirectories(recent).Any())
             throw new InvalidOperationException("De beheerde Garmin-map bevat submappen; automatische sync is geblokkeerd.");
         var states = new List<DeviceState>();
-        foreach (var path in device.GetFiles(recent))
+        var paths = device.GetFiles(recent).ToArray();
+        var files = manifest.Files.ToDictionary(file => file.Key, StringComparer.Ordinal);
+        var index = 0;
+        foreach (var path in paths)
         {
+            index++;
             var name = Path.GetFileName(path);
             if (!ManagedFileName.IsMatch(name)) { states.Add(new DeviceState(name, null, null)); continue; }
             var key = name[..^4];
             if (!selected.Contains(key)) { states.Add(new DeviceState(name, null, null)); continue; }
+            Progress($"Garmin teruglezen {index}/{paths.Length}: {files[key].Title}");
             var remote = device.GetFileInfo(path);
             using var stream = remote.OpenRead();
             states.Add(new DeviceState(name, remote.Length, Convert.ToHexString(SHA256.HashData(stream))));
@@ -112,14 +118,21 @@ internal static class GarminSync
         if (plan.Unknown.Length != 0) throw new InvalidOperationException("Onbekende bestanden in de beheerde Garmin-map; niets gewijzigd.");
         if (plan.Add.Length == 0 && plan.Replace.Length == 0 && plan.Remove.Length == 0) return plan;
         var directory = Path.GetFullPath(readyDirectory);
+        var files = manifest.Files.ToDictionary(file => file.Key, StringComparer.Ordinal);
+        var completed = 0;
+        var total = plan.Add.Length + plan.Replace.Length;
         foreach (var key in plan.Add)
-            UploadAndVerify(device, recent, directory, key);
+        {
+            Progress($"Naar Garmin kopieren {++completed}/{total}: {files[key].Title}");
+            UploadAndVerify(device, recent, directory, key, files[key].Title);
+        }
         foreach (var key in plan.Replace)
         {
+            Progress($"Op Garmin vervangen {++completed}/{total}: {files[key].Title}");
             var path = Path.Combine(recent, key + ".mp3");
             device.DeleteFile(path);
             if (device.FileExists(path)) throw new IOException("Vervangen gestopt: oud bestand staat nog op de Garmin.");
-            UploadAndVerify(device, recent, directory, key);
+            UploadAndVerify(device, recent, directory, key, files[key].Title);
         }
         // Only remove no-longer-selected files after every desired file has been verified.
         var beforeRemoval = Inspect(device, recent, manifest);
@@ -127,6 +140,7 @@ internal static class GarminSync
             throw new IOException("Niet alle gewenste bestanden zijn bevestigd; verwijderen van oude afleveringen overgeslagen.");
         foreach (var key in beforeRemoval.Remove)
         {
+            Progress($"Niet meer geselecteerde aflevering verwijderen: {key[..8]}");
             var path = Path.Combine(recent, key + ".mp3");
             device.DeleteFile(path);
             if (device.FileExists(path)) throw new IOException("Opruimen gestopt: bestand staat nog op de Garmin.");
@@ -134,13 +148,14 @@ internal static class GarminSync
         return Inspect(device, recent, manifest);
     }
 
-    private static void UploadAndVerify(MediaDevice device, string recent, string directory, string key)
+    private static void UploadAndVerify(MediaDevice device, string recent, string directory, string key, string title)
     {
         var name = key + ".mp3";
         var source = Path.Combine(directory, name);
         var destination = Path.Combine(recent, name);
         if (device.FileExists(destination)) throw new IOException("Kopie gestopt: doelbestand bestaat al.");
         device.UploadFile(source, destination);
+        Progress($"Overdracht klaar; Garmin-kopie teruglezen: {title}");
         using var sourceStream = File.OpenRead(source);
         var expectedHash = SHA256.HashData(sourceStream);
         var remote = device.GetFileInfo(destination);
@@ -149,6 +164,7 @@ internal static class GarminSync
         using var remoteStream = remote.OpenRead();
         if (!CryptographicOperations.FixedTimeEquals(expectedHash, SHA256.HashData(remoteStream)))
             throw new IOException("Kopie teruggelezen met verkeerde SHA-256; geen verdere wijzigingen.");
+        Progress($"Garmin-kopie gecontroleerd: {title}");
     }
 
     private static async Task<string> HashFileAsync(string path)
@@ -156,4 +172,6 @@ internal static class GarminSync
         await using var stream = File.OpenRead(path);
         return Convert.ToHexString(await SHA256.HashDataAsync(stream));
     }
+
+    private static void Progress(string message) => Console.WriteLine("[Voortgang] " + message.Replace('\r', ' ').Replace('\n', ' '));
 }

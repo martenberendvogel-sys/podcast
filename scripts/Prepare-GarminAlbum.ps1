@@ -13,7 +13,7 @@ $manifestPath = Join-Path $stagingPath 'podcast-sync-manifest.json'
 if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
     throw 'De stagingmap bevat geen Podcast Sync-manifest.'
 }
-$manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+$manifest = Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
 if ($manifest.Version -ne 1) { throw 'Onbekende manifestversie.' }
 
 $selected = @($manifest.SelectedKeys)
@@ -87,7 +87,8 @@ for ($index = 0; $index -lt $selected.Count; $index++) {
         Bytes = $ready.Length
         Sha256 = (Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant()
     }
-    Write-Host "Garmin-kopie $($index + 1)/$($selected.Count): $($episodes[$key].Title)"
+    $title = $episodes[$key].Title -replace '[\r\n]', ' '
+    Write-Host "[Voortgang] Garmin-kopie $($index + 1)/$($selected.Count): $title"
 }
 
 [pscustomobject]@{

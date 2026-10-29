@@ -181,9 +181,11 @@ internal sealed class SyncForm : Form
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardOutput = true,
-                RedirectStandardError = true
+                RedirectStandardError = true,
+                StandardOutputEncoding = new UTF8Encoding(false),
+                StandardErrorEncoding = new UTF8Encoding(false)
             };
-            foreach (var arg in new[] { "-NoProfile", "-ExecutionPolicy", "RemoteSigned", "-File", _script }.Concat(arguments))
+            foreach (var arg in new[] { "-NoProfile", "-OutputFormat", "Text", "-ExecutionPolicy", "RemoteSigned", "-EncodedCommand", PowerShellCommand.Encode(_script, arguments) })
             {
                 process.StartInfo.ArgumentList.Add(arg);
             }
@@ -224,6 +226,10 @@ internal sealed class SyncForm : Form
             return;
         }
         _log.AppendText(line + Environment.NewLine);
+        if (line.StartsWith("[Voortgang] ", StringComparison.Ordinal))
+        {
+            _status.Text = line["[Voortgang] ".Length..];
+        }
     }
 
     private void InvalidatePlan()
